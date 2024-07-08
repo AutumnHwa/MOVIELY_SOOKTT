@@ -1,0 +1,99 @@
+.AnniRecom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: #001A56;
+    color: white;
+  }
+  
+  .pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+  }
+  
+  .recomlogo {
+    display: flex;
+    justify-content: flex-start;
+    width: 250px;
+    height: auto;
+  }
+  
+  .recomlogo img {
+    width: 220px;
+    height: auto;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-left: 0px;
+  }
+  
+  .sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 50px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 20px;
+  }
+  
+  .greetingText {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .banners {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .banner {
+    width: 600px;
+    height: 100px;
+    background: rgba(210, 210, 210, 0.53);
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    cursor: pointer;
+    padding-left: 15px; /* 왼쪽 여백 추가 */
+  }
+  
+  .banner div:first-child {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  .banner div:last-child {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .moviesContainer {
+    margin-top: 5px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .movieSwiper {
+    width: 100%;
+  }
+  
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 280px;
+    margin-left: 4px;
+  }
+  

@@ -1,0 +1,242 @@
+.movie-detail-page {
+  font-family: 'Arial, sans-serif';
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #001A56;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 550px;
+  margin-bottom: 10px;
+}
+
+.detail-logo {
+  width: 30%;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.detail-logo img {
+  width: 100%;
+  height: auto;
+}
+
+.detail-sidebar-toggle {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 50px;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+  margin-right: 0px;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.mypage-button {
+  background-color: #FBE64D;
+  color: black;
+  border-radius: 15px;
+  width: 90px;
+  height: 28px;
+  text-align: center;
+  text-decoration: none;
+  line-height: 23px;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+.mypage-button:hover {
+  background-color: #FF00B8;
+}
+
+.search-bar {
+  width: 150px;
+  height: 20px;
+  margin-top: 10px;
+  border-radius: 15px;
+  margin-top: 10px;
+  opacity: 70%;
+}
+
+.movie-info-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 550px;
+  margin-top: 5px;
+}
+
+.left-column {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 왼쪽 정렬 */
+}
+
+.detail-movie-title {
+  font-size: 25px;
+  margin-bottom: 5px;
+  text-align: left; /* 왼쪽 정렬 */
+}
+
+.detail-rating-and-add {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0px;
+  margin-top: -5px;
+  text-align: left; /* 왼쪽 정렬 */
+}
+
+.rating {
+  font-size: 1.5em;
+  margin-right: 10px;
+}
+
+.movie-detail-page .movie-rating .star {
+  color: white;
+  font-size: 30px;
+  margin: 3px;
+  cursor: pointer;
+}
+
+.movie-detail-page .movie-rating .star.filled {
+  color: gold;
+}
+
+.detail-add-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: 52px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.add-button:hover {
+  color: #FBE64D;
+}
+
+.movie-details,
+.movie-runtime,
+.movie-cast {
+  margin-bottom: 10px;
+  font-size: 15px;
+  text-align: left; /* 왼쪽 정렬 */
+  line-height: 0.3; /* 행간을 줄이기 위해 추가 */
+}
+.right-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.movie-poster {
+  width: 100%;
+  max-width: 160px;
+  margin-top: 20px;
+  margin-bottom: -15px;
+}
+
+.overview {
+  margin-top: -30px;
+  font-size: 20px;
+  text-align: left;
+}
+
+.fulloverview {
+  line-height: 1.5;
+  text-align: left; /* 왼쪽 정렬 */
+}
+
+.movie-description {
+  width: 100%;
+  max-width: 550px;
+  margin-top: 10px;
+  margin-bottom: -30px;
+  font-size: 15px;
+  text-align: left; /* 왼쪽 정렬 */
+}
+
+.ott-buttons-container {
+  width: 100%;
+  max-width: 550px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ott-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: -40px;
+  text-align: left;
+  width: 100%;
+}
+
+.ott-button {
+  width: 100%;
+  max-width: 550px;
+  height: 50px;
+  background-color: rgb(158, 162, 171);
+  color: black;
+  border: 1.2px solid white;
+  border-radius: 15px;
+  font-size: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding-left: 15px;
+  opacity: 1;
+  margin: 5px;
+}
+
+.ott-button img.ott-logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.ott-button:hover {
+  background-color: #FBE64D;
+  font-weight: bold;
+}
+
+.custom-hr {
+  border-radius: 3px;
+  border: 0;
+  height: 3px;
+  width: 550px;
+  background-color: white;
+  margin: 40px auto;
+  opacity: 50%;
+}
+
+
+.detail-searchIcon
+{
+  position: absolute;
+  right : 70px;
+  color : white;
+  margin-top: -12px;
+  cursor: pointer;
+}

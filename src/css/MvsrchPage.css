@@ -1,0 +1,181 @@
+.MvsrchPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  background-color: #001A56; /* 어두운 배경 색 */
+}
+
+.srlogo {
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  width: 250px;
+  height: auto;
+  margin-left: -340px;
+}
+
+.srchlogo img {
+  width: 220px;
+  height: auto;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-left: -620px;
+}
+
+
+
+.searchContainer {
+  position: sticky;
+  top: 0;
+  background-color: #001A56; /* 배경색 일치 */
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.searchInput {
+  padding: 5px 15px;
+  width: 300px;
+  height: 30px;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  box-sizing: border-box; /* 이 속성을 추가 */
+}
+
+.searchButton {
+  padding: 5px 15px;
+  margin-left: 2px;
+  width: 80px;
+  height: 30px;
+  background-color: white;
+  font-size: 15px;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.genreButton, .platformButton {
+  margin-right: 10px;
+  width: 120px;
+  height: 30px;
+  background-color: white;
+  color: black;
+  font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.searchButton:hover {
+  background-color: #FBE64D;
+  color: black;
+}
+
+.genreButton:hover, .platformButton:hover {
+  background-color: #FBE64D;
+  color: black;
+}
+
+.platformDropdown {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #001A56;
+  color: white;
+  border-radius: 10px;
+  position: absolute;
+  width: auto;
+}
+
+.genreDropdown {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4개의 열로 설정 */
+  grid-gap: 0px; /* 격자 사이의 간격 */
+  background-color: #2F4881;
+  color: white;
+  border-radius: 10px;
+  position: absolute;
+  width: auto; /* 너비 자동 조절 */
+  gap: 2px;
+}
+
+.filter {
+  padding: 5px 10px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  background-color: #2F4881;
+  color: white;
+}
+
+.filter:hover {
+  background-color: #FBE64D;
+  color: black;
+}
+
+.filter:last-child {
+  border-bottom: none;
+}
+
+.logoIcon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.resultText {
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  margin-top: 20px; /* 여기서 값을 조정하여 위치를 변경 */
+}
+
+.movieResults {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px; /* 여기서 값을 조정하여 위치를 변경 */
+}
+
+.movieGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.noMovies {
+  color: white;
+  font-size: 20px;
+}
+
+.srch-sidebar-toggle {
+  position: absolute;
+  right: 0px;
+  top: 40px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 50px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.srch-searchIcon
+{
+  position: absolute;
+  right : 50px;
+  color : white;
+  margin-top: -5px;
+}

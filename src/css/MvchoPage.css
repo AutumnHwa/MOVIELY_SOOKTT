@@ -1,0 +1,243 @@
+/* MvchoPage.css */
+.MvchoPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #001A56;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  position: relative;
+}
+
+.authButtons {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.authButton, .mypageButton {
+  width: 100px; /* 가로 길이 100px */
+  height: 25px; /* 세로 길이 25px */
+  background-color: #FBE64D; /* 초기 배경색 */
+  color: black; /* 초기 글씨 색 */
+  border: none; /* 테두리 없음 */
+  padding: 0 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.authButton:hover, .mypageButton:hover,
+.authButton:focus, .mypageButton:focus {
+  background-color: #FF00B8; /* 마우스 올리거나 클릭 시 배경색 */
+  color: white; /* 마우스 올리거나 클릭 시 글씨 색 */
+}
+
+.chologo {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.chologo img {
+  width: 250px;
+  height: auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.mainText {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 25px;
+  color: white;
+  text-align: center;
+  margin-top: -20px;
+}
+
+.subText {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: white;
+  text-align: center;
+}
+
+.recommendButton {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  width: 120px;
+  height: 30px;
+  border: 1px solid white;
+  border-radius: 15px;
+  background-color: transparent;
+  color: white;
+  font-size: 15px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.recommendButton:hover {
+  background-color: #FBE64D;
+  color: black;
+}
+
+.stickyTop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: transparent;
+  padding: 10px 0;
+  width: 700px;
+  height: auto;
+}
+
+.MvchoDropdownContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* 버튼 간의 간격을 조정 */
+  padding: 15px 0;
+}
+
+.MvchoGenreButton, .MvchoPlatformButton {
+  width: 320px; /* 버튼의 길이를 300px로 조정 */
+  height: 30px;
+  background-color: white;
+  color: black;
+  font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.MvchoGenreButton:hover, .MvchoPlatformButton:hover {
+  background-color: #FBE64D;
+  color: black;
+}
+
+.MvchoPlatformDropdown, .MvchoGenreDropdown {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #001A56;
+  color: white;
+  border-radius: 10px;
+  position: absolute;
+  width: auto;
+}
+
+.MvchoGenreDropdown {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4개의 열로 설정 */
+  grid-gap: 0px; /* 격자 사이의 간격 */
+  background-color: #2F4881;
+  color: white;
+  border-radius: 10px;
+  position: absolute;
+  width: auto; /* 너비 자동 조절 */
+}
+
+.platformDropdown {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #001A56;
+  color: white;
+  border-radius: 10px;
+  position: absolute;
+  width: auto;
+}
+
+.MvchoFilter {
+  padding: 5px 10px; /* padding 값을 늘림 */
+  height: 30px; /* 버튼 높이 통일 */
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  background-color: #2F4881;
+  color: white;
+  width: 100%;
+}
+
+.MvchoFilter:hover {
+  background-color: #FBE64D;
+  color: black;
+}
+
+.platformLogo {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.cho-sidebar-toggle {
+  position: absolute;
+  right: -30px;
+  top: 30px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 50px;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (max-width: 720px) {
+  .mainText {
+    font-size: 17px;
+  }
+
+  .subText {
+    font-size: 11px;
+  }
+
+  .recommendButton {
+    width: 96px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  .MvchoDropdownContainer {
+    width: 100%;
+    padding: 15px 0;
+    gap: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .MvchoGenreButton, .MvchoPlatformButton {
+    width: 100%;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .stickyTop {
+    padding: 10px 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .sidebar-toggle {
+    right: 10px;
+    top: 10px;
+    font-size: 24px;
+  }
+}

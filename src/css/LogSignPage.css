@@ -1,0 +1,76 @@
+.logSignPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.logSignPage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../Loginback.png');
+  background-size: cover;
+  opacity: 0.7;
+  z-index: 0;
+}
+
+.logSign-logo {
+  margin-top: 40px;
+  margin-bottom: 120px;
+  z-index: 1;
+  width: 260px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.logSign-logo img {
+  width: 100%;
+  height: auto;
+}
+
+.logSignBox {
+  background-color: rgba(0, 0, 0, 0.68);
+  border: 1px solid white;
+  width: 460px;
+  height: 416px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+h2 {
+  margin-top: 49px;
+  color: white;
+}
+
+p {
+  margin-top: 20px;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+}
+
+.googleLoginButton {
+  width: 320px;
+  height: 41px;
+  background-color: white;
+  color: #141414;
+  font-size: 16px;
+  border: none;
+  margin-top: 80px;
+  cursor: pointer;
+}
+
+.googleLoginButton:hover {
+  background-color: #FBE64D;
+  color: black;
+}

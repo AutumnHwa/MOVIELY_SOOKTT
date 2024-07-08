@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/Frontend/static/css/main.37c89b27.css",
+    "main.js": "/Frontend/static/js/main.6eb28475.js",
+    "static/media/Loginback.png": "/Frontend/static/media/Loginback.f6469c009cb4e61cf7af.png",
+    "static/media/movie.csv": "/Frontend/static/media/movie.3673f0b27442015a8dc8.csv",
+    "static/media/wavve.png": "/Frontend/static/media/wavve.01ceb58a0e738b961493.png",
+    "static/media/logo.png": "/Frontend/static/media/logo.8a30ca688d38f4e47996.png",
+    "static/media/disneyplus.png": "/Frontend/static/media/disneyplus.367583882a4a8e9e8e69.png",
+    "static/media/netflix.png": "/Frontend/static/media/netflix.42bc90437b23dc3fd14d.png",
+    "static/media/watcha.png": "/Frontend/static/media/watcha.c372c31f3e33bbd8a08b.png",
+    "index.html": "/Frontend/index.html",
+    "main.37c89b27.css.map": "/Frontend/static/css/main.37c89b27.css.map",
+    "main.6eb28475.js.map": "/Frontend/static/js/main.6eb28475.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.37c89b27.css",
+    "static/js/main.6eb28475.js"
+  ]
+}

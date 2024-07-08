@@ -1,0 +1,227 @@
+.RecomPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.recomlogo {
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  width: 250px;
+  height: auto;
+}
+
+.recomlogo img {
+  width: 220px;
+  height: auto;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-left: 0px;
+}
+.searchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  width: 400px;
+  height: 30px;
+  border-radius: 20px;
+  padding-left: 15px;
+  margin-right: 10px;
+}
+
+.searchButton {
+  background-color: white;
+  color: black;
+  border: 1px solid white;
+  border-radius: 15px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.searchButton:hover {
+  background-color: #FBE64D;
+  color: black;
+}
+
+.greetingText {
+  color: white;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.tabButtons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  font-size: 17px;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 40px;
+}
+
+.tabButton:hover, .tabButton.active {
+  color: yellow;
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topMovieAndListContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* 부모 컨테이너의 너비를 전체로 설정 */
+}
+
+.topMovieContainer {
+  width: 300px; /* 너비를 200px로 설정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.movieListContainer {
+  width: 300px; /* 너비를 200px로 설정 */
+  height: 370px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(47, 72, 129, 0.72);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.7em;
+}
+
+.movieItem {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.moviePoster {
+  width: 70px;
+  height: 105px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.movieDetails {
+  display: flex;
+  flex-direction: column;
+  white-space: normal;
+}
+
+.movieTitle {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.movieGenre {
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.movieOverview {
+  font-size: 12px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.randomMoviesContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 600px;
+}
+
+.swiper-container {
+  width: 100%;
+}
+
+.swiper-wrapper {
+  display: flex;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.swiper-button-next, .swiper-button-prev {
+  color: white;
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+  background-color: rgba(128, 128, 128, 0.5);
+}
+
+.swiper-pagination-bullet {
+  background: white;
+}
+
+.randomMovies .mvBanner {
+  margin: 0px;
+}
+
+.popupContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popupContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popupContent button {
+  margin-top: 10px;
+}
+
+.recom-sidebar-toggle {
+  position: absolute;
+  right: -30px;
+  top: 30px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 50px;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 20 px;
+}
+
+.recom-searchIcon {
+  position: absolute;
+  right : 70px;
+  color : white;
+  margin-top: -12px;
+  }
