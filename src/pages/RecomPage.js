@@ -38,11 +38,12 @@ const genreMapping = {
 function RecomPage() {
   const { authToken, user } = useAuth(); 
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('recommendations');
+  const [searchTerm, setSearchTerm] = useState('');
   const [randomMovies, setRandomMovies] = useState([]);
   const [topMovie, setTopMovie] = useState(null);
   const [movieItems, setMovieItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(true);
+  const [loadingRandomMovies, setLoadingRandomMovies] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false); // 사이드바 상태 관리
 
   const toggleSidebar = () => {
@@ -56,11 +57,12 @@ function RecomPage() {
   useEffect(() => {
     const fetchRecommendations = async () => {
       if (!authToken || !user) {
-        setLoading(false);
+        setLoadingRecommendations(false);
         return;
       }
 
       try {
+        console.log('Fetching recommendations...'); // API 호출 시작 로그 추가
         const response = await fetch('https://moviely.duckdns.org/api/recommend', {
           method: 'POST',
           headers: {
@@ -70,47 +72,46 @@ function RecomPage() {
           body: JSON.stringify({ user_id: user.id }),
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Fetched recommendations:', data);
-
-          data.forEach((movie, index) => {
-            console.log(`Movie ${index}:`, movie);
-          });
-
-          if (data.length > 0) {
-            setTopMovie(data[0]);
-            setMovieItems(data.slice(1, 6));
-          }
-        } else {
-          console.error('Failed to fetch recommendations:', response.statusText);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch recommendations: ${response.statusText}`);
         }
-        setLoading(false);
+
+        const data = await response.json();
+        console.log('Fetched recommendations:', data);
+
+        if (data.length > 0) {
+          setTopMovie(data[0]);
+          setMovieItems(data.slice(1, 6));
+        }
+        setLoadingRecommendations(false);
       } catch (error) {
-        console.error('Error fetching recommendations:', error);
-        setLoading(false);
+        console.error('Error fetching recommendations:', error.message);
+        setLoadingRecommendations(false);
       }
     };
 
     const fetchRandomMovies = async () => {
       try {
+        console.log('Fetching random movies...'); // API 호출 시작 로그 추가
         const response = await fetch('https://moviely.duckdns.org/api/movies');
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Fetched random movies:', data);
-          const moviesArray = data.content; // 데이터의 content 배열에 접근
-          setRandomMovies(shuffleArray(moviesArray).slice(0, 10));
-        } else {
-          console.error('Failed to fetch random movies:', response.statusText);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch random movies: ${response.statusText}`);
         }
+
+        const data = await response.json();
+        console.log('Fetched random movies:', data);
+        const moviesArray = data.content; // 데이터의 content 배열에 접근
+        setRandomMovies(shuffleArray(moviesArray).slice(0, 10));
+        setLoadingRandomMovies(false);
       } catch (error) {
-        console.error('Error fetching random movies:', error);
+        console.error('Error fetching random movies:', error.message);
+        setLoadingRandomMovies(false);
       }
     };
 
     fetchRecommendations();
     fetchRandomMovies();
-  }, [authToken, user, navigate]);
+  }, [authToken, user]);
 
   const shuffleArray = (array) => {
     let shuffled = array.slice();
@@ -119,6 +120,10 @@ function RecomPage() {
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
+  };
+
+  const handleSearchClick = () => {
+    navigate('/movie-search', { state: { searchTerm } });
   };
 
   return (
@@ -141,81 +146,87 @@ function RecomPage() {
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
       <div className="greetingText">{user ? `${user.name}님을 위한 취향저격 영화를 찾아봤어요.` : '취향저격 영화를 찾아봤어요.'}</div>
       <div className="tabContent">
-        {activeTab === 'recommendations' && (
-          <>
-            <div className="topMovieAndListContainer">
-              <div className="topMovieContainer">
-                {loading ? (
-                  <div>Loading top movie...</div>
-                ) : (
-                  topMovie && (
-                    <div className="topMovie">
+        <div className="topMovieAndListContainer">
+          <div className="topMovieContainer">
+            {loadingRecommendations ? (
+              <div>Fetching recommendations...</div>
+            ) : (
+              topMovie ? (
+                <div className="topMovie">
+                  <MvBanner
+                    title={topMovie.title}
+                    poster={topMovie.poster_path}
+                    flatrate={Array.isArray(topMovie.flatrate) ? topMovie.flatrate.join(', ') : topMovie.flatrate}
+                    userId={user ? user.id : null} // 사용자 ID 전달
+                    movieId={topMovie.movie_id} // 영화 ID 전달
+                  />
+                </div>
+              ) : (
+                <div>No recommendations found.</div>
+              )
+            )}
+          </div>
+          <div className="movieListContainer">
+            {loadingRecommendations ? (
+              <div>Fetching recommendations...</div>
+            ) : (
+              movieItems.length > 0 ? (
+                movieItems.map((movie, index) => {
+                  const genreList = movie.genre ? movie.genre.split(',').map(g => genreMapping[g.trim()]).filter(Boolean) : [];
+                  const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
+                  console.log('Movie Data:', movie); // Movie 데이터 로그 출력
+                  return (
+                    <div key={index} className="movieItem">
+                      <img
+                        src={posterUrl}
+                        alt={movie.title}
+                        className="moviePoster"
+                      />
+                      <div className="movieDetails">
+                        <div className="movieTitle">{movie.title}</div>
+                        <div className="movieReleaseDate">{new Date(movie.release_date).toLocaleDateString()}</div>
+                        <div className="movieGenre">{genreList.length ? genreList.join(', ') : 'No Genre'}</div>
+                        <div className="movieOverview">{movie.overview}</div>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div>No recommendations found.</div>
+              )
+            )}
+          </div>
+        </div>
+        <div className="randomMoviesContainer">
+          {loadingRandomMovies ? (
+            <div>Fetching random movies...</div>
+          ) : (
+            <Swiper
+              spaceBetween={0}
+              slidesPerView={4}
+              navigation
+              pagination={{ clickable: true }}
+              modules={[Navigation, Pagination]}
+            >
+              {randomMovies.map((movie, index) => {
+                const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
+                return (
+                  <SwiperSlide key={index}>
+                    <div style={{ transform: 'scale(0.8)' }}>
                       <MvBanner
-                        title={topMovie.title}
-                        poster={topMovie.poster_path}
-                        flatrate={Array.isArray(topMovie.flatrate) ? topMovie.flatrate.join(', ') : topMovie.flatrate}
+                        title={movie.title}
+                        poster={posterUrl}
+                        flatrate={Array.isArray(movie.flatrate) ? movie.flatrate.join(', ') : movie.flatrate}
                         userId={user ? user.id : null} // 사용자 ID 전달
-                        movieId={topMovie.movie_id} // 영화 ID 전달
+                        movieId={movie.movie_id} // 영화 ID 전달
                       />
                     </div>
-                  )
-                )}
-              </div>
-              <div className="movieListContainer">
-                {loading ? (
-                  <div>Loading movies...</div>
-                ) : (
-                  movieItems.map((movie, index) => {
-                    const genreList = movie.genre ? movie.genre.split(',').map(g => genreMapping[g.trim()]).filter(Boolean) : [];
-                    const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
-                    console.log('Movie Data:', movie); // Movie 데이터 로그 출력
-                    return (
-                      <div key={index} className="movieItem">
-                        <img
-                          src={posterUrl}
-                          alt={movie.title}
-                          className="moviePoster"
-                        />
-                        <div className="movieDetails">
-                          <div className="movieTitle">{movie.title}</div>
-                          <div className="movieReleaseDate">{new Date(movie.release_date).toLocaleDateString()}</div>
-                          <div className="movieGenre">{genreList.length ? genreList.join(', ') : 'No Genre'}</div>
-                          <div className="movieOverview">{movie.overview}</div>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </div>
-            <div className="randomMoviesContainer">
-              <Swiper
-                spaceBetween={0}
-                slidesPerView={4}
-                navigation
-                pagination={{ clickable: true }}
-                modules={[Navigation, Pagination]}
-              >
-                {randomMovies.map((movie, index) => {
-                  const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
-                  return (
-                    <SwiperSlide key={index}>
-                      <div style={{ transform: 'scale(0.8)' }}>
-                        <MvBanner
-                          title={movie.title}
-                          poster={posterUrl}
-                          flatrate={Array.isArray(movie.flatrate) ? movie.flatrate.join(', ') : movie.flatrate}
-                          userId={user ? user.id : null} // 사용자 ID 전달
-                          movieId={movie.movie_id} // 영화 ID 전달
-                        />
-                      </div>
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            </div>
-          </>
-        )}
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          )}
+        </div>
       </div>
     </div>
   );

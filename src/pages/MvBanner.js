@@ -122,6 +122,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
 
   const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x231?text=No+Image'; 
 
+  // Debugging log
   console.log('Poster URL:', posterUrl);
 
   validFlatrate.forEach(service => {
