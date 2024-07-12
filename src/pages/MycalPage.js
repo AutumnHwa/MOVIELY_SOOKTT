@@ -6,16 +6,18 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Popcal from './Popcal';
-import Sidebar from '../components/Sidebar'; // Sidebar 컴포넌트 임포트
+import Sidebar from '../components/Sidebar'; 
 import '../css/MycalPage.css';
 import logoImage from '../logo.png';
+import { useAuth } from '../context/AuthContext'; // AuthContext import
 
 function MycalPage() {
+  const { user } = useAuth(); // 사용자 정보 가져오기
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [events, setEvents] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // 사이드바 상태 추가
+  const [sidebarOpen, setSidebarOpen] = useState(false); 
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -49,7 +51,7 @@ function MycalPage() {
     }
 
     const eventDetails = {
-      id: selectedEvent ? selectedEvent.id : Date.now().toString(), // Ensure unique ID
+      id: selectedEvent ? selectedEvent.id : Date.now().toString(), 
       title: movieData.movie_title,
       start: movieData.watch_date || selectedDate,
       allDay: true,
@@ -136,6 +138,7 @@ function MycalPage() {
           onSave={handleSaveMovieData}
           onDelete={handleDeleteEvent}
           initialData={selectedEvent}
+          userId={user.id} // 사용자 ID를 Popcal 컴포넌트로 전달
         />
       )}
     </div>

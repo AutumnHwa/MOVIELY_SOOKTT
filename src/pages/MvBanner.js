@@ -40,24 +40,28 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         body: JSON.stringify(ratingData),
       });
 
-      const responseData = await response.text(); 
+      const responseData = await response.text();
 
       try {
         const jsonResponse = JSON.parse(responseData);
         if (response.ok) {
           setMessage('Rating submitted successfully!');
+          console.log('Rating submitted successfully!');
         } else {
           console.error('Rating submission failed:', jsonResponse);
           setMessage('Failed to submit rating: ' + (jsonResponse.message || 'Unknown error'));
+          console.log('Rating submission failed:', jsonResponse.message || 'Unknown error');
         }
       } catch (e) {
         console.error('JSON parsing error:', responseData);
         setMessage('Failed to submit rating: Invalid JSON response.');
+        console.log('Failed to submit rating: Invalid JSON response.');
       }
 
     } catch (error) {
       console.error('Error:', error);
       setMessage('Failed to submit rating.');
+      console.log('Error:', error);
     }
 
     setTimeout(() => {
@@ -99,13 +103,16 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
 
       if (response.ok) {
         setMessage('List updated successfully!');
+        console.log('List updated successfully!');
       } else {
         console.error('List update failed:', responseData);
         setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
+        console.log('List update failed:', responseData.message || 'Unknown error');
       }
     } catch (error) {
       console.error('Error:', error);
       setMessage('Failed to update list.');
+      console.log('Error:', error);
     }
 
     setShowModal(false);
@@ -120,14 +127,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
 
   const validFlatrate = typeof flatrate === 'string' ? flatrate.split(', ').map(service => service.trim().toLowerCase()).filter(Boolean) : [];
 
-  const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x231?text=No+Image'; 
-
-  // Debugging log
-  console.log('Poster URL:', posterUrl);
-
-  validFlatrate.forEach(service => {
-    console.log(`Service: ${service}, URL: ${flatrateLogos[service]}`);
-  });
+  const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x231?text=No+Image';
 
   return (
     <div className="movie-banner">
@@ -142,7 +142,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
       <div className="movie-info">
         <div className="movie-title">{title}</div>
         <div className="flatrate-logos">
-          {validFlatrate.map((service, index) => (
+          {validFlatrate.map((service) => (
             <img
               key={service}
               src={flatrateLogos[service]}
@@ -166,12 +166,14 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         <button onClick={handleAddClick} className="add-button">+</button>
       </div>
       {showModal && <Popcho onClose={handleCloseModal} onSave={handleSaveModal} />}
-      {message && <div className="popupContainer">
-        <div className="popupContent">
-          <p>{message}</p>
-          <button onClick={() => setMessage('')}>닫기</button>
+      {message && (
+        <div className="popupContainer">
+          <div className="popupContent">
+            <p>{message}</p>
+            <button onClick={() => setMessage('')}>닫기</button>
+          </div>
         </div>
-      </div>}
+      )}
     </div>
   );
 };
