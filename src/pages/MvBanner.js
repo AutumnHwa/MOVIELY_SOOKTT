@@ -125,9 +125,18 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
     navigate(`/movie/${movieId}`);
   };
 
-  const validFlatrate = typeof flatrate === 'string' ? flatrate.split(', ').map(service => service.trim().toLowerCase()).filter(Boolean) : [];
+  // 추가된 콘솔 로그로 flatrate 데이터 확인
+  console.log('Flatrate data:', flatrate);
 
-  const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x231?text=No+Image';
+  const validFlatrate = Array.isArray(flatrate) ? flatrate.map(service => service.trim().toLowerCase()).filter(Boolean) : [];
+
+  const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x231?text=No+Image'; 
+
+  console.log('Poster URL:', posterUrl);
+
+  validFlatrate.forEach(service => {
+    console.log(`Service: ${service}, URL: ${flatrateLogos[service]}`);
+  });
 
   return (
     <div className="movie-banner">
