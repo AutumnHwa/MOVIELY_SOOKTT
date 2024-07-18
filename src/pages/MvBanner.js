@@ -124,6 +124,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
   const handlePosterClick = () => {
     navigate(`/movie/${movieId}`);
   };
+
   console.log('Flatrate data:', flatrate);
 
   const validFlatrate = Array.isArray(flatrate) ? flatrate.map(service => service.trim().toLowerCase()).filter(Boolean) : [];
