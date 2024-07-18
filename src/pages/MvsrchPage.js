@@ -245,7 +245,7 @@ function MvsrchPage({ userId }) {
                   key={index}
                   title={movie.title}
                   poster={movie.poster_path}
-                  flatrate={movie.flatrate.join(', ')}
+                  flatrate={movie.flatrate} // flatrate를 배열로 전달
                   rating={Math.round(movie.vote_average / 2)}
                   movieId={movie.id} // 영화 ID 전달
                   userId={userId} // 사용자 ID 전달

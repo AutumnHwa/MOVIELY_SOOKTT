@@ -8,10 +8,10 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import MvBanner from './MvBanner';
-import Sidebar from '../components/Sidebar'; // Sidebar 컴포넌트를 import 합니다.
+import Sidebar from '../components/Sidebar';
 import '../css/RecomPage.css';
 import logoImage from '../logo.png';
-import { useAuth } from '../context/AuthContext'; // AuthContext import
+import { useAuth } from '../context/AuthContext';
 
 const genreMapping = {
   '28': '액션',
@@ -44,7 +44,7 @@ function RecomPage() {
   const [movieItems, setMovieItems] = useState([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(true);
   const [loadingRandomMovies, setLoadingRandomMovies] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // 사이드바 상태 관리
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -62,7 +62,7 @@ function RecomPage() {
       }
 
       try {
-        console.log('Fetching recommendations...'); // API 호출 시작 로그 추가
+        console.log('Fetching recommendations...');
         const response = await fetch('https://moviely.duckdns.org/api/recommend', {
           method: 'POST',
           headers: {
@@ -92,7 +92,7 @@ function RecomPage() {
 
     const fetchRandomMovies = async () => {
       try {
-        console.log('Fetching random movies...'); // API 호출 시작 로그 추가
+        console.log('Fetching random movies...');
         const response = await fetch('https://moviely.duckdns.org/api/movies');
         if (!response.ok) {
           throw new Error(`Failed to fetch random movies: ${response.statusText}`);
@@ -100,7 +100,7 @@ function RecomPage() {
 
         const data = await response.json();
         console.log('Fetched random movies:', data);
-        const moviesArray = data.content; // 데이터의 content 배열에 접근
+        const moviesArray = data.content;
         setRandomMovies(shuffleArray(moviesArray).slice(0, 10));
         setLoadingRandomMovies(false);
       } catch (error) {
@@ -156,9 +156,9 @@ function RecomPage() {
                   <MvBanner
                     title={topMovie.title}
                     poster={topMovie.poster_path}
-                    flatrate={Array.isArray(topMovie.flatrate) ? topMovie.flatrate.join(', ') : topMovie.flatrate}
-                    userId={user ? user.id : null} // 사용자 ID 전달
-                    movieId={topMovie.movie_id} // 영화 ID 전달
+                    flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
+                    userId={user ? user.id : null}
+                    movieId={topMovie.movie_id}
                   />
                 </div>
               ) : (
@@ -174,7 +174,7 @@ function RecomPage() {
                 movieItems.map((movie, index) => {
                   const genreList = movie.genre ? movie.genre.split(',').map(g => genreMapping[g.trim()]).filter(Boolean) : [];
                   const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
-                  console.log('Movie Data:', movie); // Movie 데이터 로그 출력
+                  console.log('Movie Data:', movie);
                   return (
                     <div key={index} className="movieItem">
                       <img
@@ -216,9 +216,9 @@ function RecomPage() {
                       <MvBanner
                         title={movie.title}
                         poster={posterUrl}
-                        flatrate={Array.isArray(movie.flatrate) ? movie.flatrate.join(', ') : movie.flatrate}
-                        userId={user ? user.id : null} // 사용자 ID 전달
-                        movieId={movie.movie_id} // 영화 ID 전달
+                        flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
+                        userId={user ? user.id : null}
+                        movieId={movie.movie_id}
                       />
                     </div>
                   </SwiperSlide>

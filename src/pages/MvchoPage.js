@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import MvBanner from './MvBanner';
 import '../css/MvchoPage.css';
 import logoImage from '../logo.png';
+import watchaLogo from '../watcha.png';
 import netflixLogo from '../netflix.png';
 import disneyPlusLogo from '../disneyplus.png';
-import watchaLogo from '../watcha.png';
 import wavveLogo from '../wavve.png';
+import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
 function MvchoPage() {
@@ -43,29 +46,36 @@ function MvchoPage() {
     '웨이브': 'Wavve'
   }), []);
 
-  const genres = useMemo(() => Object.keys(genreMapping), [genreMapping]);
-  const platforms = useMemo(() => Object.keys(platformMapping), [platformMapping]);
+  const platforms = useMemo(() => [
+    { name: '전체', logo: null },
+    { name: '넷플릭스', logo: netflixLogo },
+    { name: '디즈니플러스', logo: disneyPlusLogo },
+    { name: '왓챠', logo: watchaLogo },
+    { name: '웨이브', logo: wavveLogo }
+  ], []);
 
+  const genres = useMemo(() => Object.keys(genreMapping), [genreMapping]);
   const [selectedGenre, setSelectedGenre] = useState('장르 전체');
   const [selectedPlatform, setSelectedPlatform] = useState('전체');
   const [movies, setMovies] = useState([]);
-  const [allMovies, setAllMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0); // 현재 페이지 번호
-  const [hasMore, setHasMore] = useState(true); // 추가 데이터 여부 확인
-  const [showGenres, setShowGenres] = useState(false);
   const [showPlatforms, setShowPlatforms] = useState(false);
+  const [showGenres, setShowGenres] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false);
+  };
 
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
-      let url = `https://moviely.duckdns.org/api/movies?size=1000&sort=release_date,desc&release_date.gte=2000-01-01`;
-      if (selectedGenre !== '장르 전체') {
-        url += `&genre=${genreMapping[selectedGenre]}`;
-      }
-      if (selectedPlatform !== '전체') {
-        url += `&platform=${platformMapping[selectedPlatform]}`;
-      }
+      let url = `https://moviely.duckdns.org/api/movies?size=8000&sort=release_date,desc&release_date.gte=2000-01-01`;
 
       const response = await fetch(url, { mode: 'cors' });
 
@@ -82,9 +92,8 @@ function MvchoPage() {
           genre: movie.genre ? movie.genre.split(', ') : []
         })).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
 
-        setAllMovies(processedData);
-        setMovies(processedData.slice(0, 500)); // 처음 500개만 설정
-        setHasMore(processedData.length > 500);
+        setMovies(processedData);
+        setFilteredMovies(processedData.slice(0, 500)); // 처음 500개만 설정
       }
 
       setLoading(false);
@@ -92,23 +101,39 @@ function MvchoPage() {
       console.error('Error fetching movies:', error);
       setLoading(false);
     }
-  }, [selectedGenre, selectedPlatform, genreMapping, platformMapping]);
+  }, []);
 
   useEffect(() => {
     fetchMovies();
   }, [fetchMovies]);
 
+  const filterMovies = useCallback(() => {
+    let filtered = [...movies];
+
+    if (selectedPlatform !== '전체') {
+      const selectedPlatformInEnglish = platformMapping[selectedPlatform].toLowerCase();
+      filtered = filtered.filter(movie => movie.flatrate.includes(selectedPlatformInEnglish));
+    }
+
+    if (selectedGenre !== '장르 전체') {
+      filtered = filtered.filter(movie => movie.genre.includes(genreMapping[selectedGenre]));
+    }
+
+    return filtered;
+  }, [movies, selectedPlatform, selectedGenre, genreMapping, platformMapping]);
+
+  useEffect(() => {
+    setFilteredMovies(filterMovies().slice(0, 500));
+  }, [filterMovies]);
+
   const loadMoreMovies = () => {
-    if (!loading && hasMore) {
-      const nextPage = page + 1;
-      const newMovies = allMovies.slice(nextPage * 500, (nextPage + 1) * 500);
-      setMovies(prevMovies => [...prevMovies, ...newMovies]);
-      setPage(nextPage);
-      setHasMore((nextPage + 1) * 500 < allMovies.length);
+    if (!loading && filteredMovies.length < movies.length) {
+      const nextMovies = filterMovies().slice(filteredMovies.length, filteredMovies.length + 500);
+      setFilteredMovies(prevMovies => [...prevMovies, ...nextMovies]);
     }
   };
 
-  const banners = movies.map((movie, index) => (
+  const banners = filteredMovies.map((movie, index) => (
     <MvBanner
       key={index}
       title={movie.title}
@@ -123,19 +148,11 @@ function MvchoPage() {
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
     setShowGenres(false);
-    setMovies([]); // 장르 변경 시 영화 목록 초기화
-    setPage(0); // 페이지 번호 초기화
-    setHasMore(true); // 추가 데이터 여부 초기화
-    fetchMovies(); // 새로운 장르로 데이터 다시 불러오기
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
     setShowPlatforms(false);
-    setMovies([]); // 플랫폼 변경 시 영화 목록 초기화
-    setPage(0); // 페이지 번호 초기화
-    setHasMore(true); // 추가 데이터 여부 초기화
-    fetchMovies(); // 새로운 플랫폼으로 데이터 다시 불러오기
   };
 
   const platformLogos = {
@@ -151,6 +168,20 @@ function MvchoPage() {
         <Link to="/" className="chologo">
           <img src={logoImage} alt="Logo" />
         </Link>
+        <FontAwesomeIcon
+          icon={faSearch}
+          size="2x"
+          className="srch-searchIcon"
+          onClick={() => navigate('/movie-search')}
+        />
+        <button className="srch-sidebar-toggle" onClick={toggleSidebar}>
+          ☰
+        </button>
+        <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
+        <div
+          className={`overlay ${sidebarOpen ? 'show' : ''}`}
+          onClick={closeSidebar}
+        />
       </header>
       <div className="mainText">재미있게 봤거나 눈길이 가는 영화들을 평가해주세요.</div>
       <div className="subText">찜한 영화들을 바탕으로 MOVIELY가 취향저격 영화들을 추천해 드려요.</div>
@@ -181,12 +212,12 @@ function MvchoPage() {
               <div className="MvchoPlatformDropdown">
                 {platforms.map((platform) => (
                   <button
-                    key={platform}
-                    onClick={() => handlePlatformClick(platform)}
+                    key={platform.name}
+                    onClick={() => handlePlatformClick(platform.name)}
                     className="MvchoFilter"
                   >
-                    {platform !== '전체' && <img src={platformLogos[platform]} alt={platform} className="platformLogo" />}
-                    {platform}
+                    {platform.logo && <img src={platform.logo} alt={platform.name} className="platformLogo"/>}
+                    {platform.name}
                   </button>
                 ))}
               </div>
@@ -198,11 +229,11 @@ function MvchoPage() {
         {banners}
       </div>
       {loading && <div className="loading">로딩 중...</div>}
-      {hasMore && !loading && (
+      {!loading && filteredMovies.length < movies.length && (
         <button onClick={loadMoreMovies} className="loadMoreButton">더 불러오기</button>
       )}
     </div>
   );
 }
 
-export default MvchoPage;
+export default MvchoPage
