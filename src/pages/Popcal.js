@@ -7,7 +7,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
     movie_title: '',
     movie_content: '',
     created_at: '',
-    created_by: userId || '' 
+    created_by: userId || ''
   });
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -26,10 +26,13 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(`Input changed - ${name}: ${value}`);  // 입력값 변경 확인 로그
     setMovieData(prevData => ({ ...prevData, [name]: value }));
   };
 
   const addCalendarEvent = async () => {
+    console.log('movieData:', movieData);  // 현재 상태 확인 로그
+
     if (!userId) {
       alert('유효한 사용자 ID를 제공해주세요.');
       return;
