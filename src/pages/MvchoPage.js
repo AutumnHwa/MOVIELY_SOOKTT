@@ -75,7 +75,7 @@ function MvchoPage() {
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
-      let url = `https://moviely.duckdns.org/api/movies?size=8000&sort=release_date,desc&release_date.gte=2000-01-01`;
+      let url = `https://moviely.duckdns.org/api/movies?size=500&sort=release_date,desc&release_date.gte=2000-01-01`;
 
       const response = await fetch(url, { mode: 'cors' });
 
