@@ -86,9 +86,9 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
     try {
       let url = '';
       if (option === 'option1') {
-        url = 'https://moviely.duckdns.org/wishlist';
+        url = 'https://moviely.duckdns.org/mypage/wishList';
       } else if (option === 'option2') {
-        url = 'https://moviely.duckdns.org/watchedlist';
+        url = 'https://moviely.duckdns.org/mypage/watchedList';
       }
 
       const response = await fetch(url, {
