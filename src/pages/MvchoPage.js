@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import MvBanner from './MvBanner';
 import '../css/MvchoPage.css';
@@ -7,7 +7,7 @@ import netflixLogo from '../netflix.png';
 import disneyPlusLogo from '../disneyplus.png';
 import watchaLogo from '../watcha.png';
 import wavveLogo from '../wavve.png';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../context/AuthContext';
 
 function MvchoPage() {
   const { authToken, user, logout } = useAuth();
@@ -45,90 +45,97 @@ function MvchoPage() {
 
   const genres = useMemo(() => Object.keys(genreMapping), [genreMapping]);
   const platforms = useMemo(() => Object.keys(platformMapping), [platformMapping]);
-  
+
   const [selectedGenre, setSelectedGenre] = useState('장르 전체');
   const [selectedPlatform, setSelectedPlatform] = useState('전체');
   const [movies, setMovies] = useState([]);
+  const [allMovies, setAllMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0); // 현재 페이지 번호
+  const [hasMore, setHasMore] = useState(true); // 추가 데이터 여부 확인
   const [showGenres, setShowGenres] = useState(false);
   const [showPlatforms, setShowPlatforms] = useState(false);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      setLoading(true);
-      try {
-        let url = 'https://moviely.duckdns.org/api/movies?size=1000';
-        if (selectedGenre !== '장르 전체') {
-          url += `&genre=${genreMapping[selectedGenre]}`;
-        }
-        if (selectedPlatform !== '전체') {
-          url += `&platform=${platformMapping[selectedPlatform]}`;
-        }
-
-        const response = await fetch(url, { mode: 'cors' });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data && data.content) {
-          const processedData = data.content.map(movie => ({
-            ...movie,
-            flatrate: movie.flatrate ? movie.flatrate.split(', ') : [],
-            genre: movie.genre ? movie.genre.split(', ') : []
-          })).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
-
-          setMovies(processedData);
-        }
-
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching movies:', error);
-        setLoading(false);
+  const fetchMovies = useCallback(async () => {
+    setLoading(true);
+    try {
+      let url = `https://moviely.duckdns.org/api/movies?size=1000&sort=release_date,desc&release_date.gte=2000-01-01`;
+      if (selectedGenre !== '장르 전체') {
+        url += `&genre=${genreMapping[selectedGenre]}`;
       }
-    };
+      if (selectedPlatform !== '전체') {
+        url += `&platform=${platformMapping[selectedPlatform]}`;
+      }
 
-    fetchMovies();
+      const response = await fetch(url, { mode: 'cors' });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data && data.content) {
+        const processedData = data.content.map(movie => ({
+          ...movie,
+          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+          genre: movie.genre ? movie.genre.split(', ') : []
+        })).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
+
+        setAllMovies(processedData);
+        setMovies(processedData.slice(0, 500)); // 처음 500개만 설정
+        setHasMore(processedData.length > 500);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+      setLoading(false);
+    }
   }, [selectedGenre, selectedPlatform, genreMapping, platformMapping]);
+
+  useEffect(() => {
+    fetchMovies();
+  }, [fetchMovies]);
+
+  const loadMoreMovies = () => {
+    if (!loading && hasMore) {
+      const nextPage = page + 1;
+      const newMovies = allMovies.slice(nextPage * 500, (nextPage + 1) * 500);
+      setMovies(prevMovies => [...prevMovies, ...newMovies]);
+      setPage(nextPage);
+      setHasMore((nextPage + 1) * 500 < allMovies.length);
+    }
+  };
 
   const banners = movies.map((movie, index) => (
     <MvBanner
       key={index}
       title={movie.title}
       poster={movie.poster_path}
-      flatrate={movie.flatrate.join(', ')}
+      flatrate={movie.flatrate}
       rating={Math.round(movie.vote_average / 2)}
       movieId={movie.id || movie.movie_id}
       userId={user?.id}
     />
   ));
 
-  const handleAuthButtonClick = () => {
-    if (authToken) {
-      logout();
-    } else {
-      navigate('/login');
-    }
-  };
-
-  const handleMyPageClick = () => {
-    if (authToken) {
-      navigate('/my/watched');
-    } else {
-      navigate('/login');
-    }
-  };
-
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
     setShowGenres(false);
+    setMovies([]); // 장르 변경 시 영화 목록 초기화
+    setPage(0); // 페이지 번호 초기화
+    setHasMore(true); // 추가 데이터 여부 초기화
+    fetchMovies(); // 새로운 장르로 데이터 다시 불러오기
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
     setShowPlatforms(false);
+    setMovies([]); // 플랫폼 변경 시 영화 목록 초기화
+    setPage(0); // 페이지 번호 초기화
+    setHasMore(true); // 추가 데이터 여부 초기화
+    fetchMovies(); // 새로운 플랫폼으로 데이터 다시 불러오기
   };
 
   const platformLogos = {
@@ -188,8 +195,12 @@ function MvchoPage() {
         </div>
       </div>
       <div className="bannerGrid">
-        {loading ? <div className="loading">로딩 중...</div> : (banners.length > 0 ? banners : <div className="noMovies">선택하신 장르의 영화가 없습니다.</div>)}
+        {banners}
       </div>
+      {loading && <div className="loading">로딩 중...</div>}
+      {hasMore && !loading && (
+        <button onClick={loadMoreMovies} className="loadMoreButton">더 불러오기</button>
+      )}
     </div>
   );
 }
