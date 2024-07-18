@@ -18,6 +18,15 @@ import { useAuth } from '../context/AuthContext';
 import moviesCSV from '../movie.csv';
 
 import ani_1 from '../ani_1.png';
+import ani_2 from '../ani_2.png';
+import ani_3 from '../ani_3.png';
+import ani_4 from '../ani_4.png';
+import ani_5 from '../ani_5.png';
+import ani_6 from '../ani_6.png';
+import ani_7 from '../ani_7.png';
+import ani_8 from '../ani_8.png';
+import ani_9 from '../ani_9.png';
+import ani_10 from '../ani_10.png';
 
 const AnniRecom = () => {
   const { user } = useAuth(); 
@@ -69,16 +78,16 @@ const AnniRecom = () => {
   };
 
   const categories = [
-    { title: '연인과 함께하는 달콤살벌한 하루', description: '발렌타인데이 추천 영화', imageUrl: ani_1 },
-    { title: "Happy women's Day", description: '여성의 날 추천 영화', },
-    { title: '과학이 미래다.', description: '과학의 날 추천 영화',  },
-    { title: '오늘은 어린이날 우리들 세상', description: '어린이날 추천 영화',  },
-    { title: '우리의 지구는 오직 하나 뿐입니다', description: '환경의 날 추천 영화',  },
-    { title: '우리는 결코 당신을 잊지 않겠습니다', description: '현충일 추천 영화', },
-    { title: '우리 민족 대명절, 풍성한 한가위!', description: '추석 추천 영화',  },
-    { title: 'Trick Or Treat!', description: '할로윈데이 추천 영화',  },
-    { title: 'All I want for Christmas is...', description: '크리스마스 추천 영화',  },
-    { title: '까치까치 설날 말고 우리우리 설날', description: '설날 추천 영화', },
+    { title: '연인과 함께하는 달콤살벌한 하루', description: '발렌타인데이 추천 영화', imageUrl: ani_1, className: 'banner-1' },
+    { title: "Happy women's Day", description: '여성의 날 추천 영화', imageUrl: ani_2, className: 'banner-2' },
+    { title: '과학 그리고 현실 그 사이...', description: '과학의 날 추천 영화', imageUrl: ani_3, className: 'banner-3' },
+    { title: '오늘은 어린이날 우리들 세상', description: '어린이날 추천 영화', imageUrl: ani_4, className: 'banner-4' },
+    { title: '우리의 지구는 오직 하나 뿐입니다', description: '환경의 날 추천 영화', imageUrl: ani_5, className: 'banner-5' },
+    { title: '우리는 결코 당신을 잊지 않겠습니다', description: '현충일 추천 영화', imageUrl: ani_6, lassName: 'banner-6' },
+    { title: '우리 민족 대명절, 풍성한 한가위!', description: '추석 추천 영화', imageUrl: ani_7, className: 'banner-7' },
+    { title: 'Trick Or Treat!', description: '할로윈데이 추천 영화', imageUrl: ani_8, className: 'banner-8' },
+    { title: 'All I want for Christmas is...', description: '크리스마스 추천 영화', imageUrl: ani_9, className: 'banner-9' },
+    { title: '까치까치 설날 말고 우리우리 설날', description: '설날 추천 영화', imageUrl: ani_10, className: 'banner-10' },
   ];
 
   return (
@@ -106,7 +115,7 @@ const AnniRecom = () => {
         {categories.map((category, index) => (
           <React.Fragment key={index}>
             <div
-              className="banner"
+              className={`banner ${category.className}`}
               onClick={() => handleBannerClick(category.title, index)}
             >
               <div className="banner-text">

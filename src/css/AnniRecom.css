@@ -86,6 +86,51 @@
     object-fit: cover;
 }
 
+.banner-1 .banner-image {
+    width: 50%;
+    height: 120%;
+}
+
+.banner-2 .banner-image {
+    width: 50%;
+    height: 120%;
+}
+
+.banner-3 .banner-image {
+    width: 100%;
+    height: 140%;
+}
+
+.banner-4 .banner-image {
+    width: 80%;
+    height: 100%;
+}
+
+.banner-5 .banner-image {
+    height: 100%;
+}
+
+.banner-6 .banner-image {
+    width: 100%;
+    height: 170%;
+}
+
+.banner-7 .banner-image {
+    height: 100%;
+}
+
+.banner-8 .banner-image {
+    height: 160%;
+}
+
+.banner-9 .banner-image {
+    height: 110%;
+}
+
+.banner-10 .banner-image {
+    height: 100%;
+}
+
 .banner-text div:first-child {
     font-size: 20px;
     margin-bottom: 5px;

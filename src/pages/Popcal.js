@@ -48,7 +48,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
     };
 
     try {
-      const response = await fetch('/mypage/calendar', {
+      const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -63,14 +63,28 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
         })
       });
 
+      console.log('Request sent to URL:', 'https://moviely.duckdns.org/mypage/calendar');
+      console.log('Request payload:', {
+        user_id: userId,
+        watch_date: movieData.watch_date,
+        movie_title: movieData.movie_title,
+        movie_content: movieData.movie_content,
+        created_at: movieData.created_at || new Date().toISOString(),
+        created_by: movieData.created_by
+      });
+
       if (!response.ok) {
+        console.log('Response status:', response.status);
         throw new Error('Failed to save movie data');
       }
+
+      const responseData = await response.json();
+      console.log('Response from server:', responseData);
 
       onSave(eventDetails);
       onClose();
     } catch (error) {
-      console.error(error);
+      console.error('Error:', error);
       alert('영화 데이터를 저장하는 중 오류가 발생했습니다.');
     }
   };
