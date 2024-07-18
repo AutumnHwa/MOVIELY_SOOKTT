@@ -108,6 +108,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         body: JSON.stringify(listData),
       });
 
+      console.log('Response status:', response.status);
       const responseData = await response.json();
       console.log('Response from server:', responseData);
 
