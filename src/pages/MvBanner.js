@@ -84,10 +84,10 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
       return;
     }
 
-    const listData = {
+    const listData = new URLSearchParams({
       user_id: userId,
       movie_id: movieId
-    };
+    });
 
     try {
       let url = '';
@@ -98,14 +98,14 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
       }
 
       console.log('Sending data to URL:', url);
-      console.log('Data being sent:', listData);
+      console.log('Data being sent:', listData.toString());
 
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(listData),
+        body: listData.toString(),
       });
 
       const responseData = await response.json();
