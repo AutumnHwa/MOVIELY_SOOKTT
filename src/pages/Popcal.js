@@ -48,6 +48,16 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
     };
 
     try {
+      console.log('Sending data to URL:', 'https://moviely.duckdns.org/mypage/calendar');
+      console.log('Data being sent:', {
+        user_id: userId,
+        watch_date: movieData.watch_date,
+        movie_title: movieData.movie_title,
+        movie_content: movieData.movie_content,
+        created_at: movieData.created_at || new Date().toISOString(),
+        created_by: movieData.created_by
+      });
+
       const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
         method: 'POST',
         headers: {
@@ -63,18 +73,9 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
         })
       });
 
-      console.log('Request sent to URL:', 'https://moviely.duckdns.org/mypage/calendar');
-      console.log('Request payload:', {
-        user_id: userId,
-        watch_date: movieData.watch_date,
-        movie_title: movieData.movie_title,
-        movie_content: movieData.movie_content,
-        created_at: movieData.created_at || new Date().toISOString(),
-        created_by: movieData.created_by
-      });
+      console.log('Response status:', response.status);
 
       if (!response.ok) {
-        console.log('Response status:', response.status);
         throw new Error('Failed to save movie data');
       }
 
