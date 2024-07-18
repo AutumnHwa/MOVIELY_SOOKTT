@@ -10,8 +10,10 @@ import netflixLogo from '../netflix.png';
 import disneyPlusLogo from '../disneyplus.png';
 import wavveLogo from '../wavve.png';
 import Sidebar from '../components/Sidebar';
+import { useAuth } from '../context/AuthContext';
 
-function MvsrchPage({ userId }) {
+function MvsrchPage() {
+  const { user } = useAuth(); // useAuth 훅 사용
   const genreMapping = useMemo(() => ({
     '장르 전체': 'All',
     '액션': '28',
@@ -71,7 +73,7 @@ function MvsrchPage({ userId }) {
   const closeSidebar = () => {
     setSidebarOpen(false);
   };
-  
+
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -107,7 +109,7 @@ function MvsrchPage({ userId }) {
     };
 
     fetchMovies();
-  }, [userId]);
+  }, []);
 
   const filterMovies = useCallback(() => {
     let filtered = [...movies];
@@ -245,10 +247,10 @@ function MvsrchPage({ userId }) {
                   key={index}
                   title={movie.title}
                   poster={movie.poster_path}
-                  flatrate={movie.flatrate} // flatrate를 배열로 전달
+                  flatrate={movie.flatrate}
                   rating={Math.round(movie.vote_average / 2)}
-                  movieId={movie.id} // 영화 ID 전달
-                  userId={userId} // 사용자 ID 전달
+                  movieId={movie.id}
+                  userId={user?.id} // userId를 useAuth 훅을 통해 가져와 전달
                 />
               ))}
             </div>
