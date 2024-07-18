@@ -78,6 +78,11 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
   };
 
   const handleSaveModal = async (option) => {
+    if (!userId || !movieId) {
+      setMessage('User ID and Movie ID must not be null');
+      return;
+    }
+
     const listData = {
       user_id: userId,
       movie_id: movieId
@@ -99,12 +104,11 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         body: JSON.stringify(listData),
       });
 
-      const responseData = await response.json();
-
       if (response.ok) {
         setMessage('List updated successfully!');
         console.log('List updated successfully!');
       } else {
+        const responseData = await response.json();
         console.error('List update failed:', responseData);
         setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
         console.log('List update failed:', responseData.message || 'Unknown error');
