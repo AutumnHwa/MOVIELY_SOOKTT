@@ -70,12 +70,12 @@
   }
   
   .banner div:first-child {
-    font-size: 18px;
+    font-size: 17px;
     margin-bottom: 5px;
   }
   
   .banner div:last-child {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
   }
   

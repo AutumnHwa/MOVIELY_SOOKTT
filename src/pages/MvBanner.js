@@ -128,6 +128,21 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
     navigate(`/movie/${movieId}`);
   };
 
+  const handleAuthClick = async () => {
+    try {
+      const response = await fetch('https://moviely.duckdns.org/oauth2/authorize/google', {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (response.redirected) {
+        window.location.href = response.url;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   console.log('Flatrate data:', flatrate);
 
   const validFlatrate = Array.isArray(flatrate) ? flatrate.map(service => service.trim().toLowerCase()).filter(Boolean) : [];
@@ -175,6 +190,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
           ))}
         </div>
         <button onClick={handleAddClick} className="add-button">+</button>
+        <button onClick={handleAuthClick} className="auth-button">Login with Google</button>
       </div>
       {showModal && <Popcho onClose={handleCloseModal} onSave={handleSaveModal} />}
       {message && (

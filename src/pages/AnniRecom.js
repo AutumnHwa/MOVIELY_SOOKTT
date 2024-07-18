@@ -67,16 +67,16 @@ const AnniRecom = () => {
   };
 
   const categories = [
-    { title: '기념일 1 - 설명 1', description: '기념일 1 - 설명 2' },
-    { title: '기념일 2 - 설명 1', description: '기념일 2 - 설명 2' },
-    { title: '기념일 3 - 설명 1', description: '기념일 3 - 설명 2' },
-    { title: '기념일 4 - 설명 1', description: '기념일 4 - 설명 2' },
-    { title: '기념일 5 - 설명 1', description: '기념일 5 - 설명 2' },
-    { title: '기념일 6 - 설명 1', description: '기념일 6 - 설명 2' },
-    { title: '기념일 7 - 설명 1', description: '기념일 7 - 설명 2' },
-    { title: '기념일 8 - 설명 1', description: '기념일 8 - 설명 2' },
-    { title: '기념일 9 - 설명 1', description: '기념일 9 - 설명 2' },
-    { title: '기념일 10 - 설명 1', description: '기념일 10 - 설명 2' },
+    { title: '연인과 함께하는 달콤살벌한 하루', description: '발렌타인데이 추천 영화' },
+    { title: "Happy women's Day", description: '여성의 날 추천 영화' },
+    { title: '과학이 미래다.', description: '과학의 날 추천 영화' },
+    { title: '오늘은 어린이날 우리들 세상', description: '어린이날 추천 영화' },
+    { title: '우리의 지구는 오직 하나 뿐입니다', description: '환경의 날 추천 영화' },
+    { title: '우리는 결코 당신을 잊지 않겠습니다', description: '현충일 추천 영화' },
+    { title: '송편도 먹고 갈비찜도 먹고 잡채도 먹고', description: '추석 추천 영화' },
+    { title: 'Trick Or Treat!', description: '할로윈데이 추천 영화' },
+    { title: 'All I want for Christmas is...', description: '크리스마스 추천 영화' },
+    { title: '까치까치 설날 말고 우리우리 설날', description: '설날 추천 영화' },
   ];
 
   return (
