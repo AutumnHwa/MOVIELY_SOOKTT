@@ -38,10 +38,10 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
       return;
     }
 
-    if (!movieData.movie_title) {
-      alert('영화 제목을 입력해주세요.');
-      return;
-    }
+    //if (!movieData.movie_title) {
+      //alert('영화 제목을 입력해주세요.');
+      //return;
+    //}
 
     const eventDetails = {
       id: initialData ? initialData.id : Date.now().toString(),
