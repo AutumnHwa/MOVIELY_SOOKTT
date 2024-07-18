@@ -99,15 +99,18 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         body: JSON.stringify(listData),
       });
 
-      const responseData = await response.json();
-
-      if (response.ok) {
-        setMessage('List updated successfully!');
-        console.log('List updated successfully!');
+      if (response.redirected) {
+        window.location.href = response.url;
       } else {
-        console.error('List update failed:', responseData);
-        setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
-        console.log('List update failed:', responseData.message || 'Unknown error');
+        const responseData = await response.json();
+        if (response.ok) {
+          setMessage('List updated successfully!');
+          console.log('List updated successfully!');
+        } else {
+          console.error('List update failed:', responseData);
+          setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
+          console.log('List update failed:', responseData.message || 'Unknown error');
+        }
       }
     } catch (error) {
       console.error('Error:', error);

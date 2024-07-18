@@ -75,7 +75,7 @@ function MvchoPage() {
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
-      let url = `https://moviely.duckdns.org/api/movies?size=500&sort=release_date,desc&release_date.gte=2000-01-01`;
+      const url = `https://moviely.duckdns.org/api/movies?size=8000&sort=release_date,desc&release_date.gte=2000-01-01`;
 
       const response = await fetch(url, { mode: 'cors' });
 
@@ -93,7 +93,7 @@ function MvchoPage() {
         })).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
 
         setMovies(processedData);
-        setFilteredMovies(processedData.slice(0, 500)); // 처음 500개만 설정
+        setFilteredMovies(processedData); // 처음 500개만 설정
       }
 
       setLoading(false);
@@ -123,15 +123,8 @@ function MvchoPage() {
   }, [movies, selectedPlatform, selectedGenre, genreMapping, platformMapping]);
 
   useEffect(() => {
-    setFilteredMovies(filterMovies().slice(0, 500));
+    setFilteredMovies(filterMovies());
   }, [filterMovies]);
-
-  const loadMoreMovies = () => {
-    if (!loading && filteredMovies.length < movies.length) {
-      const nextMovies = filterMovies().slice(filteredMovies.length, filteredMovies.length + 500);
-      setFilteredMovies(prevMovies => [...prevMovies, ...nextMovies]);
-    }
-  };
 
   const banners = filteredMovies.map((movie, index) => (
     <MvBanner
@@ -226,14 +219,10 @@ function MvchoPage() {
         </div>
       </div>
       <div className="bannerGrid">
-        {banners}
+        {loading ? <div className="loading">로딩 중...</div> : (banners.length > 0 ? banners : <div className="noMovies">선택하신 필터에 맞는 영화가 없습니다.</div>)}
       </div>
-      {loading && <div className="loading">로딩 중...</div>}
-      {!loading && filteredMovies.length < movies.length && (
-        <button onClick={loadMoreMovies} className="loadMoreButton">더 불러오기</button>
-      )}
     </div>
   );
 }
 
-export default MvchoPage
+export default MvchoPage;
