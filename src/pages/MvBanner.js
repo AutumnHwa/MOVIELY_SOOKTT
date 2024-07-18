@@ -98,7 +98,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
       }
 
       console.log('Sending data to URL:', url);
-      console.log('Data being sent:', listData);
+      console.log('Data being sent:', JSON.stringify(listData));  // JSON.stringify 추가
 
       const response = await fetch(url, {
         method: 'POST',
