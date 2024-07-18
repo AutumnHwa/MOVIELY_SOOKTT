@@ -76,6 +76,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
       console.log('Response status:', response.status);
 
       if (!response.ok) {
+        console.log('Response text:', await response.text());
         throw new Error('Failed to save movie data');
       }
 
