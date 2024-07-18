@@ -79,58 +79,58 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
 
   const handleSaveModal = async (option) => {
     if (!userId || !movieId) {
-      setMessage('User ID and Movie ID must not be null');
-      console.log('User ID or Movie ID is null:', { userId, movieId });
-      return;
+        setMessage('User ID and Movie ID must not be null');
+        console.log('User ID or Movie ID is null:', { userId, movieId });
+        return;
     }
 
     const listData = {
-      user_id: userId,
-      movie_id: movieId
+        user_id: userId,
+        movie_id: movieId
     };
 
+    console.log('Data being sent:', JSON.stringify(listData)); // 디버그용 로그 추가
+
     try {
-      let url = '';
-      if (option === 'option1') {
-        url = 'https://moviely.duckdns.org/mypage/wishList';
-      } else if (option === 'option2') {
-        url = 'https://moviely.duckdns.org/mypage/watchedList';
-      }
+        let url = '';
+        if (option === 'option1') {
+            url = 'https://moviely.duckdns.org/mypage/wishList';
+        } else if (option === 'option2') {
+            url = 'https://moviely.duckdns.org/mypage/watchedList';
+        }
 
-      console.log('Sending data to URL:', url);
-      console.log('Data being sent:', JSON.stringify(listData));  // JSON.stringify 추가
+        console.log('Sending data to URL:', url);
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(listData),
-      });
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(listData),
+        });
 
-      console.log('Response status:', response.status);
-      const responseData = await response.json();
-      console.log('Response from server:', responseData);
+        const responseData = await response.json();
+        console.log('Response from server:', responseData);
 
-      if (response.ok) {
-        setMessage('List updated successfully!');
-        console.log('List updated successfully!');
-      } else {
-        console.error('List update failed:', responseData);
-        setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
-        console.log('List update failed:', responseData.message || 'Unknown error');
-      }
+        if (response.ok) {
+            setMessage('List updated successfully!');
+            console.log('List updated successfully!');
+        } else {
+            console.error('List update failed:', responseData);
+            setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
+            console.log('List update failed:', responseData.message || 'Unknown error');
+        }
     } catch (error) {
-      console.error('Error:', error);
-      setMessage('Failed to update list.');
-      console.log('Error:', error);
+        console.error('Error:', error);
+        setMessage('Failed to update list.');
+        console.log('Error:', error);
     }
 
     setShowModal(false);
     setTimeout(() => {
-      setMessage('');
+        setMessage('');
     }, 3000);
-  };
+};
 
   const handlePosterClick = () => {
     navigate(`/movie/${movieId}`);
