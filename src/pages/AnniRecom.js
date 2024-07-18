@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from '../components/Sidebar';
@@ -16,6 +16,8 @@ import '../css/Popcho.css'; // Popcho 스타일 임포트
 import logoImage from '../logo.png';
 import { useAuth } from '../context/AuthContext';
 import moviesCSV from '../movie.csv';
+
+import ani_1 from '../ani_1.png';
 
 const AnniRecom = () => {
   const { user } = useAuth(); 
@@ -67,16 +69,16 @@ const AnniRecom = () => {
   };
 
   const categories = [
-    { title: '연인과 함께하는 달콤살벌한 하루', description: '발렌타인데이 추천 영화' },
-    { title: "Happy women's Day", description: '여성의 날 추천 영화' },
-    { title: '과학이 미래다.', description: '과학의 날 추천 영화' },
-    { title: '오늘은 어린이날 우리들 세상', description: '어린이날 추천 영화' },
-    { title: '우리의 지구는 오직 하나 뿐입니다', description: '환경의 날 추천 영화' },
-    { title: '우리는 결코 당신을 잊지 않겠습니다', description: '현충일 추천 영화' },
-    { title: '송편도 먹고 갈비찜도 먹고 잡채도 먹고', description: '추석 추천 영화' },
-    { title: 'Trick Or Treat!', description: '할로윈데이 추천 영화' },
-    { title: 'All I want for Christmas is...', description: '크리스마스 추천 영화' },
-    { title: '까치까치 설날 말고 우리우리 설날', description: '설날 추천 영화' },
+    { title: '연인과 함께하는 달콤살벌한 하루', description: '발렌타인데이 추천 영화', imageUrl: ani_1 },
+    { title: "Happy women's Day", description: '여성의 날 추천 영화', },
+    { title: '과학이 미래다.', description: '과학의 날 추천 영화',  },
+    { title: '오늘은 어린이날 우리들 세상', description: '어린이날 추천 영화',  },
+    { title: '우리의 지구는 오직 하나 뿐입니다', description: '환경의 날 추천 영화',  },
+    { title: '우리는 결코 당신을 잊지 않겠습니다', description: '현충일 추천 영화', },
+    { title: '우리 민족 대명절, 풍성한 한가위!', description: '추석 추천 영화',  },
+    { title: 'Trick Or Treat!', description: '할로윈데이 추천 영화',  },
+    { title: 'All I want for Christmas is...', description: '크리스마스 추천 영화',  },
+    { title: '까치까치 설날 말고 우리우리 설날', description: '설날 추천 영화', },
   ];
 
   return (
@@ -107,8 +109,11 @@ const AnniRecom = () => {
               className="banner"
               onClick={() => handleBannerClick(category.title, index)}
             >
-              <div>{category.title}</div>
-              <div><strong>{category.description}</strong></div>
+              <div className="banner-text">
+                <div>{category.title}</div>
+                <div><strong>{category.description}</strong></div>
+              </div>
+              <img src={category.imageUrl} alt={category.title} className="banner-image" />
             </div>
             {selectedCategory && bannerIndex === index && (
               <div className="moviesContainer">

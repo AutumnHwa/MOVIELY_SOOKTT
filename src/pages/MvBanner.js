@@ -136,6 +136,8 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
   };
 
   console.log('Flatrate data:', flatrate);
+  console.log('User ID:', userId);
+  console.log('Movie ID:', movieId);
 
   const validFlatrate = Array.isArray(flatrate) ? flatrate.map(service => service.trim().toLowerCase()).filter(Boolean) : [];
 
