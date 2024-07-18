@@ -80,6 +80,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
   const handleSaveModal = async (option) => {
     if (!userId || !movieId) {
       setMessage('User ID and Movie ID must not be null');
+      console.log('User ID or Movie ID is null:', { userId, movieId });
       return;
     }
 
@@ -96,6 +97,9 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         url = 'https://moviely.duckdns.org/mypage/watchedList';
       }
 
+      console.log('Sending data to URL:', url);
+      console.log('Data being sent:', listData);
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -104,11 +108,13 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         body: JSON.stringify(listData),
       });
 
+      const responseData = await response.json();
+      console.log('Response from server:', responseData);
+
       if (response.ok) {
         setMessage('List updated successfully!');
         console.log('List updated successfully!');
       } else {
-        const responseData = await response.json();
         console.error('List update failed:', responseData);
         setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
         console.log('List update failed:', responseData.message || 'Unknown error');
