@@ -7,7 +7,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
     movie_title: '',
     movie_content: '',
     created_at: '',
-    created_by: userId || '' // 사용자 ID 설정
+    created_by: userId || '' 
   });
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -29,7 +29,12 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
     setMovieData(prevData => ({ ...prevData, [name]: value }));
   };
 
-  const handleSave = async () => {
+  const addCalendarEvent = async () => {
+    if (!userId) {
+      alert('유효한 사용자 ID를 제공해주세요.');
+      return;
+    }
+
     if (!movieData.movie_title) {
       alert('영화 제목을 입력해주세요.');
       return;
@@ -47,36 +52,32 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
       }
     };
 
+    const calendarEvent = {
+      user_id: userId,
+      watch_date: movieData.watch_date,
+      movie_title: movieData.movie_title,
+      movie_content: movieData.movie_content,
+      created_at: movieData.created_at || new Date().toISOString(),
+      created_by: movieData.created_by
+    };
+
     try {
       console.log('Sending data to URL:', 'https://moviely.duckdns.org/mypage/calendar');
-      console.log('Data being sent:', {
-        user_id: userId,
-        watch_date: movieData.watch_date,
-        movie_title: movieData.movie_title,
-        movie_content: movieData.movie_content,
-        created_at: movieData.created_at || new Date().toISOString(),
-        created_by: movieData.created_by
-      });
+      console.log('Data being sent:', calendarEvent);
 
       const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          user_id: userId,
-          watch_date: movieData.watch_date,
-          movie_title: movieData.movie_title,
-          movie_content: movieData.movie_content,
-          created_at: movieData.created_at || new Date().toISOString(),
-          created_by: movieData.created_by
-        })
+        body: JSON.stringify(calendarEvent)
       });
 
       console.log('Response status:', response.status);
 
       if (!response.ok) {
-        console.log('Response text:', await response.text());
+        const responseText = await response.text();
+        console.log('Response text:', responseText);
         throw new Error('Failed to save movie data');
       }
 
@@ -135,7 +136,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
         {errorMessage && <div className="error-message">{errorMessage}</div>}
         <div className="popcal-buttons">
           <button onClick={handleDelete}>삭제하기</button>
-          <button onClick={handleSave}>저장하기</button>
+          <button onClick={addCalendarEvent}>저장하기</button>
         </div>
       </div>
     </div>
