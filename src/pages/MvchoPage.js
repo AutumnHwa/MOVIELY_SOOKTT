@@ -78,7 +78,7 @@ function MvchoPage() {
             ...movie,
             flatrate: movie.flatrate ? movie.flatrate.split(', ') : [],
             genre: movie.genre ? movie.genre.split(', ') : []
-          })).sort((a, b) => new Date(b.release_date) - new Date(a.release_date)); // 최신순으로 정렬
+          })).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
 
           setMovies(processedData);
         }

@@ -124,8 +124,6 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
   const handlePosterClick = () => {
     navigate(`/movie/${movieId}`);
   };
-
-  // 추가된 콘솔 로그로 flatrate 데이터 확인
   console.log('Flatrate data:', flatrate);
 
   const validFlatrate = Array.isArray(flatrate) ? flatrate.map(service => service.trim().toLowerCase()).filter(Boolean) : [];
