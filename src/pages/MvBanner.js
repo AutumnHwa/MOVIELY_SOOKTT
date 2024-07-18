@@ -99,18 +99,15 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         body: JSON.stringify(listData),
       });
 
-      if (response.redirected) {
-        window.location.href = response.url;
+      const responseData = await response.json();
+
+      if (response.ok) {
+        setMessage('List updated successfully!');
+        console.log('List updated successfully!');
       } else {
-        const responseData = await response.json();
-        if (response.ok) {
-          setMessage('List updated successfully!');
-          console.log('List updated successfully!');
-        } else {
-          console.error('List update failed:', responseData);
-          setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
-          console.log('List update failed:', responseData.message || 'Unknown error');
-        }
+        console.error('List update failed:', responseData);
+        setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
+        console.log('List update failed:', responseData.message || 'Unknown error');
       }
     } catch (error) {
       console.error('Error:', error);
@@ -126,21 +123,6 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
 
   const handlePosterClick = () => {
     navigate(`/movie/${movieId}`);
-  };
-
-  const handleAuthClick = async () => {
-    try {
-      const response = await fetch('https://moviely.duckdns.org/oauth2/authorize/google', {
-        method: 'GET',
-        credentials: 'include'
-      });
-
-      if (response.redirected) {
-        window.location.href = response.url;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
   };
 
   console.log('Flatrate data:', flatrate);
@@ -190,7 +172,6 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
           ))}
         </div>
         <button onClick={handleAddClick} className="add-button">+</button>
-        <button onClick={handleAuthClick} className="auth-button">Login with Google</button>
       </div>
       {showModal && <Popcho onClose={handleCloseModal} onSave={handleSaveModal} />}
       {message && (

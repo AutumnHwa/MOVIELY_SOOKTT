@@ -58,7 +58,7 @@
   
   .banner {
     width: 600px;
-    height: 100px;
+    height: 120px;
     background: rgba(210, 210, 210, 0.53);
     margin-top: 5px;
     display: flex;
@@ -75,7 +75,7 @@
   }
   
   .banner div:last-child {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
   }
   
