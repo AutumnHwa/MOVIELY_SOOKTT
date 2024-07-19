@@ -158,7 +158,7 @@ function RecomPage() {
                     poster={topMovie.poster_path}
                     flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                     userId={user ? user.id : null}
-                    movieId={topMovie.movie_id}
+                    movieId={topMovie.id || topMovie.movie_id} // 이 부분 수정
                   />
                 </div>
               ) : (
@@ -218,7 +218,7 @@ function RecomPage() {
                         poster={posterUrl}
                         flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                         userId={user ? user.id : null}
-                        movieId={movie.movie_id}
+                        movieId={movie.id || movie.movie_id} // 이 부분 수정
                       />
                     </div>
                   </SwiperSlide>
