@@ -14,6 +14,7 @@ import { useAuth } from '../context/AuthContext';
 
 function MvsrchPage() {
   const { user } = useAuth(); // useAuth 훅 사용
+  console.log('Logged in user:', user); // user 객체를 콘솔에 출력
   const genreMapping = useMemo(() => ({
     '장르 전체': 'All',
     '액션': '28',
@@ -92,7 +93,8 @@ function MvsrchPage() {
           const processedData = data.content.map(movie => ({
             ...movie,
             flatrate: movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : [],
-            genre: movie.genre ? movie.genre.split(', ') : []
+            genre: movie.genre ? movie.genre.split(', ') : [],
+            id: movie.id // 여기에서 id를 추가합니다.
           }));
           setMovies(processedData);
           setFilteredMovies(processedData);
