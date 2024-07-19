@@ -21,7 +21,6 @@ function MycalPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 페이지가 로드될 때 이벤트 데이터를 서버에서 가져오기
     const fetchEvents = async () => {
       try {
         const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
