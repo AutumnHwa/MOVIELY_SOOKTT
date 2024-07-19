@@ -12,6 +12,7 @@ import Sidebar from '../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import '../css/MvdetailPage.css';
+import { useAuth } from '../context/AuthContext';
 
 const flatrateLogos = {
   'disney plus': disneyPlusLogo,
@@ -58,13 +59,13 @@ const genreMapping = {
 
 const MvdetailPage = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const userId = sessionStorage.getItem('userId');
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -94,7 +95,7 @@ const MvdetailPage = () => {
     setRating(newRating);
 
     const ratingData = {
-      user_id: userId,
+      user_id: user.id,
       movie_id: movie.movie_id,
       rating: parseFloat(newRating)
     };
@@ -146,14 +147,14 @@ const MvdetailPage = () => {
   };
 
   const handleSaveModal = async (option) => {
-    if (!userId || !movie.movie_id) {
+    if (!user.id || !movie.movie_id) {
         setMessage('User ID and Movie ID must not be null');
-        console.log('User ID or Movie ID is null:', { userId, movie_id: movie.movie_id });
+        console.log('User ID or Movie ID is null:', { userId: user.id, movie_id: movie.movie_id });
         return;
     }
 
     const listData = {
-        user_id: userId,
+        user_id: user.id,
         movie_id: movie.movie_id
     };
 
