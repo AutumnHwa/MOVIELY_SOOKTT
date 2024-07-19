@@ -26,13 +26,10 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Input changed - ${name}: ${value}`);
     setMovieData(prevData => ({ ...prevData, [name]: value }));
   };
 
   const addCalendarEvent = async () => {
-    console.log('movieData:', movieData);
-
     if (!userId) {
       alert('유효한 사용자 ID를 제공해주세요.');
       return;
@@ -65,9 +62,6 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
     };
 
     try {
-      console.log('Sending data to URL:', 'https://moviely.duckdns.org/mypage/calendar');
-      console.log('Data being sent:', calendarEvent);
-
       const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
         method: 'POST',
         headers: {
@@ -76,17 +70,12 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
         body: JSON.stringify(calendarEvent)
       });
 
-      console.log('Response status:', response.status);
-
       if (!response.ok) {
         const responseText = await response.text();
-        console.log('Response text:', responseText);
         throw new Error('Failed to save movie data');
       }
 
       const responseData = await response.json();
-      console.log('Response from server:', responseData);
-
       onSave(eventDetails);
       onClose();
     } catch (error) {
@@ -95,10 +84,28 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (initialData && initialData.id) {
-      onDelete(initialData.id);
-      onClose();
+      try {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          const responseText = await response.text();
+          console.error('Failed to delete event:', responseText);
+          throw new Error('Failed to delete event');
+        }
+
+        onDelete(initialData.id);
+        onClose();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('이벤트를 삭제하는 중 오류가 발생했습니다.');
+      }
     } else {
       setErrorMessage('삭제할 이벤트가 없습니다.');
     }

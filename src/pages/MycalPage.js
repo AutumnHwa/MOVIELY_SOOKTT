@@ -69,14 +69,33 @@ function MycalPage() {
     setIsPopupOpen(true);
   };
 
-  const handleDeleteEvent = (eventId) => {
+  const handleDeleteEvent = async (eventId) => {
     if (!eventId) {
       alert('삭제할 이벤트가 없습니다.');
       return;
     }
 
-    const updatedEvents = events.filter(event => event.id !== eventId);
-    setEvents(updatedEvents);
+    try {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const responseText = await response.text();
+        console.error('Failed to delete event:', responseText);
+        throw new Error('Failed to delete event');
+      }
+
+      const updatedEvents = events.filter(event => event.id !== eventId);
+      setEvents(updatedEvents);
+      setIsPopupOpen(false);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('이벤트를 삭제하는 중 오류가 발생했습니다.');
+    }
   };
 
   return (
