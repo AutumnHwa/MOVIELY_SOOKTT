@@ -6,18 +6,18 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Popcal from './Popcal';
-import Sidebar from '../components/Sidebar'; 
+import Sidebar from '../components/Sidebar';
 import '../css/MycalPage.css';
 import logoImage from '../logo.png';
-import { useAuth } from '../context/AuthContext'; // AuthContext import
+import { useAuth } from '../context/AuthContext';
 
 function MycalPage() {
-  const { user } = useAuth(); // 사용자 정보 가져오기
+  const { user } = useAuth();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [events, setEvents] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false); 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -44,21 +44,11 @@ function MycalPage() {
     setIsPopupOpen(false);
   };
 
-  const handleSaveMovieData = (movieData) => {
-    if (!movieData.movie_title) {
+  const handleSaveMovieData = (eventDetails) => {
+    if (!eventDetails.title) {
       alert('영화 제목을 입력해주세요.');
       return;
     }
-
-    const eventDetails = {
-      id: selectedEvent ? selectedEvent.id : Date.now().toString(), 
-      title: movieData.movie_title,
-      start: movieData.watch_date || selectedDate,
-      allDay: true,
-      extendedProps: {
-        movie_content: movieData.movie_content
-      }
-    };
 
     const updatedEvents = selectedEvent
       ? events.map(event => event.id === selectedEvent.id ? eventDetails : event)
@@ -138,7 +128,7 @@ function MycalPage() {
           onSave={handleSaveMovieData}
           onDelete={handleDeleteEvent}
           initialData={selectedEvent}
-          userId={user.id} // 사용자 ID를 Popcal 컴포넌트로 전달
+          userId={user.id}
         />
       )}
     </div>
