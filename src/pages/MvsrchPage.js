@@ -88,11 +88,14 @@ function MvsrchPage() {
       const data = await response.json();
 
       if (data && data.content) {
-        const processedData = data.content.map(movie => ({
-          ...movie,
-          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
-          genre: movie.genre ? movie.genre.split(', ') : []
-        })).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
+        const processedData = data.content.map(movie => {
+          console.log('Fetched movie:', movie); // 디버깅용 로그 추가
+          return {
+            ...movie,
+            flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+            genre: movie.genre ? movie.genre.split(', ') : []
+          };
+        }).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
 
         setMovies(processedData);
         setFilteredMovies(processedData); // 처음 1000개만 설정
