@@ -13,7 +13,7 @@ import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
 function MvsrchPage() {
-  const { user } = useAuth(); // useAuth 훅 사용
+  const { user } = useAuth();
   const genreMapping = useMemo(() => ({
     '장르 전체': 'All',
     '액션': '28',
@@ -246,7 +246,7 @@ function MvsrchPage() {
                   poster={movie.poster_path}
                   flatrate={movie.flatrate}
                   rating={Math.round(movie.vote_average / 2)}
-                  movieId={movie.id}
+                  movieId={movie.id || movie.movie_id} // 이 부분 수정
                   userId={user?.id} // userId를 useAuth 훅을 통해 가져와 전달
                 />
               ))}
