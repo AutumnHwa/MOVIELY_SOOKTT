@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../css/Popcal.css';
 
-const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
+const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, selectedDate }) => {
   const [movieData, setMovieData] = useState({
-    watch_date: '',
+    watch_date: selectedDate || '',
     movie_title: '',
     movie_content: '',
     created_at: '',
@@ -15,14 +15,14 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId }) => {
   useEffect(() => {
     if (initialData) {
       setMovieData({
-        watch_date: initialData.start || '',
+        watch_date: initialData.start || selectedDate || '',
         movie_title: initialData.title || '',
         movie_content: initialData.movie_content || '',
         created_at: initialData.created_at || '',
         created_by: initialData.created_by || userId
       });
     }
-  }, [initialData, userId]);
+  }, [initialData, userId, selectedDate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
