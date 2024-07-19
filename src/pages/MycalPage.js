@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -19,6 +19,43 @@ function MycalPage() {
   const [events, setEvents] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 페이지가 로드될 때 이벤트 데이터를 서버에서 가져오기
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          const responseText = await response.text();
+          console.error('Failed to fetch events:', responseText);
+          throw new Error('Failed to fetch events');
+        }
+
+        const responseData = await response.json();
+        const fetchedEvents = responseData.map(event => ({
+          id: event.id,
+          title: event.movie_title,
+          start: event.watch_date,
+          allDay: true,
+          extendedProps: {
+            movie_content: event.movie_content
+          }
+        }));
+
+        setEvents(fetchedEvents);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchEvents();
+  }, [user.id]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -148,6 +185,7 @@ function MycalPage() {
           onDelete={handleDeleteEvent}
           initialData={selectedEvent}
           userId={user.id}
+          selectedDate={selectedDate}
         />
       )}
     </div>
