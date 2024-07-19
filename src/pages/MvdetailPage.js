@@ -108,32 +108,33 @@ const MvdetailPage = () => {
         body: JSON.stringify(ratingData),
       });
 
-      if (!response.ok) {
-        // 응답이 성공적이지 않으면 즉시 오류 메시지 표시
-        setMessage('Failed to submit rating: ' + response.statusText);
-        setTimeout(() => setMessage(''), 3000);
-        return;
-      }
-
       const responseData = await response.text();
 
       try {
         const jsonResponse = JSON.parse(responseData);
-        if (jsonResponse.success) {
+        if (response.ok) {
           setMessage('Rating submitted successfully!');
+          console.log('Rating submitted successfully!');
         } else {
+          console.error('Rating submission failed:', jsonResponse);
           setMessage('Failed to submit rating: ' + (jsonResponse.message || 'Unknown error'));
+          console.log('Rating submission failed:', jsonResponse.message || 'Unknown error');
         }
       } catch (e) {
         console.error('JSON parsing error:', responseData);
         setMessage('Failed to submit rating: Invalid JSON response.');
+        console.log('Failed to submit rating: Invalid JSON response.');
       }
+
     } catch (error) {
       console.error('Error:', error);
       setMessage('Failed to submit rating.');
+      console.log('Error:', error);
     }
 
-    setTimeout(() => setMessage(''), 3000);
+    setTimeout(() => {
+      setMessage('');
+    }, 3000);
   };
 
   const handleAddClick = () => {
@@ -144,9 +145,59 @@ const MvdetailPage = () => {
     setShowModal(false);
   };
 
-  const handleSaveModal = (option) => {
-    console.log("저장 옵션:", option);
+  const handleSaveModal = async (option) => {
+    if (!userId || !movie.movie_id) {
+        setMessage('User ID and Movie ID must not be null');
+        console.log('User ID or Movie ID is null:', { userId, movie_id: movie.movie_id });
+        return;
+    }
+
+    const listData = {
+        user_id: userId,
+        movie_id: movie.movie_id
+    };
+
+    console.log('Data being sent:', JSON.stringify(listData)); // 디버그용 로그 추가
+
+    try {
+        let url = '';
+        if (option === 'option1') {
+            url = 'https://moviely.duckdns.org/mypage/wishList';
+        } else if (option === 'option2') {
+            url = 'https://moviely.duckdns.org/mypage/watchedList';
+        }
+
+        console.log('Sending data to URL:', url);
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(listData),
+        });
+
+        const responseData = await response.json();
+        console.log('Response from server:', responseData);
+
+        if (response.ok) {
+            setMessage('List updated successfully!');
+            console.log('List updated successfully!');
+        } else {
+            console.error('List update failed:', responseData);
+            setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
+            console.log('List update failed:', responseData.message || 'Unknown error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        setMessage('Failed to update list.');
+        console.log('Error:', error);
+    }
+
     setShowModal(false);
+    setTimeout(() => {
+        setMessage('');
+    }, 3000);
   };
 
   if (loading) {
