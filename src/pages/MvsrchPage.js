@@ -13,8 +13,7 @@ import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
 function MvsrchPage() {
-  const { user } = useAuth(); 
-  console.log('Logged in user:', user); 
+  const { user } = useAuth(); // useAuth 훅 사용
   const genreMapping = useMemo(() => ({
     '장르 전체': 'All',
     '액션': '28',
@@ -75,54 +74,47 @@ function MvsrchPage() {
     setSidebarOpen(false);
   };
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        console.log('Fetching movies...');
-        const response = await fetch('https://moviely.duckdns.org/api/movies?size=1000', { mode: 'cors' });
-        console.log('API 요청 성공:', response);
+  const fetchMovies = useCallback(async () => {
+    setLoading(true);
+    try {
+      const url = `https://moviely.duckdns.org/api/movies?size=1000&sort=release_date,desc&release_date.gte=2000-01-01`;
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      const response = await fetch(url, { mode: 'cors' });
 
-        const data = await response.json();
-        console.log('API 응답 데이터:', data);
-
-        if (data && data.content) {
-          const processedData = data.content.map(movie => ({
-            ...movie,
-            flatrate: movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : [],
-            genre: movie.genre ? movie.genre.split(', ') : [],
-            id: movie.id // 여기에서 id를 추가합니다.
-          }));
-          setMovies(processedData);
-          setFilteredMovies(processedData);
-          setLoading(false);
-          console.log('Processed Data:', processedData);
-        } else {
-          console.error('Unexpected response format:', data);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error('Error fetching movies:', error);
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
 
-    fetchMovies();
+      const data = await response.json();
+
+      if (data && data.content) {
+        const processedData = data.content.map(movie => ({
+          ...movie,
+          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+          genre: movie.genre ? movie.genre.split(', ') : []
+        })).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
+
+        setMovies(processedData);
+        setFilteredMovies(processedData); // 처음 1000개만 설정
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchMovies();
+  }, [fetchMovies]);
 
   const filterMovies = useCallback(() => {
     let filtered = [...movies];
 
     if (selectedPlatform !== '전체') {
       const selectedPlatformInEnglish = platformMapping[selectedPlatform].toLowerCase();
-      console.log(`Selected Platform in English: ${selectedPlatformInEnglish}`);
-      filtered = filtered.filter(movie => {
-        console.log(`Movie Platforms: ${movie.flatrate}`);
-        return movie.flatrate.includes(selectedPlatformInEnglish);
-      });
+      filtered = filtered.filter(movie => movie.flatrate.includes(selectedPlatformInEnglish));
     }
 
     if (selectedGenre !== '장르 전체') {
