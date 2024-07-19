@@ -13,8 +13,8 @@ import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
 function MvsrchPage() {
-  const { user } = useAuth(); // useAuth 훅 사용
-  console.log('Logged in user:', user); // user 객체를 콘솔에 출력
+  const { user } = useAuth(); 
+  console.log('Logged in user:', user); 
   const genreMapping = useMemo(() => ({
     '장르 전체': 'All',
     '액션': '28',
