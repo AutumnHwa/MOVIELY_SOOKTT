@@ -58,6 +58,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
     };
 
     const calendarEvent = {
+      calendar_id: initialData ? initialData.id : Date.now().toString(), // calendar_id 사용
       user_id: userId,
       watch_date: new Date(movieData.watch_date).toISOString(),
       movie_title: movieData.movie_title,
@@ -97,7 +98,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
   const handleDelete = async () => {
     if (initialData && initialData.id) {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/event/${initialData.id}`, { // URL 수정
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'

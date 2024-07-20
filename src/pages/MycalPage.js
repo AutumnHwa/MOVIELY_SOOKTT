@@ -42,7 +42,7 @@ function MycalPage() {
 
         const responseData = await response.json();
         const fetchedEvents = responseData.map(event => ({
-          id: event.calendar_id,
+          id: event.calendar_id, // calendar_id 사용
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
           allDay: true,
@@ -116,7 +116,7 @@ function MycalPage() {
     }
 
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/event/${eventId}`, { // URL 수정
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
