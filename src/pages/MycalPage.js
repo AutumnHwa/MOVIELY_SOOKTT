@@ -27,7 +27,7 @@ function MycalPage() {
       console.log('User ID:', user.id); // 사용자 ID를 출력합니다.
 
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${calendar.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -42,13 +42,13 @@ function MycalPage() {
 
         const responseData = await response.json();
 
-        // responseData의 형식을 확인합니다.
+  
         console.log('responseData:', responseData);
 
-        // 응답이 단일 객체일 경우 처리
+  
         const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
         const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id, // calendar_id 사용
+          id: event.calendar_id, 
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
           allDay: true,
