@@ -66,6 +66,10 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       created_by: movieData.created_by
     };
 
+    // 콘솔에 데이터를 출력합니다.
+    console.log('eventDetails:', eventDetails);
+    console.log('calendarEvent:', calendarEvent);
+
     try {
       const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
         method: 'POST',
@@ -77,6 +81,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
 
       if (!response.ok) {
         const responseText = await response.text();
+        console.error('Failed to save movie data:', responseText);
         throw new Error('Failed to save movie data');
       }
 
