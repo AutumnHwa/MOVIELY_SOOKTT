@@ -27,7 +27,7 @@ function MycalPage() {
       console.log('User ID:', user.id); // 사용자 ID를 출력합니다.
 
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${calendar.id}`, {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
