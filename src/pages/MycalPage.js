@@ -102,15 +102,33 @@ function MycalPage() {
     setIsPopupOpen(false);
   };
 
-  const handleEventClick = ({ event }) => {
-    setSelectedDate(event.startStr);
-    setSelectedEvent({
-      id: event.id,
-      title: event.title,
-      start: event.startStr,
-      movie_content: event.extendedProps.movie_content
-    });
-    setIsPopupOpen(true);
+  const handleEventClick = async ({ event }) => {
+    try {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/event/${event.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const responseText = await response.text();
+        console.error('Failed to fetch event:', responseText);
+        throw new Error('Failed to fetch event');
+      }
+
+      const responseData = await response.json();
+      setSelectedDate(responseData.watch_date);
+      setSelectedEvent({
+        id: responseData.calendar_id,
+        title: responseData.movie_title,
+        start: new Date(responseData.watch_date).toISOString(),
+        movie_content: responseData.movie_content
+      });
+      setIsPopupOpen(true);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const handleDeleteEvent = async (eventId) => {
