@@ -22,6 +22,11 @@ function MycalPage() {
 
   useEffect(() => {
     const fetchEvents = async () => {
+      if (!user) {
+        console.error('User not logged in');
+        return;
+      }
+      
       try {
         const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
           method: 'GET',
@@ -54,7 +59,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, [user.id]);
+  }, [user]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -133,6 +138,10 @@ function MycalPage() {
       alert('이벤트를 삭제하는 중 오류가 발생했습니다.');
     }
   };
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="mycalPage">
