@@ -3,7 +3,7 @@ import '../css/Popcal.css';
 
 const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, selectedDate }) => {
   const [movieData, setMovieData] = useState({
-    watch_date: selectedDate || '',
+    watch_date: '',
     movie_title: '',
     movie_content: '',
     created_at: '',
@@ -21,8 +21,13 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
         created_at: initialData.created_at || '',
         created_by: initialData.created_by || userId
       });
+    } else {
+      setMovieData({
+        ...movieData,
+        watch_date: selectedDate || ''
+      });
     }
-  }, [initialData, userId, selectedDate]);
+  }, [initialData, selectedDate, userId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,9 +46,9 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
     }
 
     const eventDetails = {
-      id: initialData ? initialData.calendar_id : Date.now().toString(),
+      id: initialData ? initialData.id : Date.now().toString(),
       title: movieData.movie_title,
-      start: movieData.watch_date,
+      start: new Date(movieData.watch_date).toISOString(),
       allDay: true,
       extendedProps: {
         movie_content: movieData.movie_content,
@@ -54,7 +59,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
 
     const calendarEvent = {
       user_id: userId,
-      watch_date: movieData.watch_date,
+      watch_date: new Date(movieData.watch_date).toISOString(),
       movie_title: movieData.movie_title,
       movie_content: movieData.movie_content,
       created_at: movieData.created_at || new Date().toISOString(),
@@ -85,9 +90,9 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
   };
 
   const handleDelete = async () => {
-    if (initialData && initialData.calendar_id) {
+    if (initialData && initialData.id) {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.calendar_id}`, {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -100,7 +105,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
           throw new Error('Failed to delete event');
         }
 
-        onDelete(initialData.calendar_id);
+        onDelete(initialData.id);
         onClose();
       } catch (error) {
         console.error('Error:', error);
