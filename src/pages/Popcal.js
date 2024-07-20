@@ -15,7 +15,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
   useEffect(() => {
     if (initialData) {
       setMovieData({
-        watch_date: initialData.start || selectedDate || '',
+        watch_date: initialData.start ? new Date(initialData.start).toISOString().split('T')[0] : '',
         movie_title: initialData.title || '',
         movie_content: initialData.movie_content || '',
         created_at: initialData.created_at || '',

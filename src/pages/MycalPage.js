@@ -22,6 +22,8 @@ function MycalPage() {
 
   useEffect(() => {
     const fetchEvents = async () => {
+      if (!user) return;
+
       try {
         const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
           method: 'GET',
@@ -40,7 +42,7 @@ function MycalPage() {
         const fetchedEvents = responseData.map(event => ({
           id: event.calendar_id,
           title: event.movie_title,
-          start: event.watch_date,
+          start: new Date(event.watch_date).toISOString().split('.')[0], // Adjusting date format
           allDay: true,
           extendedProps: {
             movie_content: event.movie_content
@@ -54,7 +56,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, [user.id]);
+  }, [user]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -133,6 +135,10 @@ function MycalPage() {
       alert('이벤트를 삭제하는 중 오류가 발생했습니다.');
     }
   };
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="mycalPage">
