@@ -98,7 +98,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
   const handleDelete = async () => {
     if (initialData && initialData.id) {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/event/${initialData.id}`, { // URL 수정
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, { // URL 수정
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'

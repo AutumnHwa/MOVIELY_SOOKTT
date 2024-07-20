@@ -138,7 +138,7 @@ function MycalPage() {
     }
 
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/event/${eventId}`, { // URL 수정
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
