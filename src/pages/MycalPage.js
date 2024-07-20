@@ -45,21 +45,19 @@ function MycalPage() {
         // responseData의 형식을 확인합니다.
         console.log('responseData:', responseData);
 
-        if (Array.isArray(responseData)) {
-          const fetchedEvents = responseData.map(event => ({
-            id: event.calendar_id, // calendar_id 사용
-            title: event.movie_title,
-            start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
-            allDay: true,
-            extendedProps: {
-              movie_content: event.movie_content
-            }
-          }));
+        // 응답이 단일 객체일 경우 처리
+        const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
+        const eventsData = fetchedEvents.map(event => ({
+          id: event.calendar_id, // calendar_id 사용
+          title: event.movie_title,
+          start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
+          allDay: true,
+          extendedProps: {
+            movie_content: event.movie_content
+          }
+        }));
 
-          setEvents(fetchedEvents);
-        } else {
-          console.error('Expected an array but got:', responseData);
-        }
+        setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
       }
