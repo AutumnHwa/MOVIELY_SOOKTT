@@ -22,12 +22,10 @@ function MycalPage() {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      if (!user) return;
-
-      console.log('User ID:', user.id); // 사용자 ID를 출력합니다.
-
+      // 여기에 calendar_id를 사용하여 모든 이벤트를 가져오는 로직을 추가합니다.
+      // 이 부분은 서버에서 calendar_id를 기준으로 이벤트 목록을 제공하도록 설정되어 있어야 합니다.
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
+        const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -41,7 +39,6 @@ function MycalPage() {
         }
 
         const responseData = await response.json();
-
         console.log('responseData:', responseData);
 
         const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
@@ -62,7 +59,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, [user]);
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -104,7 +101,7 @@ function MycalPage() {
 
   const handleEventClick = async ({ event }) => {
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/event/${event.id}`, {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
