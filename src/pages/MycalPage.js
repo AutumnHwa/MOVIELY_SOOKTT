@@ -42,7 +42,7 @@ function MycalPage() {
         const fetchedEvents = responseData.map(event => ({
           id: event.calendar_id,
           title: event.movie_title,
-          start: new Date(event.watch_date).toISOString().split('.')[0], // Adjusting date format
+          start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
           allDay: true,
           extendedProps: {
             movie_content: event.movie_content
