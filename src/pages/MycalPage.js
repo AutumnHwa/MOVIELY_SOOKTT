@@ -42,13 +42,11 @@ function MycalPage() {
 
         const responseData = await response.json();
 
-  
         console.log('responseData:', responseData);
 
-  
         const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
         const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id, 
+          id: event.calendar_id,
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
           allDay: true,
