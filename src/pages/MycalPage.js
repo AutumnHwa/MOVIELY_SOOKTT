@@ -38,7 +38,7 @@ function MycalPage() {
 
         const responseData = await response.json();
         const fetchedEvents = responseData.map(event => ({
-          id: event.id,
+          id: event.calendar_id,
           title: event.movie_title,
           start: event.watch_date,
           allDay: true,

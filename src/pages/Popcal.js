@@ -41,7 +41,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
     }
 
     const eventDetails = {
-      id: initialData ? initialData.id : Date.now().toString(),
+      id: initialData ? initialData.calendar_id : Date.now().toString(),
       title: movieData.movie_title,
       start: movieData.watch_date,
       allDay: true,
@@ -85,9 +85,9 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
   };
 
   const handleDelete = async () => {
-    if (initialData && initialData.id) {
+    if (initialData && initialData.calendar_id) {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.calendar_id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
           throw new Error('Failed to delete event');
         }
 
-        onDelete(initialData.id);
+        onDelete(initialData.calendar_id);
         onClose();
       } catch (error) {
         console.error('Error:', error);
