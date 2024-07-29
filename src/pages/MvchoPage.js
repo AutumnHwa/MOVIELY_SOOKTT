@@ -158,7 +158,7 @@ function MvchoPage() {
   return (
     <div className="MvchoPage">
       <header className="pageHeader">
-        <Link to="/" className="chologo">
+        <Link to="/recommendations" className="chologo">
           <img src={logoImage} alt="Logo" />
         </Link>
         <FontAwesomeIcon

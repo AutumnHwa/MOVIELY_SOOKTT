@@ -18,7 +18,6 @@ const flatrateLogos = {
 const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
   const [rating, setRating] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   const handleStarClick = async (index) => {
@@ -45,28 +44,20 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
       try {
         const jsonResponse = JSON.parse(responseData);
         if (response.ok) {
-          setMessage('Rating submitted successfully!');
           console.log('Rating submitted successfully!');
         } else {
           console.error('Rating submission failed:', jsonResponse);
-          setMessage('Failed to submit rating: ' + (jsonResponse.message || 'Unknown error'));
           console.log('Rating submission failed:', jsonResponse.message || 'Unknown error');
         }
       } catch (e) {
         console.error('JSON parsing error:', responseData);
-        setMessage('Failed to submit rating: Invalid JSON response.');
         console.log('Failed to submit rating: Invalid JSON response.');
       }
 
     } catch (error) {
       console.error('Error:', error);
-      setMessage('Failed to submit rating.');
-      console.log('Error:', error);
+      console.log('Failed to submit rating.');
     }
-
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
   };
 
   const handleAddClick = () => {
@@ -79,7 +70,6 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
 
   const handleSaveModal = async (option) => {
     if (!userId || !movieId) {
-        setMessage('User ID and Movie ID must not be null');
         console.log('User ID or Movie ID is null:', { userId, movieId });
         return;
     }
@@ -113,24 +103,18 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         console.log('Response from server:', responseData);
 
         if (response.ok) {
-            setMessage('List updated successfully!');
             console.log('List updated successfully!');
         } else {
             console.error('List update failed:', responseData);
-            setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
             console.log('List update failed:', responseData.message || 'Unknown error');
         }
     } catch (error) {
         console.error('Error:', error);
-        setMessage('Failed to update list.');
-        console.log('Error:', error);
+        console.log('Failed to update list.');
     }
 
     setShowModal(false);
-    setTimeout(() => {
-        setMessage('');
-    }, 3000);
-};
+  };
 
   const handlePosterClick = () => {
     navigate(`/movie/${movieId}`);
@@ -142,7 +126,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
 
   const validFlatrate = Array.isArray(flatrate) ? flatrate.map(service => service.trim().toLowerCase()).filter(Boolean) : [];
 
-  const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x181?text=No+Image';
+  const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x231?text=No+Image';
 
   console.log('Poster URL:', posterUrl);
 
@@ -157,7 +141,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         alt={title}
         className="movie-poster-banner"
         onClick={handlePosterClick}
-        onError={(e) => e.target.src = 'https://via.placeholder.com/154x181?text=No+Image'}
+        onError={(e) => e.target.src = 'https://via.placeholder.com/154x231?text=No+Image'}
       />
       <div className="movie-info">
         <div className="movie-title">{title}</div>
@@ -186,14 +170,6 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         <button onClick={handleAddClick} className="add-button">+</button>
       </div>
       {showModal && <Popcho onClose={handleCloseModal} onSave={handleSaveModal} />}
-      {message && (
-        <div className="popupContainer">
-          <div className="popupContent">
-            <p>{message}</p>
-            <button onClick={() => setMessage('')}>닫기</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

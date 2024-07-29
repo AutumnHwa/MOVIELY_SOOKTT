@@ -53,7 +53,7 @@ function MyalrPage() {
   return (
     <div className="myalrPage">
       <header className="pageHeader">
-        <Link to="/">
+        <Link to="/recommendations">
           <img src={logoImage} alt="Logo" className="myPageLogo" />
         </Link>
         <Link to="/movie-search" className="searchIconContainer">

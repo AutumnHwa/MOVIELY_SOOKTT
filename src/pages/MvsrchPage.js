@@ -182,7 +182,7 @@ function MvsrchPage() {
           className={`overlay ${sidebarOpen ? 'show' : ''}`}
           onClick={closeSidebar}
         />
-        <Link to="/" className="srchlogo">
+        <Link to="/recommendations" className="srchlogo">
           <img src={logoImage} alt="Logo" />
         </Link>
       </header>

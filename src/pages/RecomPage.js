@@ -129,7 +129,7 @@ function RecomPage() {
   return (
     <div className="RecomPage">
       <header className="pageHeader">
-        <Link to="/" className="recomlogo">
+        <Link to="/recommendations" className="recomlogo">
           <img src={logoImage} alt="Logo" />
         </Link>
         <Link to="/movie-search" className="searchIconContainer">

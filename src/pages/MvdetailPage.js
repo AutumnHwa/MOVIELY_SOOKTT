@@ -233,7 +233,7 @@ const MvdetailPage = () => {
   return (
     <div className="movie-detail-page">
       <header className="pageHeader">
-        <Link to="/" className="detail-logo">
+        <Link to="/recommendations" className="detail-logo">
           <img src={detailLogoImage} alt="Logo" />
         </Link>
         <Link to="/movie-search" className="searchIconContainer">

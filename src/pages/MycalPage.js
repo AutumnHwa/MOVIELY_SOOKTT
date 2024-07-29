@@ -169,7 +169,7 @@ function MycalPage() {
   return (
     <div className="mycalPage">
       <header className="pageHeader">
-        <Link to="/">
+        <Link to="/recommendations">
           <img src={logoImage} alt="Logo" className="myPageLogo" />
         </Link>
         <Link to="/movie-search" className="searchIconContainer">
