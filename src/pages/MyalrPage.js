@@ -66,14 +66,12 @@ function MyalrPage() {
 
   const banners = movies.map((movie, index) => (
     <MvBanner
-      key={index}
       title={movie.title}
-      poster={movie.poster_path}
-      flatrate={movie.flatrate}
-      rating={Math.round(movie.vote_average / 2)}
-      movieId={movie.id || movie.movie_id}
-      userId={user?.id}
-    />
+      poster={posterUrl}
+      flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
+      userId={user ? user.id : null}
+      movieId={movie.id || movie.movie_id} // 이 부분 수정
+      />
   ));
 
   return (
