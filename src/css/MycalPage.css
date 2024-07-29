@@ -81,14 +81,15 @@
 
 .calendar-container {
   border-radius: 8px;
-  width: 455px;
-  height: 475px;
+  width: 405px; /* 기존 너비에서 50px 줄임 */
+  height: auto;
   margin: auto;
   margin-top: 20px;
   padding: 25px 20px 40px;
   background-color: #ffffff;
   box-sizing: border-box;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* 달력이 컨테이너 밖으로 삐져나오지 않게 함 */
 }
 
 .fc-toolbar-title {
