@@ -29,7 +29,7 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 250px;
+  width: 200px;
 }
 
 .heading {
@@ -37,7 +37,7 @@
   text-align: center;
   color: #FFF;
   font-family: 'Pretendard', sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
@@ -55,13 +55,14 @@
 
 .button {
   display: inline-block;
-  width: 140px;
-  height: 26px;
+  width: 120px;
+  height: 19px;
   margin: 10px;
+  font-size: 13px;
   background-color: transparent; /* 초기 배경색은 투명 */
   color: white; /* 글자 색상 */
   text-align: center;
-  line-height: 26px; /* 세로 정렬을 위해 버튼 높이와 동일하게 설정 */
+  line-height: 17px; /* 세로 정렬을 위해 버튼 높이와 동일하게 설정 */
   text-decoration: none;
   border: 1px solid white; /* 테두리 설정 */
   border-radius: 24px; /* 둥근 모서리 */
@@ -81,25 +82,25 @@
 
 .poster {
   position: absolute;
-  width: 220px;
-  height: 330px;
+  width: 160px;
+  height: 240px;
 }
 
 .poster-1 {
   top: 60px; 
-  left: -230px; 
+  left: -180px; 
   transform: rotate(-10deg); 
 }
 
 .poster-2 {
-  top: 130px;
+  top: 110px;
   left: 15px; 
   transform: rotate(10deg);
 }
 
 .poster-3 {
-  top: 300px; 
-  left: -120px; 
+  top: 240px; 
+  left: -100px; 
   transform: rotate(0deg); 
 }
 

@@ -12,31 +12,32 @@
   flex-direction: column;
   align-items: center;
   background: #000;
-  width: 154px;
+  width: 130px;
 }
 
 .movie-info {
+  height: 48px;
   display: grid;
   grid-template-columns: auto repeat(4, minmax(20px, auto));
-  grid-template-rows: 20px 20px;
+  grid-template-rows: 18px 18px;
   gap: 2px;
   align-items: center;
   background: #2F4881;
   color: white;
   width: 100%;
-  padding: 6px;
+  padding: 6px 6px;
   box-sizing: border-box;
 }
 
 .movie-poster-banner {
-  width: 154px;
-  height: 200px;
+  width: 130px;
+  height: 170px;
 }
 
 .movie-title {
   grid-column: 1;
   grid-row: 1;
-  font-size: 11px;
+  font-size: 8px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -50,8 +51,8 @@
 }
 
 .flatrate-logo {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   object-fit: contain;
   margin-left: 5px;
 }
@@ -80,14 +81,14 @@
 .bannerGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
+  grid-gap: 15px;
   margin-top: 10px;
   padding-bottom: 10px;
 }
 
 .movie-rating .star {
   color: white;
-  font-size: 15px;
+  font-size: 13px;
   margin: 1px;
 }
 

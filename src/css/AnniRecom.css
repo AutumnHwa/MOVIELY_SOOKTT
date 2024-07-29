@@ -24,7 +24,7 @@
 }
 
 .recomlogo img {
-    width: 220px;
+    width: 180px;
     height: auto;
     margin-bottom: 20px;
     margin-top: 30px;
@@ -35,7 +35,7 @@
     background: transparent;
     border: none;
     color: white;
-    font-size: 50px;
+    font-size: 52px;
     cursor: pointer;
     padding: 0;
     margin-left: 20px;
@@ -44,7 +44,7 @@
 .greetingText {
     margin-top: 40px;
     margin-bottom: 30px;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: bold;
     text-align: center;
 }

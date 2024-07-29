@@ -22,9 +22,9 @@
 
 .logSign-logo {
   margin-top: 40px;
-  margin-bottom: 120px;
+  margin-bottom: 70px;
   z-index: 1;
-  width: 260px;
+  width: 200px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -38,7 +38,7 @@
 .logSignBox {
   background-color: rgba(0, 0, 0, 0.68);
   border: 1px solid white;
-  width: 400px;
+  width: 350px;
   height: 416px;
   margin-top: 10px;
   display: flex;
@@ -48,16 +48,17 @@
 }
 
 h2 {
-  margin-top: 49px;
+  margin-top: 100px;
   color: white;
+  font-size: 22px;
 }
 
 p {
   margin-top: 20px;
   color: white;
-  font-size: 15px;
+  font-size: 13px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 60px;
 }
 
 .googleLoginButton {
@@ -67,7 +68,7 @@ p {
   color: #141414;
   font-size: 16px;
   border: none;
-  margin-top: 80px;
+  margin-top: 50px;
   cursor: pointer;
 }
 

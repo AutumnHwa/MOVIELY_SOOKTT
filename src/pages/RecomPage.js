@@ -203,7 +203,7 @@ function RecomPage() {
           ) : (
             <Swiper
               spaceBetween={0}
-              slidesPerView={4}
+              slidesPerView={4.5}
               navigation
               pagination={{ clickable: true }}
               modules={[Navigation, Pagination]}

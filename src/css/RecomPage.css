@@ -8,7 +8,7 @@
 .recomlogo {
   display: flex;
   justify-content: flex-start; /* 왼쪽 정렬 */
-  width: 250px;
+  width: 200px;
   height: auto;
 }
 
@@ -51,7 +51,7 @@
   color: white;
   margin-top: 40px;
   margin-bottom: 30px;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -96,8 +96,8 @@
 }
 
 .movieListContainer {
-  width: 300px; /* 너비를 200px로 설정 */
-  height: 370px;
+  width: 270px; /* 너비를 200px로 설정 */
+  height: 350px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
@@ -149,7 +149,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 70px;
+  margin-top: 50px;
   width: 600px;
   margin-bottom: 50px;
 }
