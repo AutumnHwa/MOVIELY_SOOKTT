@@ -236,8 +236,8 @@ function RecomPage() {
             <div>Fetching anniversary movies...</div>
           ) : (
             <Swiper
-              spaceBetween={10}
-              slidesPerView={3}
+              spaceBetween={1}
+              slidesPerView={4}
               navigation
               pagination={{ clickable: true }}
               modules={[Navigation, Pagination]}
