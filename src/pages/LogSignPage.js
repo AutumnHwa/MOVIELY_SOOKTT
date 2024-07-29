@@ -29,9 +29,9 @@ function LogSignPage() {
       if (data.jwtToken) {
         login(data.jwtToken, data.user);
         if (data.isNewUser) {
-          navigate('/add');
-        } else {
           navigate('/movie-select');
+        } else {
+          navigate('/recommendations');
         }
       } else {
         alert('로그인에 실패했습니다.');
