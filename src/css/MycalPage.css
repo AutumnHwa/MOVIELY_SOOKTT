@@ -57,7 +57,7 @@
 }
 
 .recordButton {
-  margin-top: 40px;
+  margin-top: 5px;
   padding: 7px 20px;
   background-color: #2F4881;
   color: white;
@@ -81,8 +81,8 @@
 
 .calendar-container {
   border-radius: 8px;
-  width: 455px; /* 기존 너비에서 50px 줄임 */
-  height: 425px;
+  width: 455px;
+  height: auto;
   margin: auto;
   margin-top: 20px;
   padding: 25px 20px 40px;
@@ -93,7 +93,7 @@
 }
 
 .fc-toolbar-title {
-  font-size: 16px;
+  font-size: 13px; /* 기존 크기에서 3픽셀 줄임 */
   font-weight: lighter;
   color: #000000;
 }
@@ -159,4 +159,8 @@
   font-size: 50px;
   cursor: pointer;
   padding: 0;
+}
+
+.fc .fc-daygrid-body {
+  padding-bottom: 10px; /* 아래 여백 추가 */
 }
