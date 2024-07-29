@@ -12,7 +12,6 @@ function MyalrPage() {
   const { authToken, user } = useAuth();
   const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -50,7 +49,6 @@ function MyalrPage() {
         }));
 
         setMovies(processedData);
-        setFilteredMovies(processedData);
       }
 
       setLoading(false);
@@ -66,11 +64,11 @@ function MyalrPage() {
     }
   }, [fetchWatchedMovies, user]);
 
-  const banners = filteredMovies.map((movie, index) => (
+  const banners = movies.map((movie, index) => (
     <MvBanner
       key={index}
       title={movie.title}
-      poster={movie.poster_path}
+      poster={movie.poster_path || 'https://via.placeholder.com/154x231?text=No+Image'}
       flatrate={movie.flatrate}
       rating={Math.round(movie.vote_average / 2)}
       movieId={movie.id || movie.movie_id}
@@ -105,15 +103,10 @@ function MyalrPage() {
         <Link to="/my/wishlist" className="navButton">보고싶은 영화</Link>
         <Link to="/my/calendar" className="navButton">MOVIELY 캘린더</Link>
       </div>
-      <div className="movieGrid">
+      <div className="bannerGrid">
         {loading ? <div className="loading">로딩 중...</div> : 
-          movies.length > 0 ? (
-            <div className="movieGridContainer">
-              {banners}
-            </div>
-          ) : (
-            <div className="noMovies">본 영화가 없습니다.</div>
-          )}
+          banners.length > 0 ? banners : <div className="noMovies">본 영화가 없습니다.</div>
+        }
       </div>
     </div>
   );
