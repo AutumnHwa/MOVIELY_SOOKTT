@@ -230,8 +230,10 @@ function RecomPage() {
             )}
           </div>
         </div>
-        <div className="anniversaryMoviesContainer">
+        <div className="recomani-text">
           <h2>{closestAnniversary}에 딱 맞는 영화를 추천드려요!</h2>
+        </div>
+        <div className="anniversaryMoviesContainer">
           {loadingAnniversaryMovies ? (
             <div>Fetching anniversary movies...</div>
           ) : (

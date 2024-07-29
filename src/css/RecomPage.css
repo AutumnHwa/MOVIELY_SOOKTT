@@ -19,6 +19,7 @@
   margin-top: 30px;
   margin-left: 0px;
 }
+
 .searchContainer {
   display: flex;
   align-items: center;
@@ -89,14 +90,14 @@
 }
 
 .topMovieContainer {
-  width: 300px; /* 너비를 200px로 설정 */
+  width: 300px; /* 너비를 300px로 설정 */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .movieListContainer {
-  width: 270px; /* 너비를 200px로 설정 */
+  width: 270px; /* 너비를 270px로 설정 */
   height: 320px;
   overflow-y: scroll;
   display: flex;
@@ -149,9 +150,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 10px; /* recomani-text와의 간격을 10px로 설정 */
   width: 600px;
   margin-bottom: 50px;
+}
+
+.recomani-text {
+  margin-bottom: 10px; /* anniversaryMoviesContainer와의 간격을 10px로 설정 */
+  color: white;
+  text-align: center;
 }
 
 .swiper-container {
@@ -225,4 +232,4 @@
   right : 70px;
   color : white;
   margin-top: -12px;
-  }
+}
