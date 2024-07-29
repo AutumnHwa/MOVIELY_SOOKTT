@@ -91,7 +91,7 @@
 .topMovieAndListContainer {
   display: flex;
   justify-content: space-between;
-  width: 100%; /* 부모 컨테이너의 너비를 전체로 설정 */
+  width: 600px; /* 부모 컨테이너의 너비를 전체로 설정 */
 }
 
 .topMovieContainer .mvBanner {
