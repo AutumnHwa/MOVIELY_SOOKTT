@@ -98,7 +98,6 @@
   width: 200%; /* 필요에 따라 크기 조정 */
   height: auto;
   max-width: 250px;
-  transform: scale(2.0);
 }
 
 .topMovieContainer {
@@ -109,7 +108,7 @@
 }
 
 .movieListContainer {
-  width: 270px; /* 너비를 270px로 설정 */
+  width: 330px; /* 너비를 270px로 설정 */
   height: 320px;
   overflow-y: scroll;
   display: flex;
