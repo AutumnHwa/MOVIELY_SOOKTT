@@ -178,8 +178,8 @@ function RecomPage() {
         </button>
       </header>
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
-      <div className="greetingText-recom">{user ? `${user.name}님을 위한 취향저격 영화를 찾아봤어요.` : '취향저격 영화를 찾아봤어요.'}</div>
       <div className="tabContent">
+      <div className="greetingText-recom">{user ? `${user.name}님을 위한 취향저격 영화를 찾아봤어요.` : '취향저격 영화를 찾아봤어요.'}</div>
         <div className="topMovieAndListContainer">
           <div className="topMovieContainer">
             {loadingRecommendations ? (

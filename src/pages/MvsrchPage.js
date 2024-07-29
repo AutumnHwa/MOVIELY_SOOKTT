@@ -174,23 +174,27 @@ function MvsrchPage() {
   return (
     <div className="MvsrchPage">
       <header className="pageHeader-srch">
-        <FontAwesomeIcon
-          icon={faSearch}
-          size="2x"
-          className="srch-searchIcon"
-          onClick={() => navigate('/movie-search')}
-        />
-        <button className="srch-sidebar-toggle" onClick={toggleSidebar}>
-          ☰
-        </button>
+        <div className="header-content">
+          <Link to="/recommendations" className="srchlogo">
+            <img src={logoImage} alt="Logo" />
+          </Link>
+          <div className="header-icons">
+            <FontAwesomeIcon
+              icon={faSearch}
+              size="2x"
+              className="srch-searchIcon"
+              onClick={() => navigate('/movie-search')}
+            />
+            <button className="srch-sidebar-toggle" onClick={toggleSidebar}>
+              ☰
+            </button>
+          </div>
+        </div>
         <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
         <div
           className={`overlay ${sidebarOpen ? 'show' : ''}`}
           onClick={closeSidebar}
         />
-        <Link to="/recommendations" className="srchlogo">
-          <img src={logoImage} alt="Logo" />
-        </Link>
       </header>
       <div className="searchContainer">
         <div className="dropdownContainer">

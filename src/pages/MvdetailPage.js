@@ -5,7 +5,6 @@ import netflixLogo from '../netflix.png';
 import disneyPlusLogo from '../disneyplus.png';
 import wavveLogo from '../wavve.png';
 import detailLogoImage from '../logo.png';
-import Popcho from '../pages/Popcho';
 import Sidebar from '../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -68,8 +67,6 @@ const MvdetailPage = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-  const [message, setMessage] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -90,11 +87,9 @@ const MvdetailPage = () => {
           console.log('Movie data fetched:', data);
         } else {
           console.error('Failed to fetch movie:', data.message || 'Unknown error');
-          setMessage('Failed to fetch movie: ' + (data.message || 'Unknown error'));
         }
       } catch (error) {
         console.error('Error fetching movie:', error);
-        setMessage('Error fetching movie.');
       } finally {
         setLoading(false);
       }
@@ -127,41 +122,21 @@ const MvdetailPage = () => {
       try {
         const jsonResponse = JSON.parse(responseData);
         if (response.ok) {
-          setMessage('Rating submitted successfully!');
           console.log('Rating submitted successfully!');
         } else {
           console.error('Rating submission failed:', jsonResponse);
-          setMessage('Failed to submit rating: ' + (jsonResponse.message || 'Unknown error'));
-          console.log('Rating submission failed:', jsonResponse.message || 'Unknown error');
         }
       } catch (e) {
         console.error('JSON parsing error:', responseData);
-        setMessage('Failed to submit rating: Invalid JSON response.');
-        console.log('Failed to submit rating: Invalid JSON response.');
       }
 
     } catch (error) {
       console.error('Error:', error);
-      setMessage('Failed to submit rating.');
-      console.log('Error:', error);
     }
-
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
   };
 
-  const handleAddClick = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleSaveModal = async (option) => {
+  const handleAddClick = async (option) => {
     if (!user.id || !movie.movie_id) {
-      setMessage('User ID and Movie ID must not be null');
       console.log('User ID or Movie ID is null:', { userId: user.id, movie_id: movie.movie_id });
       return;
     }
@@ -195,23 +170,13 @@ const MvdetailPage = () => {
       console.log('Response from server:', responseData);
 
       if (response.ok) {
-        setMessage('List updated successfully!');
         console.log('List updated successfully!');
       } else {
         console.error('List update failed:', responseData);
-        setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
-        console.log('List update failed:', responseData.message || 'Unknown error');
       }
     } catch (error) {
       console.error('Error:', error);
-      setMessage('Failed to update list.');
-      console.log('Error:', error);
     }
-
-    setShowModal(false);
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
   };
 
   if (loading) {
@@ -297,13 +262,6 @@ const MvdetailPage = () => {
           </button>
         ))}
       </div>
-      {showModal && <Popcho onClose={handleCloseModal} onSave={handleSaveModal} />}
-      {message && <div className="popupContainer">
-        <div className="popupContent">
-          <p>{message}</p>
-          <button onClick={() => setMessage('')}>닫기</button>
-        </div>
-      </div>}
     </div>
   );
 };

@@ -7,6 +7,18 @@
   background-color: #001A56; /* 어두운 배경 색 */
 }
 
+.header-content{
+  width: 100px;
+}
+
+.pageHeader-srch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  width: 510px;
+}
+
 .srlogo {
   display: flex;
   justify-content: flex-start; /* 왼쪽 정렬 */
@@ -20,7 +32,6 @@
   height: auto;
   margin-bottom: 20px;
   margin-top: 30px;
-  margin-left: -250px;
 }
 
 .searchContainer {
@@ -33,7 +44,7 @@
   justify-content: center;
   width: 100%;
   padding: 10px 0;
-  margin-top: 30px;
+  margin-top: px;
   margin-bottom: px;
 }
 
@@ -163,21 +174,24 @@
 
 .srch-sidebar-toggle {
   position: absolute;
-  right: 210px;
-  top: 30px;
   background: transparent;
   border: none;
   color: white;
   font-size: 40px;
   cursor: pointer;
   padding: 0;
+  margin-left: 470px;
+  margin-top: -70px;
 }
 
-.srch-searchIcon
-{
+.srch-searchIcon {
   position: absolute;
-  right : 250px;
-  color : white;
-  margin-top: 41px;
+  background: transparent;
+  border: none;
+  color: white;
   width: 23px;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 440px;
+  margin-top: -60px;
 }
