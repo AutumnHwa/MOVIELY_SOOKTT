@@ -68,7 +68,7 @@ function MyalrPage() {
     <MvBanner
       key={index}
       title={movie.title}
-      poster={movie.poster_path || 'https://via.placeholder.com/154x231?text=No+Image'}
+      poster={movie.poster_path}
       flatrate={movie.flatrate}
       rating={Math.round(movie.vote_average / 2)}
       movieId={movie.id || movie.movie_id}
