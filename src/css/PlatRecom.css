@@ -52,11 +52,3 @@
     align-items: center;
     color: white;
   }
-  
-  .recom-searchIcon {
-    position: absolute;
-    right : 70px;
-	  color : white;
-    margin-top: -12px;
-    width: 26px;
-  }

@@ -173,12 +173,12 @@ function RecomPage() {
             className="recom-searchIcon"
           />
         </Link>
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
+        <button className="recom-sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
       </header>
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
-      <div className="greetingText">{user ? `${user.name}님을 위한 취향저격 영화를 찾아봤어요.` : '취향저격 영화를 찾아봤어요.'}</div>
+      <div className="greetingText-recom">{user ? `${user.name}님을 위한 취향저격 영화를 찾아봤어요.` : '취향저격 영화를 찾아봤어요.'}</div>
       <div className="tabContent">
         <div className="topMovieAndListContainer">
           <div className="topMovieContainer">
@@ -231,7 +231,7 @@ function RecomPage() {
           </div>
         </div>
         <div className="recomani-text">
-          <h2>{closestAnniversary}에 딱 맞는 영화를 추천드려요!</h2>
+          {closestAnniversary}에 딱 맞는 영화를 추천드려요!
         </div>
         <div className="anniversaryMoviesContainer">
           {loadingAnniversaryMovies ? (

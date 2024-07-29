@@ -48,12 +48,13 @@
   color: black;
 }
 
-.greetingText {
+.greetingText-recom {
   color: white;
-  margin-top: 40px;
+  margin-top: 00px;
   margin-bottom: 30px;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
+  margin-left: -400px;
 }
 
 .tabButtons {
@@ -157,11 +158,14 @@
 
 .recomani-text {
   margin-bottom: 10px; /* anniversaryMoviesContainer와의 간격을 10px로 설정 */
+  margin-top: 40px;
+  margin-left: -380px;
   color: white;
   text-align: center;
-  height : 100px;
-  font-size: 20px;
+  height : 20px;
+  font-size: 15px;
   font-weight: bold;
+  justify-content: flex-start;
 }
 
 .swiper-container {
@@ -219,12 +223,12 @@
 
 .recom-sidebar-toggle {
   position: absolute;
-  right: -30px;
-  top: 30px;
+  right: 0px;
+  top: 50px;
   background: transparent;
   border: none;
   color: white;
-  font-size: 50px;
+  font-size: 40px;
   cursor: pointer;
   padding: 0;
   margin-left: 20 px;
@@ -232,7 +236,8 @@
 
 .recom-searchIcon {
   position: absolute;
-  right : 70px;
+  right : 40px;
   color : white;
-  margin-top: -12px;
+  margin-top: -9px;
+  width: 23px;
 }
