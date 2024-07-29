@@ -5,14 +5,14 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import '../css/MywishPage.css';
 import logoImage from '../logo.png';
 import MvBanner from './MvBanner';
-import Sidebar from '../components/Sidebar'; // Sidebar 컴포넌트 임포트
+import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
 function MywishPage() {
   const { authToken, user } = useAuth(); 
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // 사이드바 상태 추가
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -26,9 +26,11 @@ function MywishPage() {
   useEffect(() => {
     const fetchWishlistMovies = async () => {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/api/wishlist?userId=${user?.id}`, {
+        // 새로운 API URL로 변경
+        const response = await fetch(`https://moviely.duckdns.org/mypage/wishList?userId=${user?.id}`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json', // 필요에 따라 추가
           }
         });
 
@@ -86,7 +88,7 @@ function MywishPage() {
                 key={index}
                 title={movie.title}
                 poster={movie.poster_path}
-                flatrate={movie.flatrate.join(', ')}
+                flatrate={movie.flatrate ? movie.flatrate.join(', ') : ''}
                 movieId={movie.id || movie.movie_id}
                 userId={user?.id}
               />

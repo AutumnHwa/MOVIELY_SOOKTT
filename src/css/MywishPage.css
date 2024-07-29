@@ -1,60 +1,89 @@
 .mywishPage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .myPageLogo {
-    width: 150px;
-    margin-top: 20px;
-  }
-  
-  .myPageTitle {
-    margin-top: 10px;
-    font-size: 40px;
-    font-weight: bold;
-    color: #FBE64D;
-  }
-  
-  .navButtons {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 500px;
-    height: 50px;
-    margin-top: 10px;
-    border: 1px solid white;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-  }
-  
-  .navButton {
-    width: 150px;
-    height: 30px;
-    background-color: white; 
-    color: black; 
-    font-weight: bold;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px; 
-    border: 1px solid white; 
-  }
-  
-  .navButton:hover, .navButton.active {
-    background-color: #FBE64D;
-    color: black; 
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px; /* Add padding to match the layout style */
+}
 
-  .my-sidebar-toggle {
-    position: absolute;
-    right: 40px;
-    top: 20px;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 50px;
-    cursor: pointer;
-    padding: 0;
-  }
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+  padding: 10px 20px;
+}
+
+.myPageLogo {
+  width: 150px; /* Adjusted size */
+  margin-top: 20px;
+}
+
+.myPageTitle {
+  margin-top: 30px; /* Adjusted top margin */
+  font-size: 40px;
+  font-weight: bold;
+  color: #FBE64D;
+}
+
+.navButtons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 500px;
+  height: 50px;
+  margin-top: 10px;
+  border: 1px solid white;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+.navButton {
+  width: 150px;
+  height: 30px;
+  background-color: white; 
+  color: black; 
+  font-weight: bold;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px; 
+  border: 1px solid white; 
+}
+
+.navButton:hover, .navButton.active {
+  background-color: #FBE64D;
+  color: black; 
+}
+
+.my-sidebar-toggle {
+  position: absolute;
+  right: 40px;
+  top: 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 50px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.movieGrid {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.movieGridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.loading, .noMovies {
+  text-align: center;
+  margin-top: 50px;
+  color: white;
+}
