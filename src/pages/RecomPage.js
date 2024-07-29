@@ -140,7 +140,7 @@ function RecomPage() {
 
         const data = await response.json();
         console.log('Fetched anniversary movies:', data);
-        setAnniversaryMovies(data);
+        setAnniversaryMovies(Array.isArray(data) ? data : []); // Ensure data is an array
         setLoadingAnniversaryMovies(false);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
@@ -227,12 +227,10 @@ function RecomPage() {
             )}
           </div>
         </div>
-        <div className="anniversaryMoviesText">
-          {closestAnniversary && (
-            <div>{`${closestAnniversary}에 딱 맞는 영화를 추천해드려요!`}</div>
-          )}
-        </div>
         <div className="anniversaryMoviesContainer">
+          <div className="anniversaryMoviesText">
+            {closestAnniversary}에 딱 맞는 영화를 추천해드려요!
+          </div>
           {loadingAnniversaryMovies ? (
             <div>Fetching anniversary movies...</div>
           ) : (
