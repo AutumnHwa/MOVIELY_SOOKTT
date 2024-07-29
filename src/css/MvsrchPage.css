@@ -168,7 +168,7 @@
   background: transparent;
   border: none;
   color: white;
-  font-size: 50px;
+  font-size: 40px;
   cursor: pointer;
   padding: 0;
 }
@@ -176,8 +176,8 @@
 .srch-searchIcon
 {
   position: absolute;
-  right : 260px;
+  right : 250px;
   color : white;
-  margin-top: 47px;
-  width: 26px;
+  margin-top: 41px;
+  width: 23px;
 }

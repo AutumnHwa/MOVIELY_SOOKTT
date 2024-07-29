@@ -190,12 +190,12 @@
 
 .cho-sidebar-toggle {
   position: absolute;
-  right: -30px;
+  right: 0px;
   top: 30px;
   background: transparent;
   border: none;
   color: white;
-  font-size: 50px;
+  font-size: 40px;
   cursor: pointer;
   padding: 0;
 }
@@ -203,10 +203,10 @@
 .cho-searchIcon
 {
   position: absolute;
-  right : 20px;
+  right : 40px;
   color : white;
-  margin-top: -10px;
-  width: 26px;
+  margin-top: -21px;
+  width: 23px;
 }
 
 

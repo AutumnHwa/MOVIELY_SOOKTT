@@ -115,9 +115,9 @@ const AnniRecom = () => {
           <img src={logoImage} alt="Logo" />
         </Link>
         <Link to="/movie-search" className="searchIconContainer">
-          <FontAwesomeIcon icon={faSearch} size="2x" className="recom-searchIcon" />
+          <FontAwesomeIcon icon={faSearch} size="2x" className="anni-searchIcon" />
         </Link>
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
+        <button className="anni-sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
       </header>
