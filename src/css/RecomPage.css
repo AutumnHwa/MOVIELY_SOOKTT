@@ -160,6 +160,8 @@
   color: white;
   text-align: center;
   height : 100px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .swiper-container {
