@@ -129,9 +129,9 @@ function RecomPage() {
     };
 
     const fetchAnniversaryMovies = async () => {
+      const closestAnniversary = getClosestAnniversary();
+      setClosestAnniversary(closestAnniversary); // 가까운 기념일을 상태에 저장
       try {
-        const closestAnniversary = getClosestAnniversary();
-        setClosestAnniversary(closestAnniversary);
         console.log('Fetching anniversary movies for:', closestAnniversary);
         const response = await fetch(`https://moviely.duckdns.org/api/anniversary?event=${encodeURIComponent(closestAnniversary)}`);
         if (!response.ok) {
@@ -140,7 +140,7 @@ function RecomPage() {
 
         const data = await response.json();
         console.log('Fetched anniversary movies:', data);
-        setAnniversaryMovies(Array.isArray(data) ? data : []); // Ensure data is an array
+        setAnniversaryMovies(data.content || []);
         setLoadingAnniversaryMovies(false);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
@@ -227,10 +227,10 @@ function RecomPage() {
             )}
           </div>
         </div>
+        <div className="anniversaryMoviesTitle">
+          {closestAnniversary && `${closestAnniversary}에 딱 맞는 영화를 추천해드려요!`}
+        </div>
         <div className="anniversaryMoviesContainer">
-          <div className="anniversaryMoviesText">
-            {closestAnniversary}에 딱 맞는 영화를 추천해드려요!
-          </div>
           {loadingAnniversaryMovies ? (
             <div>Fetching anniversary movies...</div>
           ) : (
