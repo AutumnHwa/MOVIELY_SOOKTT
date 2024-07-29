@@ -25,6 +25,7 @@
   width: 500px; /* 컨테이너의 너비를 500px로 고정 */
   height: 50px;
   margin-top: 10px;
+  margin-bottom: 20px;
   border: 1px solid white;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 5px;
