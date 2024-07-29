@@ -36,7 +36,7 @@ const genreMapping = {
 };
 
 function RecomPage() {
-  const { authToken, user } = useAuth(); 
+  const { authToken, user } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [randomMovies, setRandomMovies] = useState([]);
@@ -156,7 +156,7 @@ function RecomPage() {
                 <div className="topMovie">
                   <MvBanner
                     title={topMovie.title}
-                    poster={`https://image.tmdb.org/t/p/w500${topMovie.poster_path}`}
+                    poster={topMovie.poster_path ? `https://image.tmdb.org/t/p/w500${topMovie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image'}
                     flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                     userId={user ? user.id : null}
                     movieId={topMovie.id || topMovie.movie_id}
@@ -187,7 +187,7 @@ function RecomPage() {
                         <div className="movieTitle">{movie.title}</div>
                         <div className="movieReleaseDate">{new Date(movie.release_date).toLocaleDateString()}</div>
                         <div className="movieGenre">{genreList.length ? genreList.join(', ') : 'No Genre'}</div>
-                        <div className="movieOverview">{movie.overview}</div>
+                        <div className="movieOverview">{movie.overview || 'No overview available'}</div>
                       </div>
                     </div>
                   );
