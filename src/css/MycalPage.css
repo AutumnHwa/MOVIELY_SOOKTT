@@ -81,8 +81,8 @@
 
 .calendar-container {
   border-radius: 8px;
-  width: 405px; /* 기존 너비에서 50px 줄임 */
-  height: auto;
+  width: 455px; /* 기존 너비에서 50px 줄임 */
+  height: 425px;
   margin: auto;
   margin-top: 20px;
   padding: 25px 20px 40px;
