@@ -18,7 +18,8 @@
     rgba(255, 255, 255, 0.2) 1px,
     transparent 2px
   );
-  background-size: 21px 100%; /* 간격 20px + 두께 px */
+  background-size: 21px 100%; /* 간격 20px + 두께 1px */
+  background-attachment: fixed; /* 배경이 고정되도록 설정 */
 }
 
 .logo {
@@ -102,7 +103,6 @@
   transform: rotate(0deg); 
 }
 
-/* 미디어 쿼리는 그대로 유지 */
 @media (max-width: 720px) {
   .heading {
     font-size: 15px; /* 화면이 720px 이하일 때 글씨 크기 조정 */

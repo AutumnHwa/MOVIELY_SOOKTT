@@ -7,10 +7,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  width: 180px; /* 가로 180px로 수정 */
+  background: #000;
+  width: 154px;
   height: 260px;
-  background: none; /* 배경색 제거 */
-  position: relative;
 }
 
 .movie-info {
@@ -26,13 +25,12 @@
   padding: 6px;
   box-sizing: border-box;
 }
-
 .movie-poster-banner {
-  width: 100%; /* 부모 요소 크기에 맞추기 */
-  height: 220px; /* 고정된 세로 크기 */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  max-width: 160px;
+  max-height: 220px;
+  height: 100%;
+  margin-top: 20px;
+  margin-bottom: -15px;
 }
 
 .movie-title {
