@@ -35,6 +35,13 @@ const flatrateNames = {
   'wavve': '웨이브',
 };
 
+const flatratePrices = {
+  'disney plus': '최저가 9900원  >',
+  'netflix': '최저가 5500원  >',
+  'watcha': '최저가 7900원  >',
+  'wavve': '최저가 7900원  >',
+};
+
 const genreMapping = {
   '28': '액션',
   '12': '모험',
@@ -278,6 +285,7 @@ const MvdetailPage = () => {
           >
             <img src={flatrateLogos[platform]} alt={platform} className="ott-logo" />
             <span>{flatrateNames[platform]}</span>
+            <span className="price">{flatratePrices[platform]}</span>
           </button>
         ))}
       </div>

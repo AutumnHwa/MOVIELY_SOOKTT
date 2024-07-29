@@ -15,8 +15,6 @@ import '../css/AnniRecom.css';
 import '../css/Popcho.css'; // Popcho 스타일 임포트
 import logoImage from '../logo.png';
 import { useAuth } from '../context/AuthContext';
-import moviesCSV from '../movie.csv';
-
 import ani_1 from '../ani_1.png';
 import ani_2 from '../ani_2.png';
 import ani_3 from '../ani_3.png';
@@ -47,17 +45,31 @@ const AnniRecom = () => {
   };
 
   useEffect(() => {
-    Papa.parse(moviesCSV, {
-      download: true,
-      header: true,
-      complete: (result) => {
-        setAllMovies(result.data);
-      },
-    });
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch('https://moviely.duckdns.org/api/anniversary', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch movies');
+        }
+
+        const data = await response.json();
+        setAllMovies(data);
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+    };
+
+    fetchMovies();
   }, []);
 
   const handleBannerClick = (category, index) => {
-    const filteredMovies = allMovies.slice(0, 20); // 예시로 처음 20개 영화를 사용
+    const filteredMovies = allMovies.filter(movie => movie.anniversary_name === category);
     setMovies(filteredMovies);
     setSelectedCategory(category);
     setBannerIndex(index);
@@ -78,16 +90,16 @@ const AnniRecom = () => {
   };
 
   const categories = [
-    { title: '연인과 함께하는 달콤살벌한 하루', description: '발렌타인데이 추천 영화', imageUrl: ani_1, className: 'banner-1' },
-    { title: "Happy women's Day", description: '여성의 날 추천 영화', imageUrl: ani_2, className: 'banner-2' },
-    { title: '과학 그리고 현실 그 사이...', description: '과학의 날 추천 영화', imageUrl: ani_3, className: 'banner-3' },
-    { title: '오늘은 어린이날 우리들 세상', description: '어린이날 추천 영화', imageUrl: ani_4, className: 'banner-4' },
-    { title: '우리의 지구는 오직 하나 뿐입니다', description: '환경의 날 추천 영화', imageUrl: ani_5, className: 'banner-5' },
-    { title: '우리는 결코 당신을 잊지 않겠습니다', description: '현충일 추천 영화', imageUrl: ani_6, lassName: 'banner-6' },
-    { title: '우리 민족 대명절, 풍성한 한가위!', description: '추석 추천 영화', imageUrl: ani_7, className: 'banner-7' },
-    { title: 'Trick Or Treat!', description: '할로윈데이 추천 영화', imageUrl: ani_8, className: 'banner-8' },
-    { title: 'All I want for Christmas is...', description: '크리스마스 추천 영화', imageUrl: ani_9, className: 'banner-9' },
-    { title: '까치까치 설날 말고 우리우리 설날', description: '설날 추천 영화', imageUrl: ani_10, className: 'banner-10' },
+    { title: '연인과 함께하는 달콤살벌한 하루', description: '발렌타인데이 추천 영화', anniversaryName: '발렌타인데이', imageUrl: ani_1, className: 'banner-1' },
+    { title: "Happy women's Day", description: '여성의 날 추천 영화', anniversaryName: '여성의날', imageUrl: ani_2, className: 'banner-2' },
+    { title: '과학 그리고 현실 그 사이...', description: '과학의 날 추천 영화', anniversaryName: '과학의날', imageUrl: ani_3, className: 'banner-3' },
+    { title: '오늘은 어린이날 우리들 세상', description: '어린이날 추천 영화', anniversaryName: '어린이날', imageUrl: ani_4, className: 'banner-4' },
+    { title: '우리의 지구는 오직 하나 뿐입니다', description: '환경의 날 추천 영화', anniversaryName: '환경의날', imageUrl: ani_5, className: 'banner-5' },
+    { title: '우리는 결코 당신을 잊지 않겠습니다', description: '현충일 추천 영화', anniversaryName: '현충일', imageUrl: ani_6, className: 'banner-6' },
+    { title: '우리 민족 대명절, 풍성한 한가위!', description: '추석 추천 영화', anniversaryName: '추석', imageUrl: ani_7, className: 'banner-7' },
+    { title: 'Trick Or Treat!', description: '할로윈데이 추천 영화', anniversaryName: '할러윈', imageUrl: ani_8, className: 'banner-8' },
+    { title: 'All I want for Christmas is...', description: '크리스마스 추천 영화', anniversaryName: '크리스마스', imageUrl: ani_9, className: 'banner-9' },
+    { title: '까치까치 설날 말고 우리우리 설날', description: '설날 추천 영화', anniversaryName: '설날', imageUrl: ani_10, className: 'banner-10' },
   ];
 
   return (
@@ -116,7 +128,7 @@ const AnniRecom = () => {
           <React.Fragment key={index}>
             <div
               className={`banner ${category.className}`}
-              onClick={() => handleBannerClick(category.title, index)}
+              onClick={() => handleBannerClick(category.anniversaryName, index)}
             >
               <div className="banner-text">
                 <div>{category.title}</div>
@@ -141,7 +153,7 @@ const AnniRecom = () => {
                             title={movie.title}
                             poster={movie.poster_path}
                             flatrate={movie.flatrate ? movie.flatrate.split(', ') : []}
-                            movieId={movie.id || movie.movie_id}
+                            movieId={movie.movie_id}
                             userId={user?.id}
                             onAddClick={(e) => handleAddClick(movie)}
                           />

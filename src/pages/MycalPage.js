@@ -1,65 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import Papa from 'papaparse';
+import moviesCSV from '../movie.csv';
+import watchaLogo from '../watcha.png';
+import netflixLogo from '../netflix.png';
+import disneyPlusLogo from '../disneyplus.png';
+import wavveLogo from '../wavve.png';
+import detailLogoImage from '../logo.png';
+import Popcho from '../pages/Popcho';
+import Sidebar from '../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import Popcal from './Popcal';
-import Sidebar from '../components/Sidebar';
-import '../css/MycalPage.css';
-import logoImage from '../logo.png';
+import '../css/MvdetailPage.css';
 import { useAuth } from '../context/AuthContext';
 
-function MycalPage() {
+const flatrateLogos = {
+  'disney plus': disneyPlusLogo,
+  'netflix': netflixLogo,
+  'watcha': watchaLogo,
+  'wavve': wavveLogo,
+};
+
+const flatrateUrls = {
+  'disney plus': 'https://www.disneyplus.com',
+  'netflix': 'https://www.netflix.com',
+  'watcha': 'https://www.watcha.com',
+  'wavve': 'https://www.wavve.com',
+};
+
+const flatrateNames = {
+  'disney plus': '디즈니 플러스',
+  'netflix': '넷플릭스',
+  'watcha': '왓챠',
+  'wavve': '웨이브',
+};
+
+const flatratePrices = {
+  'disney plus': '최저가 9900원',
+  'netflix': '최저가 5500원',
+  'watcha': '최저가 7900원',
+  'wavve': '최저가 7900원',
+};
+
+const genreMapping = {
+  '28': '액션',
+  '12': '모험',
+  '16': '애니메이션',
+  '35': '코미디',
+  '80': '범죄',
+  '99': '다큐멘터리',
+  '18': '드라마',
+  '10751': '가족',
+  '14': '판타지',
+  '36': '역사',
+  '27': '공포',
+  '10402': '음악',
+  '9648': '미스터리',
+  '10749': '로맨스',
+  '878': 'SF',
+  '10770': 'TV 영화',
+  '53': '스릴러',
+  '10752': '전쟁',
+  '37': '서부'
+};
+
+const MvdetailPage = () => {
+  const { id } = useParams();
   const { user } = useAuth();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [events, setEvents] = useState([]);
+  const [movie, setMovie] = useState(null);
+  const [cast, setCast] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [rating, setRating] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      // 여기에 calendar_id를 사용하여 모든 이벤트를 가져오는 로직을 추가합니다.
-      // 이 부분은 서버에서 calendar_id를 기준으로 이벤트 목록을 제공하도록 설정되어 있어야 합니다.
-      try {
-        const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          const responseText = await response.text();
-          console.error('Failed to fetch events:', responseText);
-          throw new Error('Failed to fetch events');
-        }
-
-        const responseData = await response.json();
-        console.log('responseData:', responseData);
-
-        const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
-        const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id,
-          title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
-          allDay: true,
-          extendedProps: {
-            movie_content: event.movie_content
-          }
-        }));
-
-        setEvents(eventsData);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-
-    fetchEvents();
-  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -69,112 +83,179 @@ function MycalPage() {
     setSidebarOpen(false);
   };
 
-  const handleDateClick = ({ dateStr }) => {
-    setSelectedDate(dateStr);
-    setSelectedEvent(null);
-    setIsPopupOpen(true);
-  };
+  useEffect(() => {
+    const fetchMovieData = async () => {
+      try {
+        const response = await fetch(`https://moviely.duckdns.org/movie/${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
 
-  const handleRecordButtonClick = () => {
-    setSelectedDate(new Date().toISOString().split('T')[0]);
-    setSelectedEvent(null);
-    setIsPopupOpen(true);
-  };
-
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
-  };
-
-  const handleSaveMovieData = (eventDetails) => {
-    if (!eventDetails.title) {
-      alert('영화 제목을 입력해주세요.');
-      return;
-    }
-
-    const updatedEvents = selectedEvent
-      ? events.map(event => event.id === selectedEvent.id ? eventDetails : event)
-      : [...events, eventDetails];
-
-    setEvents(updatedEvents);
-    setIsPopupOpen(false);
-  };
-
-  const handleEventClick = async ({ event }) => {
-    try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
+        if (!response.ok) {
+          const responseText = await response.text();
+          console.error('Failed to fetch movie data:', responseText);
+          throw new Error('Failed to fetch movie data');
         }
-      });
 
-      if (!response.ok) {
-        const responseText = await response.text();
-        console.error('Failed to fetch event:', responseText);
-        throw new Error('Failed to fetch event');
+        const movieData = await response.json();
+        const foundMovie = movieData.movie;
+
+        if (foundMovie) {
+          foundMovie.genre = foundMovie.genre.split(',').map(genreId => genreMapping[genreId.trim()] || genreId.trim()).join(', ');
+          setMovie(foundMovie);
+
+          // 출연진 정보 설정
+          setCast(movieData.cast);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching movie data:', error);
+        setLoading(false);
       }
+    };
 
-      const responseData = await response.json();
-      setSelectedDate(responseData.watch_date);
-      setSelectedEvent({
-        id: responseData.calendar_id,
-        title: responseData.movie_title,
-        start: new Date(responseData.watch_date).toISOString(),
-        movie_content: responseData.movie_content
-      });
-      setIsPopupOpen(true);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    fetchMovieData();
+  }, [id]);
 
-  const handleDeleteEvent = async (eventId) => {
-    if (!eventId) {
-      alert('삭제할 이벤트가 없습니다.');
-      return;
-    }
+  const handleStarClick = async (index) => {
+    const newRating = index + 1;
+    setRating(newRating);
+
+    const ratingData = {
+      user_id: user.id,
+      movie_id: movie.movie_id,
+      rating: parseFloat(newRating)
+    };
 
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
-        method: 'DELETE',
+      const response = await fetch('https://moviely.duckdns.org/ratings', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ratingData),
       });
 
-      if (!response.ok) {
-        const responseText = await response.text();
-        console.error('Failed to delete event:', responseText);
-        throw new Error('Failed to delete event');
+      const responseData = await response.text();
+
+      try {
+        const jsonResponse = JSON.parse(responseData);
+        if (response.ok) {
+          setMessage('Rating submitted successfully!');
+          console.log('Rating submitted successfully!');
+        } else {
+          console.error('Rating submission failed:', jsonResponse);
+          setMessage('Failed to submit rating: ' + (jsonResponse.message || 'Unknown error'));
+          console.log('Rating submission failed:', jsonResponse.message || 'Unknown error');
+        }
+      } catch (e) {
+        console.error('JSON parsing error:', responseData);
+        setMessage('Failed to submit rating: Invalid JSON response.');
+        console.log('Failed to submit rating: Invalid JSON response.');
       }
 
-      const updatedEvents = events.filter(event => event.id !== eventId);
-      setEvents(updatedEvents);
-      setIsPopupOpen(false);
     } catch (error) {
       console.error('Error:', error);
-      alert('이벤트를 삭제하는 중 오류가 발생했습니다.');
+      setMessage('Failed to submit rating.');
+      console.log('Error:', error);
     }
+
+    setTimeout(() => {
+      setMessage('');
+    }, 3000);
   };
 
-  if (!user) {
-    return <div>Loading...</div>;
+  const handleAddClick = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleSaveModal = async (option) => {
+    if (!user.id || !movie.movie_id) {
+        setMessage('User ID and Movie ID must not be null');
+        console.log('User ID or Movie ID is null:', { userId: user.id, movie_id: movie.movie_id });
+        return;
+    }
+
+    const listData = {
+        user_id: user.id,
+        movie_id: movie.movie_id
+    };
+
+    console.log('Data being sent:', JSON.stringify(listData)); // 디버그용 로그 추가
+
+    try {
+        let url = '';
+        if (option === 'option1') {
+            url = 'https://moviely.duckdns.org/mypage/wishList';
+        } else if (option === 'option2') {
+            url = 'https://moviely.duckdns.org/mypage/watchedList';
+        }
+
+        console.log('Sending data to URL:', url);
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(listData),
+        });
+
+        const responseData = await response.json();
+        console.log('Response from server:', responseData);
+
+        if (response.ok) {
+            setMessage('List updated successfully!');
+            console.log('List updated successfully!');
+        } else {
+            console.error('List update failed:', responseData);
+            setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
+            console.log('List update failed:', responseData.message || 'Unknown error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        setMessage('Failed to update list.');
+        console.log('Error:', error);
+    }
+
+    setShowModal(false);
+    setTimeout(() => {
+        setMessage('');
+    }, 3000);
+  };
+
+  if (loading) {
+    return <div style={{ color: 'white', textAlign: 'center' }}>Loading...</div>;
   }
 
+  if (!movie) {
+    return <div style={{ color: 'white', textAlign: 'center' }}>Movie not found</div>;
+  }
+
+  const validFlatrate = typeof movie.flatrate === 'string' ? movie.flatrate.split(', ').map(service => service.trim().toLowerCase()).filter(Boolean) : [];
+
+  const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image';
+
   return (
-    <div className="mycalPage">
+    <div className="movie-detail-page">
       <header className="pageHeader">
-        <Link to="/">
-          <img src={logoImage} alt="Logo" className="myPageLogo" />
+        <Link to="/" className="detail-logo">
+          <img src={detailLogoImage} alt="Logo" />
         </Link>
         <Link to="/movie-search" className="searchIconContainer">
           <FontAwesomeIcon
             icon={faSearch}
             size="2x"
-            className="my-searchIcon"
+            className="detail-searchIcon"
           />
         </Link>
-        <button className="my-sidebar-toggle" onClick={toggleSidebar}>
+        <button className="detail-sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
         <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
@@ -183,39 +264,62 @@ function MycalPage() {
           onClick={closeSidebar}
         />
       </header>
-      <div className="myPageTitle">마이페이지</div>
-      <div className="navButtons">
-        <Link to="/my/watched" className="navButton">이미 본 영화</Link>
-        <Link to="/my/wishlist" className="navButton">보고싶은 영화</Link>
-        <Link to="/my/calendar" className="navButton active">MOVIELY 캘린더</Link>
+      <div className="movie-info-container">
+        <div className="left-column">
+          <h1 className="detail-movie-title">{movie.title}</h1>
+          <div className="detail-rating-and-add">
+            <div className="movie-rating">
+              {[...Array(5)].map((_, index) => (
+                <span
+                  key={index}
+                  className={`star ${rating > index ? 'filled' : ''}`}
+                  onClick={() => handleStarClick(index)}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <button onClick={handleAddClick} className="detail-add-button">+</button>
+          </div>
+          <p className="movie-details">개봉일 : {movie.release_date}</p>
+          <p className="movie-details">장르: {movie.genre}</p>
+          <p className="movie-details">국가: {movie.production_countries}</p>
+          <p className="movie-runtime">상영시간: {movie.run_time}분</p>
+          <p className="movie-cast">출연진: {cast.map(person => person.actor_name).join(', ')}</p>
+        </div>
+        <div className="right-column">
+          <img src={posterUrl} alt={movie.title} className="movie-poster" />
+        </div>
       </div>
-      <button onClick={handleRecordButtonClick} className="recordButton">
-        영화 관람 기록하기
-      </button>
-      <div className="calendar-container">
-        <FullCalendar
-          key={events.length}
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          dateClick={handleDateClick}
-          eventClick={handleEventClick}
-          events={events}
-          height="470px"
-        />
+      <hr className="custom-hr" />
+      <div className="movie-description">
+        <h2 className='overview'>개요</h2>
+        <p className='fulloverview'>{movie.overview}</p>
       </div>
-      {isPopupOpen && (
-        <Popcal
-          isOpen={isPopupOpen}
-          onClose={handleClosePopup}
-          onSave={handleSaveMovieData}
-          onDelete={handleDeleteEvent}
-          initialData={selectedEvent}
-          userId={user.id}
-          selectedDate={selectedDate}
-        />
-      )}
+      <hr className="custom-hr" />
+      <div className="ott-buttons-container">
+        <h2 className="ott-title">바로가기</h2>
+        {validFlatrate.map((platform, index) => (
+          <button
+            key={index}
+            className="ott-button"
+            onClick={() => window.open(flatrateUrls[platform], '_blank')}
+          >
+            <img src={flatrateLogos[platform]} alt={platform} className="ott-logo" />
+            <span>{flatrateNames[platform]}</span>
+            <span className="price">{flatratePrices[platform]}</span>
+          </button>
+        ))}
+      </div>
+      {showModal && <Popcho onClose={handleCloseModal} onSave={handleSaveModal} />}
+      {message && <div className="popupContainer">
+        <div className="popupContent">
+          <p>{message}</p>
+          <button onClick={() => setMessage('')}>닫기</button>
+        </div>
+      </div>}
     </div>
   );
-}
+};
 
-export default MycalPage;
+export default MvdetailPage;

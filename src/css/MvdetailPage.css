@@ -202,8 +202,9 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: space-between; /* 변경된 부분 */
   padding-left: 15px;
+  padding-right: 15px; /* 추가된 부분 */
   opacity: 1;
   margin: 5px;
 }
@@ -214,6 +215,10 @@
   margin-right: 10px;
   border-radius: 5px;
   text-align: left;
+}
+
+.ott-button .price { /* 새로운 클래스 추가 */
+  margin-left: auto;
 }
 
 .ott-button:hover {
@@ -230,7 +235,6 @@
   margin: 40px auto;
   opacity: 50%;
 }
-
 
 .detail-searchIcon
 {

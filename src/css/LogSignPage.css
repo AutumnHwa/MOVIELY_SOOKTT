@@ -38,7 +38,7 @@
 .logSignBox {
   background-color: rgba(0, 0, 0, 0.68);
   border: 1px solid white;
-  width: 460px;
+  width: 400px;
   height: 416px;
   margin-top: 10px;
   display: flex;
@@ -57,6 +57,7 @@ p {
   color: white;
   font-size: 15px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .googleLoginButton {
