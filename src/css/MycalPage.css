@@ -57,7 +57,7 @@
 }
 
 .recordButton {
-  margin-top: 5px;
+  margin-top: 40px;
   padding: 7px 20px;
   background-color: #2F4881;
   color: white;
@@ -85,7 +85,7 @@
   height: auto;
   margin: auto;
   margin-top: 20px;
-  padding: 25px 20px 40px;
+  padding: 25px 20px 10px; /* 전체 높이에서 30px 줄이기 위해 bottom 패딩 조정 */
   background-color: #ffffff;
   box-sizing: border-box;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -93,7 +93,7 @@
 }
 
 .fc-toolbar-title {
-  font-size: 13px; /* 기존 크기에서 3픽셀 줄임 */
+  font-size: 11px; /* 기존 크기에서 5픽셀 줄임 */
   font-weight: lighter;
   color: #000000;
 }
@@ -162,5 +162,9 @@
 }
 
 .fc .fc-daygrid-body {
-  padding-bottom: 10px; /* 아래 여백 추가 */
+  padding-bottom: 2px; /* 아래 여백을 2픽셀로 설정 */
+}
+
+.fc-daygrid-day-events {
+  height: calc(100% / 1.5); /* 높이를 3분의 2로 줄임 */
 }
