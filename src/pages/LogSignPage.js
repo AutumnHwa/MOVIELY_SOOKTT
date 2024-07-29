@@ -26,20 +26,27 @@ function LogSignPage() {
 
       console.log("Backend response data:", data); // 서버 응답 확인
 
-      if (data.jwtToken) {
-        login(data.jwtToken, data.user);
-        if (data.isNewUser) {
-          console.log('New user detected, navigating to movie-select');
-          navigate('/movie-select');
+      try {
+        if (data.jwtToken) {
+          login(data.jwtToken, data.user);
+          console.log('Token and user data:', data.jwtToken, data.user);
+          
+          if (data.isNewUser) {
+            console.log('New user detected, navigating to movie-select');
+            navigate('/movie-select');
+          } else {
+            console.log('Existing user detected, navigating to recommendations');
+            navigate('/recommendations');
+          }
         } else {
-          console.log('Existing user detected, navigating to recommendations');
-          navigate('/recommendations');
+          alert('로그인에 실패했습니다.');
         }
-      } else {
-        alert('로그인에 실패했습니다.');
+      } catch (error) {
+        console.error('Backend redirection failed:', error);
+        alert('백엔드 처리에 실패했습니다.');
       }
     } catch (error) {
-      console.error('Backend redirection failed:', error);
+      console.error('Error fetching from backend:', error);
       alert('백엔드 처리에 실패했습니다.');
     }
   };
