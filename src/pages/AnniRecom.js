@@ -30,6 +30,7 @@ const AnniRecom = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [movies, setMovies] = useState([]);
+  const [allMovies, setAllMovies] = useState([]);
   const [loading, setLoading] = useState(false); // 로딩 상태 추가
   const [showModal, setShowModal] = useState(false); // 모달 상태 관리
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -42,35 +43,42 @@ const AnniRecom = () => {
     setSidebarOpen(false);
   };
 
-  const fetchMoviesByCategory = async (category) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`https://moviely.duckdns.org/api/anniversary`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+  useEffect(() => {
+    const fetchAllMovies = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('https://moviely.duckdns.org/api/anniversary?page=0&size=150', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch movies');
+        if (!response.ok) {
+          throw new Error('Failed to fetch movies');
+        }
+
+        const data = await response.json();
+        console.log("Fetched data: ", data.content); // 데이터 확인을 위한 콘솔 로그 추가
+        setAllMovies(data.content || []);
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data = await response.json();
-      console.log("Fetched data: ", data); // 데이터 확인을 위한 콘솔 로그 추가
-      const filteredMovies = data.content.filter(movie => movie.anniversary_name === category);
-      console.log(`Movies filtered by ${category}: `, filteredMovies); // 필터링된 데이터 확인을 위한 콘솔 로그 추가
-      setMovies(filteredMovies);
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchAllMovies();
+  }, []);
 
-  const handleBannerClick = (category, index) => {
+  const handleBannerClick = (category) => {
     setSelectedCategory(category);
-    fetchMoviesByCategory(category);
+    const filteredMovies = allMovies.filter(movie => {
+      console.log(`Filtering: '${movie.anniversary_name}' === '${category}'`);
+      return movie.anniversary_name === category;
+    });
+    console.log(`Movies filtered by ${category}: `, filteredMovies); // 필터링된 데이터 확인을 위한 콘솔 로그 추가
+    setMovies(filteredMovies);
   };
 
   const handleAddClick = (movie) => {
@@ -120,7 +128,7 @@ const AnniRecom = () => {
       <div className="banners">
         {categories.map((category, index) => (
           <React.Fragment key={index}>
-            <div className={`banner ${category.className}`} onClick={() => handleBannerClick(category.anniversaryName, index)}>
+            <div className={`banner ${category.className}`} onClick={() => handleBannerClick(category.anniversaryName)}>
               <div className="banner-text">
                 <div>{category.title}</div>
                 <div>
