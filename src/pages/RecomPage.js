@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -51,13 +51,13 @@ function RecomPage() {
   const { authToken, user } = useAuth(); 
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [randomMovies, setRandomMovies] = useState([]);
   const [topMovie, setTopMovie] = useState(null);
   const [movieItems, setMovieItems] = useState([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(true);
   const [loadingAnniversaryMovies, setLoadingAnniversaryMovies] = useState(true);
   const [anniversaryMovies, setAnniversaryMovies] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [closestAnniversary, setClosestAnniversary] = useState('');
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -131,6 +131,7 @@ function RecomPage() {
     const fetchAnniversaryMovies = async () => {
       try {
         const closestAnniversary = getClosestAnniversary();
+        setClosestAnniversary(closestAnniversary);
         console.log('Fetching anniversary movies for:', closestAnniversary);
         const response = await fetch(`https://moviely.duckdns.org/api/anniversary?event=${encodeURIComponent(closestAnniversary)}`);
         if (!response.ok) {
@@ -225,6 +226,11 @@ function RecomPage() {
               )
             )}
           </div>
+        </div>
+        <div className="anniversaryMoviesText">
+          {closestAnniversary && (
+            <div>{`${closestAnniversary}에 딱 맞는 영화를 추천해드려요!`}</div>
+          )}
         </div>
         <div className="anniversaryMoviesContainer">
           {loadingAnniversaryMovies ? (
