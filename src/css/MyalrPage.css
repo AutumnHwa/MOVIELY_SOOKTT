@@ -38,8 +38,9 @@
   position: absolute;
   right: 90px;
   color: white;
-  margin-top: -12px;
+  margin-top: -17px;
   cursor: pointer;
+  width: 26px;
 }
 
 .myPageTitle {

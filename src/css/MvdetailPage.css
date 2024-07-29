@@ -14,7 +14,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 550px;
+  max-width: 50px;
   margin-bottom: 10px;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .detail-movie-title {
-  font-size: 25px;
+  font-size: 20px;
   margin-bottom: 5px;
   text-align: left; /* 왼쪽 정렬 */
 }
@@ -103,12 +103,12 @@
 
 .rating {
   font-size: 1.5em;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .movie-detail-page .movie-rating .star {
   color: white;
-  font-size: 30px;
+  font-size: 25px;
   margin: 3px;
   cursor: pointer;
 }
@@ -121,7 +121,7 @@
   background-color: transparent;
   color: white;
   border: none;
-  font-size: 52px;
+  font-size: 40px;
   cursor: pointer;
   margin-left: 10px;
 }
@@ -134,7 +134,7 @@
 .movie-runtime,
 .movie-cast {
   margin-bottom: 10px;
-  font-size: 15px;
+  font-size: 13px;
   text-align: left; /* 왼쪽 정렬 */
   line-height: 0.3; /* 행간을 줄이기 위해 추가 */
 }
@@ -146,7 +146,7 @@
 
 .movie-poster {
   width: 100%;
-  max-width: 160px;
+  max-width: 130px;
   margin-top: 20px;
   margin-bottom: -15px;
 }

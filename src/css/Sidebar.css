@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     right: -250px;
-    width: 250px;
+    width: 200px;
     height: 100%;
     background-color: white; /* 배경색을 하얀색으로 설정 */
     color: black; /* 기본 글씨 색상을 까만색으로 설정 */
@@ -33,7 +33,7 @@
 .sidebar-logo {
     width: 85px;
     height: auto; /* 비율을 유지하면서 높이를 자동으로 설정 */
-    padding-left: 90px;
+    padding-left: 50px;
     padding-top: 10px;
 }
 
@@ -47,8 +47,8 @@
     transition: background-color 0.3s, color 0.3s;
     margin: 20px; /* 버튼과 리스트 사이의 여백 */
     display: block;
-    width: 90px;
-    height: 35px;
+    width: 80px;
+    height: 30px;
     text-align: center;
     font-size: 13px;
 }
@@ -74,6 +74,7 @@
     display: block; /* 배경색이 전체 요소를 감싸도록 설정 */
     padding: 20px; /* 텍스트 주위에 약간의 패딩을 추가 */
     border-bottom: 1px solid #ccc; /* 각 링크 요소의 하단에 회색 줄 추가 */
+    font-size: 12px;
 }
 
 .sidebar ul li a:hover {

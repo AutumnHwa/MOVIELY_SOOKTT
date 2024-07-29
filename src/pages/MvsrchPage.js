@@ -173,7 +173,7 @@ function MvsrchPage() {
 
   return (
     <div className="MvsrchPage">
-      <header className="pageHeader">
+      <header className="pageHeader-srch">
         <FontAwesomeIcon
           icon={faSearch}
           size="2x"
@@ -194,7 +194,7 @@ function MvsrchPage() {
       </header>
       <div className="searchContainer">
         <div className="dropdownContainer">
-          <button onClick={() => setShowPlatforms(!showPlatforms)} className="platformButton">플랫폼ㅤㅤㅤ▼</button>
+          <button onClick={() => setShowPlatforms(!showPlatforms)} className="platformButton">플랫폼ㅤ  ▼</button>
           {showPlatforms && (
             <div className="platformDropdown">
               {platforms.map((platform) => (
@@ -211,7 +211,7 @@ function MvsrchPage() {
           )}
         </div>
         <div className="dropdownContainer">
-          <button onClick={() => setShowGenres(!showGenres)} className="genreButton">장르ㅤㅤㅤㅤ▼</button>
+          <button onClick={() => setShowGenres(!showGenres)} className="genreButton">장르ㅤ  ㅤ▼</button>
           {showGenres && (
             <div className="genreDropdown">
               {genres.map((genre) => (
