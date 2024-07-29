@@ -176,10 +176,10 @@ function MycalPage() {
           <FontAwesomeIcon
             icon={faSearch}
             size="2x"
-            className="arl-searchIcon"
+            className="wish-searchIcon"
           />
         </Link>
-        <button className="arl-sidebar-toggle" onClick={toggleSidebar}>
+        <button className="wish-sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
         <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
