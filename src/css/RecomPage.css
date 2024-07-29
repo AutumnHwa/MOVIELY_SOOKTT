@@ -86,6 +86,7 @@
 
 .topMovie{
   display: flex;
+  width: 300px;
 }
 
 .topMovieAndListContainer {
