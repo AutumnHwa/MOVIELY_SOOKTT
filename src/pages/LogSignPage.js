@@ -24,7 +24,7 @@ function LogSignPage() {
       });
       const data = await res.json();
 
-      console.log("Backend response data:", data);
+      console.log("Backend response data:", data); // 서버 응답 확인
 
       if (data.jwtToken) {
         login(data.jwtToken, data.user);
