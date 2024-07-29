@@ -86,7 +86,6 @@
 
 .topMovie{
   display: flex;
-  width: 300px;
 }
 
 .topMovieAndListContainer {
@@ -96,9 +95,9 @@
 }
 
 .topMovieContainer .mvBanner {
-  width: 100% ; /* 필요에 따라 크기 조정 */
-  height: auto;
-  max-width: 250px;
+  width: 200% !important; /* 필요에 따라 크기 조정 */
+  height: auto !important;
+  max-width: 250px !important;
 }
 
 .topMovieContainer {
