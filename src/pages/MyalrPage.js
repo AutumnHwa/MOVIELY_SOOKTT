@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -9,11 +9,12 @@ import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
 function MyalrPage() {
-  const { authToken, user } = useAuth(); 
+  const { authToken, user } = useAuth();
+  const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -23,33 +24,59 @@ function MyalrPage() {
     setSidebarOpen(false);
   };
 
-  useEffect(() => {
-    const fetchWatchedMovies = async () => {
-      try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/watchedList?userId=${user?.id}`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
+  const fetchWatchedMovies = useCallback(async () => {
+    setLoading(true);
+    try {
+      const url = `https://moviely.duckdns.org/mypage/watchedList?userId=${user?.id}`;
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-        const data = await response.json();
-        setMovies(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching watched movies:', error);
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
 
+      const data = await response.json();
+      console.log("Fetched movies:", data); // 데이터 확인을 위한 콘솔 로그 추가
+
+      if (data) {
+        const processedData = data.map(movie => ({
+          ...movie,
+          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+        }));
+
+        setMovies(processedData);
+        setFilteredMovies(processedData);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching watched movies:', error);
+      setLoading(false);
+    }
+  }, [authToken, user]);
+
+  useEffect(() => {
     if (user) {
       fetchWatchedMovies();
     }
-  }, [authToken, user]);
+  }, [fetchWatchedMovies, user]);
+
+  const banners = filteredMovies.map((movie, index) => (
+    <MvBanner
+      key={index}
+      title={movie.title}
+      poster={movie.poster_path}
+      flatrate={movie.flatrate}
+      rating={Math.round(movie.vote_average / 2)}
+      movieId={movie.id || movie.movie_id}
+      userId={user?.id}
+    />
+  ));
 
   return (
     <div className="myalrPage">
@@ -82,17 +109,7 @@ function MyalrPage() {
         {loading ? <div className="loading">로딩 중...</div> : 
           movies.length > 0 ? (
             <div className="movieGridContainer">
-              {movies.map((movie, index) => (
-                <MvBanner
-                  key={index}
-                  title={movie.title}
-                  poster={movie.poster_path || 'https://via.placeholder.com/154x231?text=No+Image'}
-                  flatrate={movie.flatrate ? movie.flatrate.split(', ') : []}
-                  movieId={movie.id || movie.movie_id}
-                  userId={user?.id}
-                  rating={Math.round(movie.vote_average / 2)}
-                />
-              ))}
+              {banners}
             </div>
           ) : (
             <div className="noMovies">본 영화가 없습니다.</div>
