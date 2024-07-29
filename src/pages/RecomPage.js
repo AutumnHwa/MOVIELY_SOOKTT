@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -51,6 +51,7 @@ function RecomPage() {
   const { authToken, user } = useAuth(); 
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [randomMovies, setRandomMovies] = useState([]);
   const [topMovie, setTopMovie] = useState(null);
   const [movieItems, setMovieItems] = useState([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(true);
@@ -130,9 +131,10 @@ function RecomPage() {
 
     const fetchAnniversaryMovies = async () => {
       const closestAnniversary = getClosestAnniversary();
-      setClosestAnniversary(closestAnniversary); // 가까운 기념일을 상태에 저장
+      setClosestAnniversary(closestAnniversary);
+      console.log('Fetching anniversary movies for:', closestAnniversary);
+
       try {
-        console.log('Fetching anniversary movies for:', closestAnniversary);
         const response = await fetch(`https://moviely.duckdns.org/api/anniversary?event=${encodeURIComponent(closestAnniversary)}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch anniversary movies: ${response.statusText}`);
@@ -140,7 +142,7 @@ function RecomPage() {
 
         const data = await response.json();
         console.log('Fetched anniversary movies:', data);
-        setAnniversaryMovies(data.content || []);
+        setAnniversaryMovies(data.content);
         setLoadingAnniversaryMovies(false);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
