@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Papa from 'papaparse';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -31,7 +30,7 @@ const AnniRecom = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [movies, setMovies] = useState([]);
-  const [allMovies, setAllMovies] = useState([]);
+  const [allMovies, setAllMovies] = useState([]); // 초기 상태를 빈 배열로 설정
   const [bannerIndex, setBannerIndex] = useState(null);
   const [showModal, setShowModal] = useState(false); // 모달 상태 관리
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -59,7 +58,8 @@ const AnniRecom = () => {
         }
 
         const data = await response.json();
-        setAllMovies(data);
+        console.log("Fetched data: ", data); // 데이터 확인을 위한 콘솔 로그 추가
+        setAllMovies(Array.isArray(data) ? data : []); // 배열인지 확인 후 설정
       } catch (error) {
         console.error('Error fetching movies:', error);
       }
@@ -69,6 +69,7 @@ const AnniRecom = () => {
   }, []);
 
   const handleBannerClick = (category, index) => {
+    console.log("All movies: ", allMovies); // 데이터 확인을 위한 콘솔 로그 추가
     const filteredMovies = allMovies.filter(movie => movie.anniversary_name === category);
     setMovies(filteredMovies);
     setSelectedCategory(category);
