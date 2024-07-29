@@ -95,9 +95,10 @@
 }
 
 .topMovieContainer .mvBanner {
-  width: 200% !important; /* 필요에 따라 크기 조정 */
-  height: auto !important;
-  max-width: 250px !important;
+  width: 200%; /* 필요에 따라 크기 조정 */
+  height: auto;
+  max-width: 250px;
+  transform: scale(2.0);
 }
 
 .topMovieContainer {
