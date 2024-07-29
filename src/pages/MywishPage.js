@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -23,34 +23,74 @@ function MywishPage() {
     setSidebarOpen(false);
   };
 
-  useEffect(() => {
-    const fetchWishlistMovies = async () => {
-      try {
-        // 새로운 API URL로 변경
-        const response = await fetch(`https://moviely.duckdns.org/mypage/wishList?userId=${user?.id}`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json', // 필요에 따라 추가
-          }
-        });
+  const fetchWishlistMovies = useCallback(async () => {
+    setLoading(true);
+    try {
+      const wishlistUrl = `https://moviely.duckdns.org/mypage/wishList?userId=${user?.id}`;
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      const wishlistResponse = await fetch(wishlistUrl, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
-        const data = await response.json();
-        setMovies(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching wishlist movies:', error);
-        setLoading(false);
+      if (!wishlistResponse.ok) {
+        throw new Error(`HTTP error! status: ${wishlistResponse.status}`);
       }
-    };
 
+      const wishlistData = await wishlistResponse.json();
+      console.log("Fetched wishlist:", wishlistData); // 데이터 확인을 위한 콘솔 로그 추가
+
+      const movieDetails = await Promise.all(
+        wishlistData.map(async (wishMovie) => {
+          const movieDetailsUrl = `https://moviely.duckdns.org/api/movies/${wishMovie.movie_id}`;
+          const movieDetailsResponse = await fetch(movieDetailsUrl, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!movieDetailsResponse.ok) {
+            throw new Error(`HTTP error! status: ${movieDetailsResponse.status}`);
+          }
+
+          const movieDetailsData = await movieDetailsResponse.json();
+          console.log("Fetched movie details:", movieDetailsData); // 데이터 확인을 위한 콘솔 로그 추가
+
+          return {
+            ...wishMovie,
+            ...movieDetailsData,
+            flatrate: movieDetailsData.flatrate ? movieDetailsData.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+          };
+        })
+      );
+
+      setMovies(movieDetails);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching wishlist movies:', error);
+      setLoading(false);
+    }
+  }, [authToken, user]);
+
+  useEffect(() => {
     if (user) {
       fetchWishlistMovies();
     }
-  }, [authToken, user]);
+  }, [fetchWishlistMovies, user]);
+
+  const banners = movies.map((movie, index) => (
+    <MvBanner
+      key={index}
+      title={movie.title}
+      poster={movie.poster_path}
+      flatrate={movie.flatrate}
+      rating={Math.round(movie.vote_average / 2)}
+      movieId={movie.id || movie.movie_id}
+      userId={user?.id}
+    />
+  ));
 
   return (
     <div className="mywishPage">
@@ -82,20 +122,8 @@ function MywishPage() {
       </div>
       <div className="bannerGrid">
         {loading ? <div className="loading">로딩 중...</div> : 
-          movies.length > 0 ? (
-            movies.map((movie, index) => (
-              <MvBanner
-                key={index}
-                title={movie.title}
-                poster={movie.poster_path}
-                flatrate={movie.flatrate ? movie.flatrate.join(', ') : ''}
-                movieId={movie.id || movie.movie_id}
-                userId={user?.id}
-              />
-            ))
-          ) : (
-            <div className="noMovies">보고싶은 영화가 없습니다.</div>
-          )}
+          banners.length > 0 ? banners : <div className="noMovies">보고싶은 영화가 없습니다.</div>
+        }
       </div>
     </div>
   );
