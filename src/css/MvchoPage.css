@@ -200,6 +200,15 @@
   padding: 0;
 }
 
+.cho-searchIcon
+{
+  position: absolute;
+  right : 20px;
+  color : white;
+  margin-top: -10px;
+  width: 26px;
+}
+
 
 
 @media (max-width: 720px) {

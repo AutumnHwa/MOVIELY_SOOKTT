@@ -42,7 +42,7 @@
 }
 
 .greetingText {
-    margin-top: 40px;
+    margin-top: 10px;
     margin-bottom: 30px;
     font-size: 20px;
     font-weight: bold;
@@ -60,7 +60,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between; /* 공간을 양쪽 끝으로 배치 */
-    width: 570px;
+    width: 550px;
     height: 100px;
     background: rgba(210, 210, 210, 0.53);
     margin-top: 5px;

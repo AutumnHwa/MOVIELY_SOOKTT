@@ -169,10 +169,10 @@ function MvchoPage() {
         <FontAwesomeIcon
           icon={faSearch}
           size="2x"
-          className="srch-searchIcon"
+          className="cho-searchIcon"
           onClick={() => navigate('/movie-search')}
         />
-        <button className="srch-sidebar-toggle" onClick={toggleSidebar}>
+        <button className="cho-sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
         <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
