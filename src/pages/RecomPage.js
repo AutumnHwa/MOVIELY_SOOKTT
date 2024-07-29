@@ -155,12 +155,12 @@ function RecomPage() {
               topMovie ? (
                 <div className="topMovie">
                   <MvBanner
-                    title={topMovie.title}
-                    poster={topMovie.poster_path ? `https://image.tmdb.org/t/p/w500${topMovie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image'}
-                    flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
-                    userId={user ? user.id : null}
-                    movieId={topMovie.id || topMovie.movie_id}
-                  />
+                        title={movie.title}
+                        poster={posterUrl}
+                        flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
+                        userId={user ? user.id : null}
+                        movieId={movie.id || movie.movie_id}
+                      />
                 </div>
               ) : (
                 <div>No recommendations found.</div>
