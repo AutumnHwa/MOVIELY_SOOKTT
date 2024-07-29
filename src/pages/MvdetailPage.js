@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Papa from 'papaparse';
-import moviesCSV from '../movie.csv';
 import watchaLogo from '../watcha.png';
 import netflixLogo from '../netflix.png';
 import disneyPlusLogo from '../disneyplus.png';
@@ -83,18 +81,26 @@ const MvdetailPage = () => {
   };
 
   useEffect(() => {
-    Papa.parse(moviesCSV, {
-      download: true,
-      header: true,
-      complete: (result) => {
-        const foundMovie = result.data.find(movie => parseInt(movie.movie_id, 10) === parseInt(id, 10));
-        if (foundMovie) {
-          foundMovie.genre = foundMovie.genre.split(',').map(genreId => genreMapping[genreId.trim()] || genreId.trim()).join(', ');
-          setMovie(foundMovie);
+    const fetchMovie = async () => {
+      try {
+        const response = await fetch(`https://moviely.duckdns.org/api/movies/${id}`);
+        const data = await response.json();
+        if (response.ok) {
+          setMovie(data);
+          console.log('Movie data fetched:', data);
+        } else {
+          console.error('Failed to fetch movie:', data.message || 'Unknown error');
+          setMessage('Failed to fetch movie: ' + (data.message || 'Unknown error'));
         }
+      } catch (error) {
+        console.error('Error fetching movie:', error);
+        setMessage('Error fetching movie.');
+      } finally {
         setLoading(false);
-      },
-    });
+      }
+    };
+
+    fetchMovie();
   }, [id]);
 
   const handleStarClick = async (index) => {
@@ -155,56 +161,56 @@ const MvdetailPage = () => {
 
   const handleSaveModal = async (option) => {
     if (!user.id || !movie.movie_id) {
-        setMessage('User ID and Movie ID must not be null');
-        console.log('User ID or Movie ID is null:', { userId: user.id, movie_id: movie.movie_id });
-        return;
+      setMessage('User ID and Movie ID must not be null');
+      console.log('User ID or Movie ID is null:', { userId: user.id, movie_id: movie.movie_id });
+      return;
     }
 
     const listData = {
-        user_id: user.id,
-        movie_id: movie.movie_id
+      user_id: user.id,
+      movie_id: movie.movie_id
     };
 
-    console.log('Data being sent:', JSON.stringify(listData)); // 디버그용 로그 추가
+    console.log('Data being sent:', JSON.stringify(listData));
 
     try {
-        let url = '';
-        if (option === 'option1') {
-            url = 'https://moviely.duckdns.org/mypage/wishList';
-        } else if (option === 'option2') {
-            url = 'https://moviely.duckdns.org/mypage/watchedList';
-        }
+      let url = '';
+      if (option === 'option1') {
+        url = 'https://moviely.duckdns.org/mypage/wishList';
+      } else if (option === 'option2') {
+        url = 'https://moviely.duckdns.org/mypage/watchedList';
+      }
 
-        console.log('Sending data to URL:', url);
+      console.log('Sending data to URL:', url);
 
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(listData),
-        });
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(listData),
+      });
 
-        const responseData = await response.json();
-        console.log('Response from server:', responseData);
+      const responseData = await response.json();
+      console.log('Response from server:', responseData);
 
-        if (response.ok) {
-            setMessage('List updated successfully!');
-            console.log('List updated successfully!');
-        } else {
-            console.error('List update failed:', responseData);
-            setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
-            console.log('List update failed:', responseData.message || 'Unknown error');
-        }
+      if (response.ok) {
+        setMessage('List updated successfully!');
+        console.log('List updated successfully!');
+      } else {
+        console.error('List update failed:', responseData);
+        setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
+        console.log('List update failed:', responseData.message || 'Unknown error');
+      }
     } catch (error) {
-        console.error('Error:', error);
-        setMessage('Failed to update list.');
-        console.log('Error:', error);
+      console.error('Error:', error);
+      setMessage('Failed to update list.');
+      console.log('Error:', error);
     }
 
     setShowModal(false);
     setTimeout(() => {
-        setMessage('');
+      setMessage('');
     }, 3000);
   };
 
@@ -216,7 +222,11 @@ const MvdetailPage = () => {
     return <div style={{ color: 'white', textAlign: 'center' }}>Movie not found</div>;
   }
 
-  const validFlatrate = typeof movie.flatrate === 'string' ? movie.flatrate.split(', ').map(service => service.trim().toLowerCase()).filter(Boolean) : [];
+  const validFlatrate = typeof movie.flatrate === 'string'
+    ? movie.flatrate.split(',').map(service => service.trim().toLowerCase()).filter(Boolean)
+    : [];
+
+  console.log('Valid Flatrate:', validFlatrate); // 디버깅 로그 추가
 
   const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image';
 
@@ -261,9 +271,7 @@ const MvdetailPage = () => {
           </div>
           <p className="movie-details">개봉일 : {movie.release_date}</p>
           <p className="movie-details">장르: {movie.genre}</p>
-          <p className="movie-details">국가: {movie.production_countries}</p>
           <p className="movie-runtime">상영시간: {movie.run_time}분</p>
-          <p className="movie-cast">출연진: {movie.cast}</p>
         </div>
         <div className="right-column">
           <img src={posterUrl} alt={movie.title} className="movie-poster" />
