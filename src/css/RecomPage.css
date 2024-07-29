@@ -97,7 +97,7 @@
 
 .movieListContainer {
   width: 270px; /* 너비를 200px로 설정 */
-  height: 350px;
+  height: 320px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
