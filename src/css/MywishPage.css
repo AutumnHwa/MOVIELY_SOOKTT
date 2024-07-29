@@ -2,7 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px; /* Add padding to match the layout style */
+  width: 100%;
+  min-height: 100vh;
+  background-color: #001A56;
+  
 }
 
 .pageHeader {
@@ -73,7 +76,7 @@
   position: absolute;
   right: 100px;
   color: white;
-  margin-top: -7px;
+  margin-top: 15px;
   cursor: pointer;
   width: 26px;
 }
