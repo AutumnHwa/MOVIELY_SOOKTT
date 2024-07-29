@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -57,6 +57,7 @@ function RecomPage() {
   const [loadingRecommendations, setLoadingRecommendations] = useState(true);
   const [loadingAnniversaryMovies, setLoadingAnniversaryMovies] = useState(true);
   const [anniversaryMovies, setAnniversaryMovies] = useState([]);
+  const [closestAnniversary, setClosestAnniversary] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -131,6 +132,7 @@ function RecomPage() {
     const fetchAnniversaryMovies = async () => {
       try {
         const closestAnniversary = getClosestAnniversary();
+        setClosestAnniversary(closestAnniversary);
         console.log('Fetching anniversary movies for:', closestAnniversary);
         const response = await fetch(`https://moviely.duckdns.org/api/anniversary?event=${encodeURIComponent(closestAnniversary)}`);
         if (!response.ok) {
@@ -230,30 +232,35 @@ function RecomPage() {
           {loadingAnniversaryMovies ? (
             <div>Fetching anniversary movies...</div>
           ) : (
-            <Swiper
-              spaceBetween={0}
-              slidesPerView={4.5}
-              navigation
-              pagination={{ clickable: true }}
-              modules={[Navigation, Pagination]}
-            >
-              {anniversaryMovies.map((movie, index) => {
-                const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
-                return (
-                  <SwiperSlide key={index}>
-                    <div style={{ transform: 'scale(0.8)' }}>
-                      <MvBanner
-                        title={movie.title}
-                        poster={posterUrl}
-                        flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
-                        userId={user ? user.id : null}
-                        movieId={movie.id || movie.movie_id} // 이 부분 수정
-                      />
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+            <>
+              <div className="anniversaryText">
+                '{closestAnniversary}'에 딱 맞는 영화를 추천해드려요!
+              </div>
+              <Swiper
+                spaceBetween={0}
+                slidesPerView={4.5}
+                navigation
+                pagination={{ clickable: true }}
+                modules={[Navigation, Pagination]}
+              >
+                {anniversaryMovies.map((movie, index) => {
+                  const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
+                  return (
+                    <SwiperSlide key={index}>
+                      <div style={{ transform: 'scale(0.8)' }}>
+                        <MvBanner
+                          title={movie.title}
+                          poster={posterUrl}
+                          flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
+                          userId={user ? user.id : null}
+                          movieId={movie.id || movie.movie_id} // 이 부분 수정
+                        />
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </>
           )}
         </div>
       </div>
