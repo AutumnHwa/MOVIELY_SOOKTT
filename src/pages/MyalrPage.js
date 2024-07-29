@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -66,12 +66,14 @@ function MyalrPage() {
 
   const banners = movies.map((movie, index) => (
     <MvBanner
+      key={index}
       title={movie.title}
-      poster={posterUrl}
-      flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
-      userId={user ? user.id : null}
-      movieId={movie.id || movie.movie_id} // 이 부분 수정
-      />
+      poster={movie.poster_path || 'https://via.placeholder.com/154x231?text=No+Image'}
+      flatrate={movie.flatrate}
+      rating={Math.round(movie.vote_average / 2)}
+      movieId={movie.id || movie.movie_id}
+      userId={user?.id}
+    />
   ));
 
   return (
