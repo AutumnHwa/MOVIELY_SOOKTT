@@ -35,16 +35,44 @@ const genreMapping = {
   '37': '서부'
 };
 
+const anniversaryDates = {
+  '환경의날': '06-05',
+  '현충일': '06-06',
+  '할로윈': '10-31',
+  '크리스마스': '12-25',
+  '추석': '09-24', // 예시 날짜
+  '여성의날': '03-08',
+  '설날': '02-10', // 예시 날짜
+  '발렌타인데이': '02-14',
+  '과학의날': '04-21'
+};
+
+const getClosestAnniversary = () => {
+  const today = new Date();
+  const dates = Object.entries(anniversaryDates).map(([name, date]) => {
+    const [month, day] = date.split('-');
+    const anniversaryDate = new Date(today.getFullYear(), parseInt(month) - 1, parseInt(day));
+    if (anniversaryDate < today) {
+      anniversaryDate.setFullYear(today.getFullYear() + 1);
+    }
+    return { name, date: anniversaryDate };
+  });
+
+  dates.sort((a, b) => a.date - b.date);
+  return dates[0].name;
+};
+
 function RecomPage() {
-  const { authToken, user } = useAuth(); 
+  const { authToken, user } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [randomMovies, setRandomMovies] = useState([]);
+  const [anniversaryMovies, setAnniversaryMovies] = useState([]);
   const [topMovie, setTopMovie] = useState(null);
   const [movieItems, setMovieItems] = useState([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(true);
-  const [loadingRandomMovies, setLoadingRandomMovies] = useState(true);
+  const [loadingAnniversaryMovies, setLoadingAnniversaryMovies] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [closestAnniversary, setClosestAnniversary] = useState('');
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -91,27 +119,29 @@ function RecomPage() {
       }
     };
 
-    const fetchRandomMovies = async () => {
+    const fetchAnniversaryMovies = async () => {
       try {
-        console.log('Fetching random movies...');
-        const response = await fetch('https://moviely.duckdns.org/api/movies');
+        console.log('Fetching anniversary movies...');
+        const response = await fetch('https://moviely.duckdns.org/api/anniversary');
         if (!response.ok) {
-          throw new Error(`Failed to fetch random movies: ${response.statusText}`);
+          throw new Error(`Failed to fetch anniversary movies: ${response.statusText}`);
         }
 
         const data = await response.json();
-        console.log('Fetched random movies:', data);
-        const moviesArray = data.content;
-        setRandomMovies(shuffleArray(moviesArray).slice(0, 10));
-        setLoadingRandomMovies(false);
+        console.log('Fetched anniversary movies:', data);
+        const closestAnniv = getClosestAnniversary();
+        setClosestAnniversary(closestAnniv);
+        const filteredMovies = data.content.filter(movie => movie.anniversary_name === closestAnniv);
+        setAnniversaryMovies(shuffleArray(filteredMovies).slice(0, 10));
+        setLoadingAnniversaryMovies(false);
       } catch (error) {
-        console.error('Error fetching random movies:', error.message);
-        setLoadingRandomMovies(false);
+        console.error('Error fetching anniversary movies:', error.message);
+        setLoadingAnniversaryMovies(false);
       }
     };
 
     fetchRecommendations();
-    fetchRandomMovies();
+    fetchAnniversaryMovies();
   }, [authToken, user]);
 
   const shuffleArray = (array) => {
@@ -156,10 +186,10 @@ function RecomPage() {
                 <div className="topMovie">
                   <MvBanner
                     title={topMovie.title}
-                    poster={topMovie.poster_path}
+                    poster={topMovie.poster_path ? `https://image.tmdb.org/t/p/w500${topMovie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image'}
                     flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                     userId={user ? user.id : null}
-                    movieId={topMovie.id || topMovie.movie_id} // 이 부분 수정
+                    movieId={topMovie.id || topMovie.movie_id}
                   />
                 </div>
               ) : (
@@ -187,7 +217,7 @@ function RecomPage() {
                         <div className="movieTitle">{movie.title}</div>
                         <div className="movieReleaseDate">{new Date(movie.release_date).toLocaleDateString()}</div>
                         <div className="movieGenre">{genreList.length ? genreList.join(', ') : 'No Genre'}</div>
-                        <div className="movieOverview">{movie.overview}</div>
+                        <div className="movieOverview">{movie.overview || 'No overview available'}</div>
                       </div>
                     </div>
                   );
@@ -198,9 +228,10 @@ function RecomPage() {
             )}
           </div>
         </div>
-        <div className="randomMoviesContainer">
-          {loadingRandomMovies ? (
-            <div>Fetching random movies...</div>
+        <div className="anniversaryMoviesContainer">
+          <h2>{closestAnniversary}에 딱 맞는 영화를 추천드려요!</h2>
+          {loadingAnniversaryMovies ? (
+            <div>Fetching anniversary movies...</div>
           ) : (
             <Swiper
               spaceBetween={0}
@@ -209,7 +240,7 @@ function RecomPage() {
               pagination={{ clickable: true }}
               modules={[Navigation, Pagination]}
             >
-              {randomMovies.map((movie, index) => {
+              {anniversaryMovies.map((movie, index) => {
                 const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
                 return (
                   <SwiperSlide key={index}>
@@ -219,7 +250,7 @@ function RecomPage() {
                         poster={posterUrl}
                         flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                         userId={user ? user.id : null}
-                        movieId={movie.id || movie.movie_id} // 이 부분 수정
+                        movieId={movie.id || movie.movie_id}
                       />
                     </div>
                   </SwiperSlide>
