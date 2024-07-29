@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import MvBanner from './MvBanner';
 import '../css/MyalrPage.css';
 import logoImage from '../logo.png';
-import MvBanner from './MvBanner';
 import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
@@ -68,7 +68,7 @@ function MyalrPage() {
     <MvBanner
       key={index}
       title={movie.title}
-      poster={movie.poster_path || 'https://via.placeholder.com/154x231?text=No+Image'}
+      poster={movie.poster_path}
       flatrate={movie.flatrate}
       rating={Math.round(movie.vote_average / 2)}
       movieId={movie.id || movie.movie_id}
