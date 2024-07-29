@@ -143,9 +143,9 @@
 }
 
 .moviesContainer {
-    margin-top: 5px;
+    margin-top: px;
     width: 100%;
-    max-width: 570px;
+    max-width: 550px;
 }
 
 .movieSwiper {
@@ -156,6 +156,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 260px;
-    margin-left: 4px;
+    height: 240px;
+    margin-left: 0px;
 }
