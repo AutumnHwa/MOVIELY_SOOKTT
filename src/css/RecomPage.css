@@ -19,6 +19,7 @@
   margin-top: 30px;
   margin-left: 0px;
 }
+
 .searchContainer {
   display: flex;
   align-items: center;
@@ -89,14 +90,14 @@
 }
 
 .topMovieContainer {
-  width: 300px; /* 너비를 200px로 설정 */
+  width: 300px; /* 너비를 300px로 설정 */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .movieListContainer {
-  width: 270px; /* 너비를 200px로 설정 */
+  width: 270px; /* 너비를 270px로 설정 */
   height: 320px;
   overflow-y: scroll;
   display: flex;
@@ -150,7 +151,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-  width: 600px;
+  width: 90%; /* 전체 너비를 90%로 설정 */
   margin-bottom: 50px;
 }
 
@@ -166,7 +167,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 5px;
+  margin: 0 5px; /* 슬라이드 간격 조정 */
 }
 
 .swiper-button-next, .swiper-button-prev {
@@ -179,10 +180,6 @@
 
 .swiper-pagination-bullet {
   background: white;
-}
-
-.randomMovies .mvBanner {
-  margin: 0px;
 }
 
 .popupContainer {
@@ -225,4 +222,4 @@
   right : 70px;
   color : white;
   margin-top: -12px;
-  }
+}
