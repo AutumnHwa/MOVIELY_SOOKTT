@@ -81,13 +81,15 @@
 .movieGrid {
   margin-top: 30px;
   width: 100%;
-  max-width: 600px;
+  max-width: 500px; /* 최대 너비를 500px로 설정 */
   padding: 0 20px;
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
 }
 
 .movieGridContainer {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* 3열로 설정 */
   gap: 20px;
 }
 
@@ -113,7 +115,7 @@
   }
 
   .movieGridContainer {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 모바일에서는 2열로 설정 */
     gap: 10px;
   }
 }
