@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -130,18 +130,17 @@ function RecomPage() {
     };
 
     const fetchAnniversaryMovies = async () => {
-      const closestAnniversary = getClosestAnniversary();
-      setClosestAnniversary(closestAnniversary);
-      console.log('Fetching anniversary movies for:', closestAnniversary);
-
       try {
+        const closestAnniversary = getClosestAnniversary();
+        setClosestAnniversary(closestAnniversary);
+        console.log('Fetching anniversary movies for:', closestAnniversary);
         const response = await fetch(`https://moviely.duckdns.org/api/anniversary?event=${encodeURIComponent(closestAnniversary)}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch anniversary movies: ${response.statusText}`);
         }
 
         const data = await response.json();
-        console.log('Fetched anniversary movies:', data);
+        console.log('Fetched anniversary movies:', data.content);
         setAnniversaryMovies(data.content);
         setLoadingAnniversaryMovies(false);
       } catch (error) {
@@ -190,7 +189,7 @@ function RecomPage() {
                     poster={topMovie.poster_path}
                     flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                     userId={user ? user.id : null}
-                    movieId={topMovie.id || topMovie.movie_id} // 이 부분 수정
+                    movieId={topMovie.id || topMovie.movie_id}
                   />
                 </div>
               ) : (
@@ -206,7 +205,6 @@ function RecomPage() {
                 movieItems.map((movie, index) => {
                   const genreList = movie.genre ? movie.genre.split(',').map(g => genreMapping[g.trim()]).filter(Boolean) : [];
                   const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
-                  console.log('Movie Data:', movie);
                   return (
                     <div key={index} className="movieItem">
                       <img
@@ -229,7 +227,7 @@ function RecomPage() {
             )}
           </div>
         </div>
-        <div className="anniversaryMoviesTitle">
+        <div className="anniversaryHeaderText">
           {closestAnniversary && `${closestAnniversary}에 딱 맞는 영화를 추천해드려요!`}
         </div>
         <div className="anniversaryMoviesContainer">
@@ -253,7 +251,7 @@ function RecomPage() {
                         poster={posterUrl}
                         flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                         userId={user ? user.id : null}
-                        movieId={movie.id || movie.movie_id} // 이 부분 수정
+                        movieId={movie.id || movie.movie_id}
                       />
                     </div>
                   </SwiperSlide>
