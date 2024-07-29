@@ -5,14 +5,14 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import '../css/MyalrPage.css';
 import logoImage from '../logo.png';
 import MvBanner from './MvBanner';
-import Sidebar from '../components/Sidebar'; // Sidebar 컴포넌트 임포트
+import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
 function MyalrPage() {
   const { authToken, user } = useAuth(); 
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // 사이드바 상태 추가
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -26,10 +26,12 @@ function MyalrPage() {
   useEffect(() => {
     const fetchWatchedMovies = async () => {
       try {
+        // API 요청 URL이 올바른지 확인하세요.
         const response = await fetch(`https://moviely.duckdns.org/mypage/watchedList?userId=${user?.id}`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json', // 이 헤더가 필요한 경우 추가하세요
+          },
         });
 
         if (!response.ok) {
