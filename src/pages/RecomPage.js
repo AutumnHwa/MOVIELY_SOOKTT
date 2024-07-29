@@ -156,10 +156,10 @@ function RecomPage() {
                 <div className="topMovie">
                   <MvBanner
                     title={topMovie.title}
-                    poster={topMovie.poster_path}
+                    poster={`https://image.tmdb.org/t/p/w500${topMovie.poster_path}`}
                     flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                     userId={user ? user.id : null}
-                    movieId={topMovie.id || topMovie.movie_id} // 이 부분 수정
+                    movieId={topMovie.id || topMovie.movie_id}
                   />
                 </div>
               ) : (
@@ -219,7 +219,7 @@ function RecomPage() {
                         poster={posterUrl}
                         flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                         userId={user ? user.id : null}
-                        movieId={movie.id || movie.movie_id} // 이 부분 수정
+                        movieId={movie.id || movie.movie_id}
                       />
                     </div>
                   </SwiperSlide>
