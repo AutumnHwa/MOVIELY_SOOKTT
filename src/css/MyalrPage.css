@@ -20,9 +20,9 @@
   height: 50px;
 }
 
-.my-sidebar-toggle {
+.arl-sidebar-toggle {
   position: absolute;
-  right: -30px;
+  right: 50px;
   top: 30px;
   background: transparent;
   border: none;
@@ -32,11 +32,11 @@
   padding: 0;
 }
 
-.my-searchIcon {
+.arl-searchIcon {
   position: absolute;
-  right: 20px;
+  right: 100px;
   color: white;
-  margin-top: -10px;
+  margin-top: 15px;
   cursor: pointer;
   width: 26px;
 }

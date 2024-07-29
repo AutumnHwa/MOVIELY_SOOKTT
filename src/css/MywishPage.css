@@ -57,16 +57,25 @@
   color: black; 
 }
 
-.my-sidebar-toggle {
+.wish-sidebar-toggle {
   position: absolute;
-  right: 40px;
-  top: 20px;
+  right: 50px;
+  top: 30px;
   background: transparent;
   border: none;
   color: white;
   font-size: 50px;
   cursor: pointer;
   padding: 0;
+}
+
+.wish-searchIcon {
+  position: absolute;
+  right: 100px;
+  color: white;
+  margin-top: -7px;
+  cursor: pointer;
+  width: 26px;
 }
 
 .movieGrid {

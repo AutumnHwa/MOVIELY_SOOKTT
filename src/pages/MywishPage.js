@@ -62,10 +62,10 @@ function MywishPage() {
           <FontAwesomeIcon
             icon={faSearch}
             size="2x"
-            className="my-searchIcon"
+            className="wish-searchIcon"
           />
         </Link>
-        <button className="my-sidebar-toggle" onClick={toggleSidebar}>
+        <button className="wish-sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
         <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
