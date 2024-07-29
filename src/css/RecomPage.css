@@ -91,8 +91,8 @@
 }
 
 .topMovieContainer .mvBanner {
-  width: 220%; /* 필요에 따라 크기 조정 */
-  height: auto;
+  width: 300px; /* 필요에 따라 크기 조정 */
+  height: 300px;
   padding: 10px;
 }
 
