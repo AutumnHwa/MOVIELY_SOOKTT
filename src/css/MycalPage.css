@@ -162,9 +162,9 @@
 }
 
 .fc .fc-daygrid-body {
-  padding-bottom: 2px; /* 아래 여백을 2픽셀로 설정 */
+  padding-bottom: 5px; /* 아래 여백을 2픽셀로 설정 */
 }
 
 .fc-daygrid-day-events {
-  height: calc(100% / 1.5); /* 높이를 3분의 2로 줄임 */
+  height: 25px;
 }
