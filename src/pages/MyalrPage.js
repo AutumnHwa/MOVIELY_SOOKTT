@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -26,31 +26,46 @@ function MyalrPage() {
   const fetchWatchedMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const url = `https://moviely.duckdns.org/mypage/watchedList?userId=${user?.id}`;
+      const watchedListUrl = `https://moviely.duckdns.org/mypage/watchedList?userId=${user?.id}`;
 
-      const response = await fetch(url, {
+      const watchedListResponse = await fetch(watchedListUrl, {
         headers: {
           'Authorization': `Bearer ${authToken}`,
           'Content-Type': 'application/json',
         },
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!watchedListResponse.ok) {
+        throw new Error(`HTTP error! status: ${watchedListResponse.status}`);
       }
 
-      const data = await response.json();
-      console.log("Fetched movies:", data); // 데이터 확인을 위한 콘솔 로그 추가
+      const watchedListData = await watchedListResponse.json();
+      console.log("Fetched watched list:", watchedListData); // 데이터 확인을 위한 콘솔 로그 추가
 
-      if (data) {
-        const processedData = data.map(movie => ({
-          ...movie,
-          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
-        }));
+      const movieDetails = await Promise.all(
+        watchedListData.map(async (watchedMovie) => {
+          const movieDetailsUrl = `https://moviely.duckdns.org/api/movies/${watchedMovie.movie_id}`;
+          const movieDetailsResponse = await fetch(movieDetailsUrl, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
 
-        setMovies(processedData);
-      }
+          if (!movieDetailsResponse.ok) {
+            throw new Error(`HTTP error! status: ${movieDetailsResponse.status}`);
+          }
 
+          const movieDetailsData = await movieDetailsResponse.json();
+          console.log("Fetched movie details:", movieDetailsData); // 데이터 확인을 위한 콘솔 로그 추가
+
+          return {
+            ...watchedMovie,
+            ...movieDetailsData,
+          };
+        })
+      );
+
+      setMovies(movieDetails);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching watched movies:', error);
