@@ -90,6 +90,12 @@
   width: 100%; /* 부모 컨테이너의 너비를 전체로 설정 */
 }
 
+.topMovieContainer .mvBanner {
+  width: 220%; /* 필요에 따라 크기 조정 */
+  height: auto;
+  padding: 10px;
+}
+
 .topMovieContainer {
   width: 300px; /* 너비를 300px로 설정 */
   display: flex;
