@@ -1,64 +1,100 @@
 .myalrPage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .myPageTitle {
-    margin-top: 100px;
-    font-size: 40px;
-    font-weight: bold;
-    color: #FBE64D; 
-  }
-  
-  .navButtons {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 500px;
-    height: 50px;
-    margin-top: 10px;
-    border: 1px solid white;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-  }
-  
-  .navButton {
-    width: 150px;
-    height: 30px;
-    background-color: white; 
-    color: black; 
-    font-weight: bold;
-    text-decoration: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px; 
-    border: 1px solid white; 
-  }
-  
-  .navButton:hover, .navButton.active {
-    background-color: #FBE64D; 
-    color: black;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
 
-  .my-sidebar-toggle {
-    position: absolute;
-    right: 40px;
-    top: 20px;
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 50px;
-    cursor: pointer;
-    padding: 0;
-  }
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #2f2f2f;
+  padding: 10px 20px;
+}
 
-.my-searchIcon
-{
+.myPageLogo {
+  height: 50px;
+}
+
+.searchIconContainer {
+  margin-right: 20px;
+}
+
+.my-sidebar-toggle {
   position: absolute;
-  right : 90px;
-  color : white;
+  right: 40px;
+  top: 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 50px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.my-searchIcon {
+  position: absolute;
+  right: 90px;
+  color: white;
   margin-top: -12px;
   cursor: pointer;
+}
+
+.myPageTitle {
+  margin-top: 100px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #FBE64D;
+}
+
+.navButtons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 500px;
+  height: 50px;
+  margin-top: 10px;
+  border: 1px solid white;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+.navButton {
+  width: 150px;
+  height: 30px;
+  background-color: white; 
+  color: black; 
+  font-weight: bold;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px; 
+  border: 1px solid white; 
+}
+
+.navButton:hover, .navButton.active {
+  background-color: #FBE64D; 
+  color: black;
+}
+
+.movieGrid {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.movieGridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.loading, .noMovies {
+  text-align: center;
+  margin-top: 50px;
+  color: white;
 }

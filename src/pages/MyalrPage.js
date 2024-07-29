@@ -26,7 +26,7 @@ function MyalrPage() {
   useEffect(() => {
     const fetchWatchedMovies = async () => {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/api/watched?userId=${user?.id}`, {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/watchedList?userId=${user?.id}`, {
           headers: {
             'Authorization': `Bearer ${authToken}`
           }
@@ -81,16 +81,18 @@ function MyalrPage() {
       <div className="movieGrid">
         {loading ? <div className="loading">로딩 중...</div> : 
           movies.length > 0 ? (
-            movies.map((movie, index) => (
-              <MvBanner
-                key={index}
-                title={movie.title}
-                poster={movie.poster_path}
-                flatrate={movie.flatrate.join(', ')}
-                movieId={movie.id || movie.movie_id}
-                userId={user?.id}
-              />
-            ))
+            <div className="movieGridContainer">
+              {movies.map((movie, index) => (
+                <MvBanner
+                  key={index}
+                  title={movie.title}
+                  poster={movie.poster_path}
+                  flatrate={movie.flatrate ? movie.flatrate.split(', ') : []}
+                  movieId={movie.id || movie.movie_id}
+                  userId={user?.id}
+                />
+              ))}
+            </div>
           ) : (
             <div className="noMovies">본 영화가 없습니다.</div>
           )}
