@@ -80,7 +80,7 @@ function MywishPage() {
         <Link to="/my/wishlist" className="navButton active">보고싶은 영화</Link>
         <Link to="/my/calendar" className="navButton">MOVIELY 캘린더</Link>
       </div>
-      <div className="movieGrid">
+      <div className="bannerGrid">
         {loading ? <div className="loading">로딩 중...</div> : 
           movies.length > 0 ? (
             movies.map((movie, index) => (
