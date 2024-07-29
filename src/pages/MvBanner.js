@@ -142,7 +142,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
 
   const validFlatrate = Array.isArray(flatrate) ? flatrate.map(service => service.trim().toLowerCase()).filter(Boolean) : [];
 
-  const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x231?text=No+Image';
+  const posterUrl = poster ? `https://image.tmdb.org/t/p/w500${poster}` : 'https://via.placeholder.com/154x181?text=No+Image';
 
   console.log('Poster URL:', posterUrl);
 
@@ -155,10 +155,9 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
       <img
         src={posterUrl}
         alt={title}
-        className="movie-poster"
-        style={{ width: '154px', height: '231px' }}
+        className="movie-poster-banner"
         onClick={handlePosterClick}
-        onError={(e) => e.target.src = 'https://via.placeholder.com/154x231?text=No+Image'}
+        onError={(e) => e.target.src = 'https://via.placeholder.com/154x181?text=No+Image'}
       />
       <div className="movie-info">
         <div className="movie-title">{title}</div>
@@ -189,7 +188,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
       {showModal && <Popcho onClose={handleCloseModal} onSave={handleSaveModal} />}
       {message && (
         <div className="popupContainer">
-          <div className="popupCㅁontent">
+          <div className="popupContent">
             <p>{message}</p>
             <button onClick={() => setMessage('')}>닫기</button>
           </div>
