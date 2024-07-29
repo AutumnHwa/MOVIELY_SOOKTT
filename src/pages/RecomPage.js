@@ -186,7 +186,7 @@ function RecomPage() {
               <div>Fetching recommendations...</div>
             ) : (
               topMovie ? (
-                <div style={{ transform: 'scale(1.6)' }}>
+                <div style={{ transform: 'scale(1.5)' }}>
                   <MvBanner
                     title={topMovie.title}
                     poster={topMovie.poster_path ? `https://image.tmdb.org/t/p/w500${topMovie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image'}
