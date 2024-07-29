@@ -26,11 +26,10 @@ function MyalrPage() {
   useEffect(() => {
     const fetchWatchedMovies = async () => {
       try {
-        // API 요청 URL이 올바른지 확인하세요.
         const response = await fetch(`https://moviely.duckdns.org/mypage/watchedList?userId=${user?.id}`, {
           headers: {
             'Authorization': `Bearer ${authToken}`,
-            'Content-Type': 'application/json', // 이 헤더가 필요한 경우 추가하세요
+            'Content-Type': 'application/json',
           },
         });
 
@@ -58,13 +57,12 @@ function MyalrPage() {
         <Link to="/recommendations">
           <img src={logoImage} alt="Logo" className="myPageLogo" />
         </Link>
-        <Link to="/movie-search" className="searchIconContainer">
-          <FontAwesomeIcon
-            icon={faSearch}
-            size="2x"
-            className="my-searchIcon"
-          />
-        </Link>
+        <FontAwesomeIcon
+          icon={faSearch}
+          size="2x"
+          className="my-searchIcon"
+          onClick={() => navigate('/movie-search')}
+        />
         <button className="my-sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>

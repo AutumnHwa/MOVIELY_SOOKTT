@@ -2,30 +2,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #001A56;
 }
 
 .pageHeader {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  padding: 20px;
   width: 100%;
-  background-color: transparent;
-  padding: 10px 20px;
+  position: relative;
 }
 
 .myPageLogo {
   height: 50px;
 }
 
-.searchIconContainer {
-  margin-right: 20px;
-}
-
 .my-sidebar-toggle {
   position: absolute;
-  right: 40px;
-  top: 20px;
+  right: -30px;
+  top: 30px;
   background: transparent;
   border: none;
   color: white;
@@ -36,48 +34,47 @@
 
 .my-searchIcon {
   position: absolute;
-  right: 90px;
+  right: 20px;
   color: white;
-  margin-top: -17px;
+  margin-top: -10px;
   cursor: pointer;
   width: 26px;
 }
 
 .myPageTitle {
-  margin-top: 100px;
-  font-size: 40px;
+  margin-top: 10px;
+  font-size: 20px;
   font-weight: bold;
-  color: #FBE64D;
+  color: white;
+  text-align: center;
 }
 
 .navButtons {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  width: 500px;
-  height: 50px;
+  width: 100%;
+  max-width: 500px;
   margin-top: 10px;
   border: 1px solid white;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 5px;
+  padding: 10px 0;
 }
 
 .navButton {
-  width: 150px;
-  height: 30px;
-  background-color: white; 
-  color: black; 
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  color: white;
   font-weight: bold;
   text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px; 
-  border: 1px solid white; 
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .navButton:hover, .navButton.active {
-  background-color: #FBE64D; 
+  background-color: #FBE64D;
   color: black;
 }
 
@@ -85,17 +82,38 @@
   margin-top: 30px;
   width: 100%;
   max-width: 1200px;
+  padding: 0 20px;
 }
 
 .movieGridContainer {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  width: 100%;
 }
 
 .loading, .noMovies {
   text-align: center;
   margin-top: 50px;
   color: white;
+}
+
+@media (max-width: 720px) {
+  .myPageTitle {
+    font-size: 17px;
+  }
+
+  .navButtons {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .navButton {
+    width: 100%;
+  }
+
+  .movieGridContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 }
