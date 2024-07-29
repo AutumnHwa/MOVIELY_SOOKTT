@@ -66,6 +66,7 @@ function RecomPage() {
   const { authToken, user } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [allMovies, setAllMovies] = useState([]);
   const [anniversaryMovies, setAnniversaryMovies] = useState([]);
   const [topMovie, setTopMovie] = useState(null);
   const [movieItems, setMovieItems] = useState([]);
@@ -90,7 +91,6 @@ function RecomPage() {
       }
 
       try {
-        console.log('Fetching recommendations...');
         const response = await fetch('https://moviely.duckdns.org/api/recommend', {
           method: 'POST',
           headers: {
@@ -106,8 +106,6 @@ function RecomPage() {
         }
 
         const data = await response.json();
-        console.log('Fetched recommendations:', data);
-
         if (data.length > 0) {
           setTopMovie(data[0]);
           setMovieItems(data.slice(1, 6));
@@ -121,19 +119,23 @@ function RecomPage() {
 
     const fetchAnniversaryMovies = async () => {
       try {
-        console.log('Fetching anniversary movies...');
-        const response = await fetch('https://moviely.duckdns.org/api/anniversary');
+        const response = await fetch('https://moviely.duckdns.org/api/anniversary?page=0&size=150', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
         if (!response.ok) {
           throw new Error(`Failed to fetch anniversary movies: ${response.statusText}`);
         }
 
         const data = await response.json();
-        console.log('Fetched anniversary movies:', data);
         const closestAnniv = getClosestAnniversary();
         setClosestAnniversary(closestAnniv);
+        setAllMovies(data.content || []);
         const filteredMovies = data.content.filter(movie => movie.anniversary_name === closestAnniv);
-        console.log('Filtered Movies:', filteredMovies); // 필터링된 데이터 확인
-        setAnniversaryMovies(shuffleArray(filteredMovies).slice(0, 10));
+        setAnniversaryMovies(filteredMovies);
         setLoadingAnniversaryMovies(false);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
@@ -206,7 +208,6 @@ function RecomPage() {
                 movieItems.map((movie, index) => {
                   const genreList = movie.genre ? movie.genre.split(',').map(g => genreMapping[g.trim()]).filter(Boolean) : [];
                   const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
-                  console.log('Movie Data:', movie);
                   return (
                     <div key={index} className="movieItem">
                       <img
@@ -243,7 +244,7 @@ function RecomPage() {
               className="movieSwiper"
             >
               {anniversaryMovies.map((movie, index) => {
-                const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image';
+                const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
                 return (
                   <SwiperSlide key={index}>
                     <div style={{ transform: 'scale(0.8)' }}>
