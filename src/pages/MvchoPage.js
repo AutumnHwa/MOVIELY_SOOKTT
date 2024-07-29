@@ -75,7 +75,7 @@ function MvchoPage() {
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const url = `https://moviely.duckdns.org/api/movies?size=500&sort=popularity,desc&release_date.gte=2000-01-01`;
+      const url = `https://moviely.duckdns.org/api/movies?size=3000&sort=popularity,desc`;
 
       const response = await fetch(url, { mode: 'cors' });
 
@@ -89,7 +89,7 @@ function MvchoPage() {
       if (data && data.content) {
         const processedData = data.content.map(movie => {
           const genres = movie.genre ? movie.genre.split(', ').map(g => g.trim()) : [];
-          console.log(`Movie: ${movie.title}, Genres: ${genres}`); // 각 영화의 장르 확인을 위한 콘솔 로그 추가
+          console.log(`Movie: ${movie.title}, Popularity: ${movie.popularity}, Genres: ${genres}`); // 각 영화의 파퓰러리티와 장르 확인을 위한 콘솔 로그 추가
           return {
             ...movie,
             flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
@@ -97,8 +97,11 @@ function MvchoPage() {
           };
         });
 
+        // 파퓰러리티 높은 순으로 정렬
+        processedData.sort((a, b) => b.popularity - a.popularity);
+
         setMovies(processedData);
-        setFilteredMovies(processedData); // 처음 500개만 설정
+        setFilteredMovies(processedData); // 처음 1000개만 설정
       }
 
       setLoading(false);

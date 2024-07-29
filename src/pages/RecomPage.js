@@ -160,6 +160,10 @@ function RecomPage() {
     navigate('/movie-search', { state: { searchTerm } });
   };
 
+  const handlePosterClick = (movieId) => {
+    navigate(`/movie/${movieId}`);
+  };
+
   return (
     <div className="RecomPage">
       <header className="pageHeader">
@@ -179,7 +183,7 @@ function RecomPage() {
       </header>
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
       <div className="tabContent">
-      <div className="greetingText-recom">{user ? `${user.name}님을 위한 취향저격 영화를 찾아봤어요.` : '취향저격 영화를 찾아봤어요.'}</div>
+        <div className="greetingText-recom">{user ? `${user.name}님을 위한 취향저격 영화를 찾아봤어요.` : '취향저격 영화를 찾아봤어요.'}</div>
         <div className="topMovieAndListContainer">
           <div className="topMovieContainer">
             {loadingRecommendations ? (
@@ -193,6 +197,7 @@ function RecomPage() {
                     flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                     userId={user ? user.id : null}
                     movieId={topMovie.id || topMovie.movie_id}
+                    onPosterClick={handlePosterClick}
                   />
                 </div>
               ) : (
@@ -209,7 +214,7 @@ function RecomPage() {
                   const genreList = movie.genre ? movie.genre.split(',').map(g => genreMapping[g.trim()]).filter(Boolean) : [];
                   const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
                   return (
-                    <div key={index} className="movieItem">
+                    <div key={index} className="movieItem" onClick={() => handlePosterClick(movie.id || movie.movie_id)}>
                       <img
                         src={posterUrl}
                         alt={movie.title}
@@ -256,6 +261,7 @@ function RecomPage() {
                         flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
                         userId={user ? user.id : null}
                         movieId={movie.id || movie.movie_id}
+                        onPosterClick={handlePosterClick}
                       />
                     </div>
                   </SwiperSlide>
