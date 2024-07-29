@@ -132,6 +132,7 @@ function RecomPage() {
         const closestAnniv = getClosestAnniversary();
         setClosestAnniversary(closestAnniv);
         const filteredMovies = data.content.filter(movie => movie.anniversary_name === closestAnniv);
+        console.log('Filtered Movies:', filteredMovies); // 필터링된 데이터 확인
         setAnniversaryMovies(shuffleArray(filteredMovies).slice(0, 10));
         setLoadingAnniversaryMovies(false);
       } catch (error) {
@@ -234,14 +235,15 @@ function RecomPage() {
             <div>Fetching anniversary movies...</div>
           ) : (
             <Swiper
-              spaceBetween={0}
-              slidesPerView={4.5}
+              spaceBetween={10}
+              slidesPerView={3}
               navigation
               pagination={{ clickable: true }}
               modules={[Navigation, Pagination]}
+              className="movieSwiper"
             >
               {anniversaryMovies.map((movie, index) => {
-                const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
+                const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image';
                 return (
                   <SwiperSlide key={index}>
                     <div style={{ transform: 'scale(0.8)' }}>
