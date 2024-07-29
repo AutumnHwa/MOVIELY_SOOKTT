@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import '../css/LogSignPage.css';
 import logoImage from '../logo.png';
 import { useAuth } from '../context/AuthContext';
@@ -29,8 +29,10 @@ function LogSignPage() {
       if (data.jwtToken) {
         login(data.jwtToken, data.user);
         if (data.isNewUser) {
+          console.log('New user detected, navigating to movie-select');
           navigate('/movie-select');
         } else {
+          console.log('Existing user detected, navigating to recommendations');
           navigate('/recommendations');
         }
       } else {

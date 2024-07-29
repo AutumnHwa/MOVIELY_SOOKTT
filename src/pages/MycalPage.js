@@ -1,3 +1,4 @@
+// 필요한 모듈과 컴포넌트를 가져옵니다.
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
@@ -11,19 +12,25 @@ import '../css/MycalPage.css';
 import logoImage from '../logo.png';
 import { useAuth } from '../context/AuthContext';
 
+// MycalPage 컴포넌트를 정의합니다.
 function MycalPage() {
+  // useAuth 훅을 사용하여 사용자 정보를 가져옵니다.
   const { user } = useAuth();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [events, setEvents] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
 
+  // useState 훅을 사용하여 상태를 정의합니다.
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 창 열림 여부
+  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
+  const [selectedEvent, setSelectedEvent] = useState(null); // 선택된 이벤트
+  const [events, setEvents] = useState([]); // 이벤트 목록
+  const [sidebarOpen, setSidebarOpen] = useState(false); // 사이드바 열림 여부
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 내비게이션 기능을 가져옵니다.
+
+  // 컴포넌트가 마운트될 때 이벤트를 가져오는 함수입니다.
   useEffect(() => {
     const fetchEvents = async () => {
+      // 여기에 calendar_id를 사용하여 모든 이벤트를 가져오는 로직을 추가합니다.
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar`, {
+        const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -39,13 +46,11 @@ function MycalPage() {
         const responseData = await response.json();
         console.log('responseData:', responseData);
 
-        // 사용자 ID에 맞게 이벤트 필터링
-        const userEvents = responseData.filter(event => event.user_id === user.id);
-
-        const eventsData = userEvents.map(event => ({
+        const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
+        const eventsData = fetchedEvents.map(event => ({
           id: event.calendar_id,
           title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(),
+          start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
           allDay: true,
           extendedProps: {
             movie_content: event.movie_content
@@ -59,7 +64,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, [user.id]);
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
