@@ -40,10 +40,10 @@ function MvchoPage() {
 
   const platformMapping = useMemo(() => ({
     '전체': 'All',
-    '넷플릭스': 'Netflix',
-    '디즈니플러스': 'Disney Plus',
-    '왓챠': 'Watcha',
-    '웨이브': 'Wavve'
+    '넷플릭스': 'netflix',
+    '디즈니플러스': 'disney plus',
+    '왓챠': 'watcha',
+    '웨이브': 'wavve'
   }), []);
 
   const platforms = useMemo(() => [
@@ -84,13 +84,18 @@ function MvchoPage() {
       }
 
       const data = await response.json();
+      console.log("Fetched movies:", data.content); // 데이터 확인을 위한 콘솔 로그 추가
 
       if (data && data.content) {
-        const processedData = data.content.map(movie => ({
-          ...movie,
-          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
-          genre: movie.genre ? movie.genre.split(', ') : []
-        })).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
+        const processedData = data.content.map(movie => {
+          const genres = movie.genre ? movie.genre.split(', ').map(g => g.trim()) : [];
+          console.log(`Movie: ${movie.title}, Genres: ${genres}`); // 각 영화의 장르 확인을 위한 콘솔 로그 추가
+          return {
+            ...movie,
+            flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+            genre: genres
+          };
+        }).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
 
         setMovies(processedData);
         setFilteredMovies(processedData); // 처음 500개만 설정
@@ -116,9 +121,16 @@ function MvchoPage() {
     }
 
     if (selectedGenre !== '장르 전체') {
-      filtered = filtered.filter(movie => movie.genre.includes(genreMapping[selectedGenre]));
+      const selectedGenreId = genreMapping[selectedGenre];
+      console.log("Selected genre ID:", selectedGenreId); // 선택된 장르 확인
+      filtered = filtered.filter(movie => {
+        const movieGenres = movie.genre.map(g => g.trim());
+        console.log("Movie genres:", movieGenres); // 영화의 장르 확인
+        return movieGenres.includes(selectedGenreId);
+      });
     }
 
+    console.log("Filtered movies:", filtered); // 필터링된 영화 확인
     return filtered;
   }, [movies, selectedPlatform, selectedGenre, genreMapping, platformMapping]);
 
@@ -146,13 +158,6 @@ function MvchoPage() {
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
     setShowPlatforms(false);
-  };
-
-  const platformLogos = {
-    '넷플릭스': netflixLogo,
-    '디즈니플러스': disneyPlusLogo,
-    '왓챠': watchaLogo,
-    '웨이브': wavveLogo
   };
 
   return (

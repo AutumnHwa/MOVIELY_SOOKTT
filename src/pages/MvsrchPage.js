@@ -39,10 +39,10 @@ function MvsrchPage() {
 
   const platformMapping = useMemo(() => ({
     '전체': 'All',
-    '넷플릭스': 'Netflix',
-    '디즈니플러스': 'Disney Plus',
-    '왓챠': 'Watcha',
-    '웨이브': 'Wavve'
+    '넷플릭스': 'netflix',
+    '디즈니플러스': 'disney plus',
+    '왓챠': 'watcha',
+    '웨이브': 'wavve'
   }), []);
 
   const platforms = useMemo(() => [
@@ -93,7 +93,7 @@ function MvsrchPage() {
           return {
             ...movie,
             flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
-            genre: movie.genre ? movie.genre.split(', ') : []
+            genre: movie.genre ? movie.genre.split(', ').map(g => g.trim()) : []
           };
         }).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
 
@@ -121,7 +121,13 @@ function MvsrchPage() {
     }
 
     if (selectedGenre !== '장르 전체') {
-      filtered = filtered.filter(movie => movie.genre.includes(genreMapping[selectedGenre]));
+      const selectedGenreId = genreMapping[selectedGenre];
+      console.log("Selected genre ID:", selectedGenreId); // 선택된 장르 확인
+      filtered = filtered.filter(movie => {
+        const movieGenres = movie.genre.map(g => g.trim());
+        console.log("Movie genres:", movieGenres); // 영화의 장르 확인
+        return movieGenres.includes(selectedGenreId);
+      });
     }
 
     if (searchTerm) {
