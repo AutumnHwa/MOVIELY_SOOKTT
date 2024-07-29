@@ -26,12 +26,11 @@ import ani_9 from '../ani_9.png';
 import ani_10 from '../ani_10.png';
 
 const AnniRecom = () => {
-  const { user } = useAuth(); 
+  const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [movies, setMovies] = useState([]);
-  const [allMovies, setAllMovies] = useState([]); // 초기 상태를 빈 배열로 설정
-  const [bannerIndex, setBannerIndex] = useState(null);
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
   const [showModal, setShowModal] = useState(false); // 모달 상태 관리
   const [selectedMovie, setSelectedMovie] = useState(null);
 
@@ -43,37 +42,35 @@ const AnniRecom = () => {
     setSidebarOpen(false);
   };
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await fetch('https://moviely.duckdns.org/api/anniversary', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
+  const fetchMoviesByCategory = async (category) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`https://moviely.duckdns.org/api/anniversary`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch movies');
-        }
-
-        const data = await response.json();
-        console.log("Fetched data: ", data); // 데이터 확인을 위한 콘솔 로그 추가
-        setAllMovies(Array.isArray(data) ? data : []); // 배열인지 확인 후 설정
-      } catch (error) {
-        console.error('Error fetching movies:', error);
+      if (!response.ok) {
+        throw new Error('Failed to fetch movies');
       }
-    };
 
-    fetchMovies();
-  }, []);
+      const data = await response.json();
+      console.log("Fetched data: ", data); // 데이터 확인을 위한 콘솔 로그 추가
+      const filteredMovies = data.content.filter(movie => movie.anniversary_name === category);
+      console.log(`Movies filtered by ${category}: `, filteredMovies); // 필터링된 데이터 확인을 위한 콘솔 로그 추가
+      setMovies(filteredMovies);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleBannerClick = (category, index) => {
-    console.log("All movies: ", allMovies); // 데이터 확인을 위한 콘솔 로그 추가
-    const filteredMovies = allMovies.filter(movie => movie.anniversary_name === category);
-    setMovies(filteredMovies);
     setSelectedCategory(category);
-    setBannerIndex(index);
+    fetchMoviesByCategory(category);
   };
 
   const handleAddClick = (movie) => {
@@ -110,11 +107,7 @@ const AnniRecom = () => {
           <img src={logoImage} alt="Logo" />
         </Link>
         <Link to="/movie-search" className="searchIconContainer">
-          <FontAwesomeIcon
-            icon={faSearch}
-            size="2x"
-            className="recom-searchIcon"
-          />
+          <FontAwesomeIcon icon={faSearch} size="2x" className="recom-searchIcon" />
         </Link>
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
@@ -127,44 +120,41 @@ const AnniRecom = () => {
       <div className="banners">
         {categories.map((category, index) => (
           <React.Fragment key={index}>
-            <div
-              className={`banner ${category.className}`}
-              onClick={() => handleBannerClick(category.anniversaryName, index)}
-            >
+            <div className={`banner ${category.className}`} onClick={() => handleBannerClick(category.anniversaryName, index)}>
               <div className="banner-text">
                 <div>{category.title}</div>
-                <div><strong>{category.description}</strong></div>
+                <div>
+                  <strong>{category.description}</strong>
+                </div>
               </div>
               <img src={category.imageUrl} alt={category.title} className="banner-image" />
             </div>
-            {selectedCategory && bannerIndex === index && (
+            {selectedCategory === category.anniversaryName && (
               <div className="moviesContainer">
-                <div className="movies">
-                  <Swiper
-                    spaceBetween={4}
-                    slidesPerView={3.5}
-                    navigation
-                    modules={[Navigation]}
-                    className="movieSwiper"
-                  >
-                    {movies.length > 0 ? (
-                      movies.map((movie, index) => (
-                        <SwiperSlide key={index}>
-                          <MvBanner
-                            title={movie.title}
-                            poster={movie.poster_path}
-                            flatrate={movie.flatrate ? movie.flatrate.split(', ') : []}
-                            movieId={movie.movie_id}
-                            userId={user?.id}
-                            onAddClick={(e) => handleAddClick(movie)}
-                          />
-                        </SwiperSlide>
-                      ))
-                    ) : (
-                      <div>영화를 불러오는 중입니다...</div>
-                    )}
-                  </Swiper>
-                </div>
+                {loading ? (
+                  <div>영화를 불러오는 중입니다...</div>
+                ) : (
+                  <div className="movies">
+                    <Swiper spaceBetween={4} slidesPerView={3.5} navigation modules={[Navigation]} className="movieSwiper">
+                      {movies.length > 0 ? (
+                        movies.map((movie, index) => (
+                          <SwiperSlide key={index}>
+                            <MvBanner
+                              title={movie.title}
+                              poster={movie.poster_path}
+                              flatrate={movie.flatrate ? movie.flatrate.split(', ') : []}
+                              movieId={movie.movie_id}
+                              userId={user?.id}
+                              onAddClick={(e) => handleAddClick(movie)}
+                            />
+                          </SwiperSlide>
+                        ))
+                      ) : (
+                        <div>해당 카테고리에 대한 영화가 없습니다.</div>
+                      )}
+                    </Swiper>
+                  </div>
+                )}
               </div>
             )}
           </React.Fragment>
