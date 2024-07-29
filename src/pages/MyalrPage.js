@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -40,7 +40,7 @@ function MyalrPage() {
       }
 
       const watchedListData = await watchedListResponse.json();
-      console.log("Fetched watched list:", watchedListData); // 데이터 확인을 위한 콘솔 로그 추가
+      console.log("Fetched watched list:", watchedListData);
 
       const movieDetails = await Promise.all(
         watchedListData.map(async (watchedMovie) => {
@@ -56,7 +56,7 @@ function MyalrPage() {
           }
 
           const movieDetailsData = await movieDetailsResponse.json();
-          console.log("Fetched movie details:", movieDetailsData); // 데이터 확인을 위한 콘솔 로그 추가
+          console.log("Fetched movie details:", movieDetailsData);
 
           return {
             ...watchedMovie,
