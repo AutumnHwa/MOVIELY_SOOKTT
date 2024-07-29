@@ -54,7 +54,7 @@
   margin-bottom: 30px;
   font-size: 15px;
   font-weight: bold;
-  margin-left: -320px;
+  margin-left: -330px;
 }
 
 .tabButtons {
@@ -169,7 +169,7 @@
 .recomani-text {
   margin-bottom: 10px; /* anniversaryMoviesContainer와의 간격을 10px로 설정 */
   margin-top: 40px;
-  margin-left: -360px;
+  margin-left: -350px;
   color: white;
   text-align: center;
   height : 20px;
