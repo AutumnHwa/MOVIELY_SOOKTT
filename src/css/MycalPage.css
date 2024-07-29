@@ -161,10 +161,24 @@
   padding: 0;
 }
 
+.fc .fc-toolbar-title {
+  font-size: 1.3em;
+  margin: 0px;
+}
+
 .fc .fc-daygrid-body {
   padding-bottom: 5px; /* 아래 여백을 2픽셀로 설정 */
 }
 
 .fc-daygrid-day-events {
   height: 25px;
+}
+
+/* 추가된 스타일 */
+.fc .fc-header-toolbar {
+  margin-bottom: 5px; /* 상단 여백을 5픽셀로 설정 */
+}
+
+.fc .fc-daygrid-day-top {
+  margin-bottom: 5px; /* 하단 여백을 5픽셀로 설정 */
 }
