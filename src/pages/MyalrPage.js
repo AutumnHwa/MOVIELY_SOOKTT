@@ -61,7 +61,7 @@ function MyalrPage() {
           return {
             ...watchedMovie,
             ...movieDetailsData,
-            flatrate: movieDetailsData.flatrate ? movieDetailsData.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+            flatrate: movieDetailsData.flatrate ? movieDetailsData.flatrate.split(',').map(f => f.trim().toLowerCase()) : [],
           };
         })
       );
