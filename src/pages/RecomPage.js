@@ -63,16 +63,18 @@ function RecomPage() {
 
       try {
         console.log('Fetching recommendations...');
-        const response = await fetch(`https://moviely.duckdns.org/api/recommend?user_id=${user.id}`, {
-          method: 'GET',
+        const response = await fetch('https://moviely.duckdns.org/api/recommend', {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authToken}`,
           },
+          body: JSON.stringify({ user_id: user.id }),
         });
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch recommendations: ${response.statusText}`);
+          const errorText = await response.text();
+          throw new Error(`Failed to fetch recommendations: ${response.statusText} - ${errorText}`);
         }
 
         const data = await response.json();
