@@ -103,7 +103,7 @@
 .topMovieContainer {
   width: 300px; /* 너비를 300px로 설정 */
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: center;
 }
 
