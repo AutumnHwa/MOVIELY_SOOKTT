@@ -20,19 +20,22 @@
 
 .navButtons {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  width: 500px;
-  height: 40px;
+  width: 500px; /* 컨테이너의 너비를 500px로 고정 */
+  height: 50px;
   margin-top: 10px;
   border: 1px solid white;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 5px;
+  box-sizing: border-box;
+  padding: 0 10px; /* 컨테이너의 패딩을 추가하여 버튼 간의 간격을 조정 */
 }
 
 .navButton {
-  width: 100px;
-  height: 15px;
+  flex: 1; /* 버튼들이 동일한 너비를 가지도록 설정 */
+  height: 10px; /* 버튼 높이를 컨테이너 높이에 맞춤 */
+  margin: 0 5px; /* 버튼 사이의 간격을 설정 */
   background-color: white;
   color: black; 
   font-weight: bold;
@@ -43,6 +46,7 @@
   align-items: center;
   border-radius: 5px; 
   border: 1px solid white; 
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .navButton:hover,
@@ -69,7 +73,6 @@
   border-color: #FBE64D; 
 }
 
-
 .recordButton:active {
   color: #FBE64D;
   border-color: #FBE64D;
@@ -83,6 +86,7 @@
   margin-top: 20px;
   padding: 25px 20px 40px;
   background-color: #ffffff;
+  box-sizing: border-box;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -108,7 +112,6 @@
   background-color: #FBE64D;
   color: rgb(0, 0, 0);
 }
-
 
 .fc-day-sun a {
   color: red;
