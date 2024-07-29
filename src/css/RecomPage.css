@@ -150,7 +150,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px; /* recomani-text와의 간격을 10px로 설정 */
+  margin-top: 0px; /* recomani-text와의 간격을 10px로 설정 */
   width: 600px;
   margin-bottom: 50px;
 }
@@ -159,6 +159,7 @@
   margin-bottom: 10px; /* anniversaryMoviesContainer와의 간격을 10px로 설정 */
   color: white;
   text-align: center;
+  height : 100px;
 }
 
 .swiper-container {
