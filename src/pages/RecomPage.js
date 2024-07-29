@@ -63,13 +63,12 @@ function RecomPage() {
 
       try {
         console.log('Fetching recommendations...');
-        const response = await fetch('https://moviely.duckdns.org/api/recommend', {
-          method: 'POST',
+        const response = await fetch(`https://moviely.duckdns.org/api/recommend?user_id=${user.id}`, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authToken}`,
           },
-          body: JSON.stringify({ user_id: user.id }),
         });
 
         if (!response.ok) {
