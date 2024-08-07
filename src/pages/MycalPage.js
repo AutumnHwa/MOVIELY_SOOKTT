@@ -103,15 +103,16 @@ function MycalPage() {
   const handleEventClick = async (clickInfo) => {
     const { event } = clickInfo;
     console.log('Clicked Event:', event); // 클릭한 이벤트 전체를 출력
-    console.log('Clicked Event ID:', event.id); // 클릭한 이벤트의 ID를 출력
+    const eventId = event._def.publicId; // event.id 대신 event._def.publicId 사용
+    console.log('Clicked Event ID:', eventId); // 클릭한 이벤트의 ID를 출력
 
-    if (!event.id) {
+    if (!eventId) {
       console.error('Event ID is undefined');
       return;
     }
 
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
