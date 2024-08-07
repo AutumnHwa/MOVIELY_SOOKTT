@@ -121,13 +121,16 @@ function MycalPage() {
         }
       });
 
+      console.log('Response status:', response.status);
+      const responseText = await response.text();
+      console.log('Response text:', responseText);
+
       if (!response.ok) {
-        const responseText = await response.text();
         console.error('Failed to fetch event:', responseText);
         throw new Error('Failed to fetch event');
       }
 
-      const responseData = await response.json();
+      const responseData = JSON.parse(responseText);
       console.log('Fetched Event Data:', responseData); // 받아온 이벤트 데이터를 출력
       setSelectedDate(responseData.watch_date);
       setSelectedEvent({
