@@ -29,6 +29,7 @@ function Sidebar({ isOpen, onClose }) {
         </button>
         <ul>
           <li><Link to="/recommendations" onClick={onClose}>취향저격 영화 추천</Link></li>
+          <li><Link to="/platform-recommendations" onClick={onClose}>맞춤 플랫폼 추천</Link></li>
           <li><Link to="/anniversary-recommendations" onClick={onClose}>기념일별 영화 추천</Link></li>
           <li><Link to="/my/wishlist" onClick={onClose}>마이페이지</Link></li>
         </ul>

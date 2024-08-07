@@ -1,4 +1,3 @@
-// 필요한 모듈과 컴포넌트를 가져옵니다.
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
@@ -12,28 +11,24 @@ import '../css/MycalPage.css';
 import logoImage from '../logo.png';
 import { useAuth } from '../context/AuthContext';
 
-// MycalPage 컴포넌트를 정의합니다.
 function MycalPage() {
-  // useAuth 훅을 사용하여 사용자 정보를 가져옵니다.
   const { user } = useAuth();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
-  // useState 훅을 사용하여 상태를 정의합니다.
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 창 열림 여부
-  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
-  const [selectedEvent, setSelectedEvent] = useState(null); // 선택된 이벤트
-  const [events, setEvents] = useState([]); // 이벤트 목록
-  const [sidebarOpen, setSidebarOpen] = useState(false); // 사이드바 열림 여부
-  const navigate = useNavigate(); // useNavigate 훅을 사용하여 내비게이션 기능을 가져옵니다.
-
-  // 컴포넌트가 마운트될 때 이벤트를 가져오는 함수입니다.
   useEffect(() => {
     const fetchEvents = async () => {
-      // 여기에 calendar_id를 사용하여 모든 이벤트를 가져오는 로직을 추가합니다.
       try {
-        const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
+        // 사용자 고유의 캘린더 아이디를 기반으로 이벤트를 가져오는 API 호출
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar`, {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}` // 필요 시 토큰을 사용하여 인증
           }
         });
 
@@ -46,8 +41,12 @@ function MycalPage() {
         const responseData = await response.json();
         console.log('responseData:', responseData);
 
-        const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
-        const eventsData = fetchedEvents.map(event => ({
+        // 사용자 고유의 캘린더 아이디 필터링
+        const userCalendarId = responseData.find(event => event.user_id === user.id)?.calendar_id;
+        console.log('User Calendar ID:', userCalendarId);
+
+        const filteredEvents = responseData.filter(event => event.calendar_id === userCalendarId);
+        const eventsData = filteredEvents.map(event => ({
           id: event.calendar_id,
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
@@ -64,7 +63,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, []);
+  }, [user]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -169,17 +168,17 @@ function MycalPage() {
   return (
     <div className="mycalPage">
       <header className="pageHeader">
-        <Link to="/recommendations">
+        <Link to="/">
           <img src={logoImage} alt="Logo" className="myPageLogo" />
         </Link>
         <Link to="/movie-search" className="searchIconContainer">
           <FontAwesomeIcon
             icon={faSearch}
             size="2x"
-            className="wish-searchIcon"
+            className="my-searchIcon"
           />
         </Link>
-        <button className="wish-sidebar-toggle" onClick={toggleSidebar}>
+        <button className="my-sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
         <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />

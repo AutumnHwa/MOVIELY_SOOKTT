@@ -57,7 +57,6 @@ function MvsrchPage() {
   const [selectedGenre, setSelectedGenre] = useState('장르 전체');
   const [selectedPlatform, setSelectedPlatform] = useState('전체');
   const [movies, setMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPlatforms, setShowPlatforms] = useState(false);
@@ -77,7 +76,16 @@ function MvsrchPage() {
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const url = `https://moviely.duckdns.org/api/movies?size=1000&sort=release_date,desc&release_date.gte=2000-01-01`;
+      const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
+      const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
+      const url = new URL('https://moviely.duckdns.org/api/movies');
+      const params = { size: 1000, sort: 'popularity,desc' };
+
+      if (genre) params.genre = genre;
+      if (platform) params.platform = platform;
+      if (searchTerm) params.search = searchTerm;
+
+      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
       const response = await fetch(url, { mode: 'cors' });
 
@@ -95,10 +103,9 @@ function MvsrchPage() {
             flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
             genre: movie.genre ? movie.genre.split(', ').map(g => g.trim()) : []
           };
-        }).sort((a, b) => b.popularity - a.popularity); // 파퓰러리티 높은 순으로 정렬
+        });
 
         setMovies(processedData);
-        setFilteredMovies(processedData); // 처음 1000개만 설정
       }
 
       setLoading(false);
@@ -106,50 +113,26 @@ function MvsrchPage() {
       console.error('Error fetching movies:', error);
       setLoading(false);
     }
-  }, []);
+  }, [selectedGenre, selectedPlatform, searchTerm, genreMapping, platformMapping]);
 
   useEffect(() => {
     fetchMovies();
   }, [fetchMovies]);
 
-  const filterMovies = useCallback(() => {
-    let filtered = [...movies];
-
-    if (selectedPlatform !== '전체') {
-      const selectedPlatformInEnglish = platformMapping[selectedPlatform].toLowerCase();
-      filtered = filtered.filter(movie => movie.flatrate.includes(selectedPlatformInEnglish));
-    }
-
-    if (selectedGenre !== '장르 전체') {
-      const selectedGenreId = genreMapping[selectedGenre];
-      filtered = filtered.filter(movie => movie.genre.includes(selectedGenreId));
-    }
-
-    if (searchTerm) {
-      const terms = searchTerm.split(' ').filter(term => term);
-      const regex = new RegExp(terms.join('|'), 'i');
-      filtered = filtered.filter(movie => regex.test(movie.title));
-    }
-
-    return filtered;
-  }, [movies, selectedPlatform, selectedGenre, searchTerm, genreMapping, platformMapping]);
-
-  useEffect(() => {
-    setFilteredMovies(filterMovies());
-  }, [filterMovies]);
-
   const handleSearchClick = () => {
-    setFilteredMovies(filterMovies());
+    fetchMovies();
   };
 
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
     setShowGenres(false);
+    fetchMovies();
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
     setShowPlatforms(false);
+    fetchMovies();
   };
 
   let resultText = '';
@@ -242,9 +225,9 @@ function MvsrchPage() {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          filteredMovies.length > 0 ? (
+          movies.length > 0 ? (
             <div className="movieGrid">
-              {filteredMovies.map((movie, index) => (
+              {movies.map((movie, index) => (
                 <MvBanner
                   key={index}
                   title={movie.title}
