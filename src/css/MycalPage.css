@@ -152,7 +152,7 @@
 .my-sidebar-toggle {
   position: absolute;
   right: 50px;
-  top: -30px;
+  top: 30px;
   background: transparent;
   border: none;
   color: white;
@@ -165,7 +165,7 @@
   position: absolute;
   right: 100px;
   color: white;
-  margin-top: 15px;
+  margin-top: -19px;
   cursor: pointer;
   width: 26px;
 }
