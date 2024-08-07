@@ -102,6 +102,11 @@ function MycalPage() {
 
   const handleEventClick = async ({ event }) => {
     console.log('Clicked Event ID:', event.id); // 클릭한 이벤트의 ID를 출력
+    if (!event.id) {
+      console.error('Event ID is undefined');
+      return;
+    }
+
     try {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
