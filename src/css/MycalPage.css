@@ -151,8 +151,8 @@
 
 .my-sidebar-toggle {
   position: absolute;
-  right: 40px;
-  top: 20px;
+  right: 50px;
+  top: 0px;
   background: transparent;
   border: none;
   color: white;
