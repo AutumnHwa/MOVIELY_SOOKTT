@@ -104,7 +104,7 @@ function MycalPage() {
   const handleEventClick = async (clickInfo) => {
     const { event } = clickInfo;
     console.log('Clicked Event:', event); // 클릭한 이벤트 전체를 출력
-    const eventId = event._def.publicId || event._def.defId || event.id || event._instance.instanceId;
+    const eventId = event._def.defId;
     console.log('Clicked Event ID:', eventId); // 클릭한 이벤트의 ID를 출력
 
     if (!eventId) {
