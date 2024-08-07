@@ -161,6 +161,15 @@
   padding: 0;
 }
 
+.my-searchIcon {
+  position: absolute;
+  right: 100px;
+  color: white;
+  margin-top: 15px;
+  cursor: pointer;
+  width: 26px;
+}
+
 .fc .fc-toolbar-title {
   font-size: 1.3em;
   margin: 0px;
