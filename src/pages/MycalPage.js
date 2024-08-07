@@ -100,9 +100,11 @@ function MycalPage() {
     setIsPopupOpen(false);
   };
 
-  const handleEventClick = async ({ event }) => {
+  const handleEventClick = async (clickInfo) => {
+    const { event } = clickInfo;
     console.log('Clicked Event:', event); // 클릭한 이벤트 전체를 출력
     console.log('Clicked Event ID:', event.id); // 클릭한 이벤트의 ID를 출력
+
     if (!event.id) {
       console.error('Event ID is undefined');
       return;
