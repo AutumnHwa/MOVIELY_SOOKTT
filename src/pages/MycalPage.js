@@ -23,12 +23,12 @@ function MycalPage() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // 사용자 고유의 캘린더 아이디를 가져오는 API 호출
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
+        // 사용자 고유의 캘린더 아이디를 기반으로 이벤트를 가져오는 API 호출
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar?user_id=${user.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}` // 필요 시 토큰을 사용하여 인증
+            'Authorization': `Bearer ${authToken}` // 필요 시 토큰을 사용하여 인증
           }
         });
 
@@ -60,7 +60,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, [user]);
+  }, [user.id]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
