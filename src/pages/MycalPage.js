@@ -12,7 +12,7 @@ import logoImage from '../logo.png';
 import { useAuth } from '../context/AuthContext';
 
 function MycalPage() {
-  const { user, authToken } = useAuth();
+  const { user } = useAuth();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -22,12 +22,12 @@ function MycalPage() {
 
   useEffect(() => {
     const fetchEvents = async () => {
+      
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar`, {
+        const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`
+            'Content-Type': 'application/json'
           }
         });
 
@@ -40,20 +40,17 @@ function MycalPage() {
         const responseData = await response.json();
         console.log('responseData:', responseData);
 
-        const userEvents = responseData.filter(event => event.user_id === user.id);
-        console.log('User Events:', userEvents);
-
-        const eventsData = userEvents.map(event => ({
-          id: event.calendar_id, // 이벤트의 ID를 calendar_id로 설정
+        const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
+        const eventsData = fetchedEvents.map(event => ({
+          id: event.calendar_id,
           title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(),
+          start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
           allDay: true,
           extendedProps: {
             movie_content: event.movie_content
           }
         }));
 
-        console.log('Events Data:', eventsData);
         setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
@@ -61,7 +58,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, [user.id, authToken]);
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -101,23 +98,12 @@ function MycalPage() {
     setIsPopupOpen(false);
   };
 
-  const handleEventClick = async (clickInfo) => {
-    const { event } = clickInfo;
-    console.log('Clicked Event:', event); // 클릭한 이벤트 전체를 출력
-    const eventId = event._def.defId;
-    console.log('Clicked Event ID:', eventId); // 클릭한 이벤트의 ID를 출력
-
-    if (!eventId) {
-      console.error('Event ID is undefined');
-      return;
-    }
-
+  const handleEventClick = async ({ event }) => {
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}` // 인증 토큰 추가
+          'Content-Type': 'application/json'
         }
       });
 
@@ -128,7 +114,6 @@ function MycalPage() {
       }
 
       const responseData = await response.json();
-      console.log('Fetched Event Data:', responseData); // 받아온 이벤트 데이터를 출력
       setSelectedDate(responseData.watch_date);
       setSelectedEvent({
         id: responseData.calendar_id,
@@ -152,8 +137,7 @@ function MycalPage() {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}` // 인증 토큰 추가
+          'Content-Type': 'application/json'
         }
       });
 
