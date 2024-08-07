@@ -22,9 +22,12 @@ function MycalPage() {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      
+      if (!user) return;
+
+      console.log('User ID:', user.id); // 사용자 ID를 출력합니다.
+
       try {
-        const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${user.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -38,6 +41,7 @@ function MycalPage() {
         }
 
         const responseData = await response.json();
+
         console.log('responseData:', responseData);
 
         const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
@@ -58,7 +62,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, []);
+  }, [user]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -100,7 +104,7 @@ function MycalPage() {
 
   const handleEventClick = async ({ event }) => {
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/event/${event.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
