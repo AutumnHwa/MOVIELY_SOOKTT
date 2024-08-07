@@ -53,6 +53,7 @@ function MycalPage() {
           }
         }));
 
+        console.log('Events Data:', eventsData);
         setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
@@ -103,7 +104,7 @@ function MycalPage() {
   const handleEventClick = async (clickInfo) => {
     const { event } = clickInfo;
     console.log('Clicked Event:', event); // 클릭한 이벤트 전체를 출력
-    const eventId = event._def.publicId; // event.id 대신 event._def.publicId 사용
+    const eventId = event._def.publicId || event._def.defId; // 가능한 ID 필드를 모두 확인
     console.log('Clicked Event ID:', eventId); // 클릭한 이벤트의 ID를 출력
 
     if (!eventId) {
