@@ -44,7 +44,7 @@ function MycalPage() {
         console.log('User Events:', userEvents);
 
         const eventsData = userEvents.map(event => ({
-          id: event.calendar_id, // 여기서 id를 calendar_id로 설정
+          id: event.calendar_id, // 이벤트의 ID를 calendar_id로 설정
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(),
           allDay: true,
@@ -105,7 +105,8 @@ function MycalPage() {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}` // 인증 토큰 추가
         }
       });
 
@@ -139,7 +140,8 @@ function MycalPage() {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}` // 인증 토큰 추가
         }
       });
 
