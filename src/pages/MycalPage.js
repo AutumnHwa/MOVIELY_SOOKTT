@@ -101,6 +101,7 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
+    console.log('Clicked Event ID:', event.id); // 클릭한 이벤트의 ID를 출력
     try {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
@@ -117,6 +118,7 @@ function MycalPage() {
       }
 
       const responseData = await response.json();
+      console.log('Fetched Event Data:', responseData); // 받아온 이벤트 데이터를 출력
       setSelectedDate(responseData.watch_date);
       setSelectedEvent({
         id: responseData.calendar_id,
