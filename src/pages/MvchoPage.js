@@ -58,7 +58,7 @@ function MvchoPage() {
   const [selectedGenre, setSelectedGenre] = useState('장르 전체');
   const [selectedPlatform, setSelectedPlatform] = useState('전체');
   const [movies, setMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]); // 선언 추가
   const [loading, setLoading] = useState(true);
   const [showPlatforms, setShowPlatforms] = useState(false);
   const [showGenres, setShowGenres] = useState(false);
@@ -75,7 +75,15 @@ function MvchoPage() {
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const url = `https://moviely.duckdns.org/api/movies?size=3000&sort=popularity,desc`;
+      const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
+      const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
+      const url = new URL('https://moviely.duckdns.org/api/movies');
+      const params = { size: 3000, sort: 'popularity,desc', 'release_date.gte': '2000-01-01' };
+
+      if (genre) params.genre = genre;
+      if (platform) params.platform = platform;
+
+      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
       const response = await fetch(url, { mode: 'cors' });
 
@@ -97,11 +105,8 @@ function MvchoPage() {
           };
         });
 
-        // 파퓰러리티 높은 순으로 정렬
-        processedData.sort((a, b) => b.popularity - a.popularity);
-
         setMovies(processedData);
-        setFilteredMovies(processedData); // 처음 1000개만 설정
+        setFilteredMovies(processedData); // 초기 로딩 시 필터링된 데이터 설정
       }
 
       setLoading(false);
@@ -109,7 +114,7 @@ function MvchoPage() {
       console.error('Error fetching movies:', error);
       setLoading(false);
     }
-  }, []);
+  }, [selectedGenre, selectedPlatform, genreMapping, platformMapping]);
 
   useEffect(() => {
     fetchMovies();
@@ -156,11 +161,13 @@ function MvchoPage() {
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
     setShowGenres(false);
+    fetchMovies();
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
     setShowPlatforms(false);
+    fetchMovies();
   };
 
   return (
