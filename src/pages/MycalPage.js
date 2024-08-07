@@ -23,12 +23,11 @@ function MycalPage() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // 사용자 고유의 캘린더 아이디를 기반으로 이벤트를 가져오는 API 호출
         const response = await fetch(`https://moviely.duckdns.org/mypage/calendar`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}` // 필요 시 토큰을 사용하여 인증
+            'Authorization': `Bearer ${authToken}`
           }
         });
 
@@ -41,14 +40,13 @@ function MycalPage() {
         const responseData = await response.json();
         console.log('responseData:', responseData);
 
-        // 사용자 고유의 이벤트 필터링
         const userEvents = responseData.filter(event => event.user_id === user.id);
         console.log('User Events:', userEvents);
 
         const eventsData = userEvents.map(event => ({
-          id: event.calendar_id,
+          id: event.calendar_id, // 여기서 id를 calendar_id로 설정
           title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
+          start: new Date(event.watch_date).toISOString(),
           allDay: true,
           extendedProps: {
             movie_content: event.movie_content
