@@ -67,7 +67,6 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       created_by: movieData.created_by
     };
 
-    // 콘솔에 데이터를 출력합니다.
     console.log('eventDetails:', eventDetails);
     console.log('calendarEvent:', calendarEvent);
 

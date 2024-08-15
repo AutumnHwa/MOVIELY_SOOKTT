@@ -99,7 +99,7 @@ function MycalPage() {
   };
 
   const handleSaveMovieData = (eventDetails) => {
-    if (!eventDetails.movie_title) {
+    if (!eventDetails.title) { // title로 확인하는 것이 맞습니다
       alert('영화 제목을 입력해주세요.');
       return;
     }
