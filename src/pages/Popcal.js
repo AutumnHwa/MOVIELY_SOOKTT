@@ -17,9 +17,9 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       setMovieData({
         watch_date: initialData.start ? new Date(initialData.start).toISOString().split('T')[0] : '',
         movie_title: initialData.title || '',
-        movie_content: initialData.movie_content || '',
-        created_at: initialData.created_at || '',
-        created_by: initialData.created_by || userId
+        movie_content: initialData.extendedProps.movie_content || '',
+        created_at: initialData.extendedProps.created_at || '',
+        created_by: initialData.extendedProps.created_by || userId
       });
     } else {
       setMovieData({
@@ -58,7 +58,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
     };
 
     const calendarEvent = {
-      calendar_id: initialData ? initialData.id : Date.now().toString(), // calendar_id 사용
+      calendar_id: initialData ? initialData.id : Date.now().toString(),
       user_id: userId,
       watch_date: new Date(movieData.watch_date).toISOString(),
       movie_title: movieData.movie_title,
@@ -86,7 +86,6 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
         throw new Error('Failed to save movie data');
       }
 
-      const responseData = await response.json();
       onSave(eventDetails);
       onClose();
     } catch (error) {
@@ -98,7 +97,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
   const handleDelete = async () => {
     if (initialData && initialData.id) {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, { // URL 수정
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, { 
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
