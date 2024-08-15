@@ -44,15 +44,19 @@ function MycalPage() {
 
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
-        fetchedEvents.forEach(event => {
-          console.log('Event:', event);
-          console.log('Event ID:', event.calendar_id, 'Title:', event.movie_title);
-        });
-
         const eventsData = fetchedEvents.map(event => {
           if (!event.calendar_id) {
-            console.warn('Event is missing calendar_id and will be skipped:', event);
-            return null;
+            console.error('Event is missing calendar_id:', event);
+            return {
+              id: `temp-${event.user_id}-${event.watch_date}`,  // 임시 ID 생성
+              title: event.movie_title,
+              start: new Date(event.watch_date).toISOString(),
+              allDay: true,
+              extendedProps: {
+                movie_content: event.movie_content,
+                missingCalendarId: true // 추가 필드로 누락된 `calendar_id` 표시
+              }
+            };
           }
           return {
             id: event.calendar_id,
@@ -63,9 +67,9 @@ function MycalPage() {
               movie_content: event.movie_content
             }
           };
-        }).filter(event => event !== null); // null이 아닌 이벤트만 필터링
+        });
 
-        console.log('Filtered eventsData:', eventsData);
+        console.log('Processed eventsData:', eventsData);
         setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
@@ -114,8 +118,8 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
-    if (!event.id) {
-      console.error('Event ID is undefined. Skipping fetch request.');
+    if (event.extendedProps.missingCalendarId) {
+      alert('이벤트에 할당된 캘린더 ID가 없습니다. 관리자에게 문의하세요.');
       return;
     }
 
