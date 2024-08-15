@@ -4,7 +4,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons'; // 여기에 아이콘을 추가합니다.
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Popcal from './Popcal';
 import Sidebar from '../components/Sidebar';
 import '../css/MycalPage.css';
@@ -45,22 +45,22 @@ function MycalPage() {
 
         fetchedEvents.forEach(event => {
           console.log('Processing event:', event);  // 개별 이벤트 로그
-          console.log('calendar_id:', event.calendar_id);  // calendar_id가 존재하는지 확인
+          console.log('calendarId:', event.calendarId);  // calendarId가 존재하는지 확인
         });
 
         const eventsData = fetchedEvents.map(event => {
-          const watchDate = new Date(event.watch_date);
+          const watchDate = new Date(event.watchDate); // watchDate로 수정
           if (isNaN(watchDate)) {
-            console.error('Invalid watch_date:', event.watch_date);
+            console.error('Invalid watchDate:', event.watchDate); // watchDate로 수정
             return null; // 유효하지 않은 날짜는 건너뛰기
           }
           return {
-            id: event.calendar_id,  // calendar_id를 id로 사용
-            title: event.movie_title,
-            start: watchDate.toISOString(), // 유효한 날짜를 ISO 형식으로 변환
+            id: event.calendarId,  // calendarId로 수정
+            title: event.movieTitle,  // movieTitle로 수정
+            start: watchDate.toISOString(),
             allDay: true,
             extendedProps: {
-              movie_content: event.movie_content
+              movie_content: event.movieContent // movieContent로 수정
             }
           };
         }).filter(event => event !== null); // 유효한 이벤트만 포함
@@ -140,12 +140,12 @@ function MycalPage() {
 
       const responseData = await response.json();
       console.log('Fetched event data:', responseData); // 개별 이벤트 데이터 로그
-      setSelectedDate(responseData.watch_date);
+      setSelectedDate(responseData.watchDate);
       setSelectedEvent({
-        id: responseData.calendar_id,
-        title: responseData.movie_title,
-        start: new Date(responseData.watch_date).toISOString(),
-        movie_content: responseData.movie_content
+        id: responseData.calendarId,
+        title: responseData.movieTitle,
+        start: new Date(responseData.watchDate).toISOString(),
+        movie_content: responseData.movieContent
       });
       setIsPopupOpen(true);
     } catch (error) {
@@ -196,7 +196,7 @@ function MycalPage() {
         </Link>
         <Link to="/movie-search" className="searchIconContainer">
           <FontAwesomeIcon
-            icon={faSearch} // 여기서 faSearch가 사용됩니다.
+            icon={faSearch}
             size="2x"
             className="wish-searchIcon"
           />
