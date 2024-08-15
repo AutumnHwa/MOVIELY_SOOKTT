@@ -23,8 +23,6 @@ function MycalPage() {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const userId = user.id;
-
       try {
         const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
           method: 'GET',
@@ -40,21 +38,16 @@ function MycalPage() {
         }
 
         const responseData = await response.json();
-        console.log('Full responseData:', responseData);
+        console.log('responseData:', responseData);  // 서버에서 받은 원본 데이터를 출력
 
-        const fetchedEvents = responseData.filter(event => event.user_id === userId);
-
-        fetchedEvents.forEach(event => {
-          console.log('Event:', event);
-          console.log('Event ID:', event.calendar_id, 'Title:', event.movie_title);
-        });
-
-        const eventsData = fetchedEvents.map(event => {
+        // 서버로부터 받은 데이터를 가공하여 화면에 표시할 이벤트로 변환
+        const eventsData = responseData.map(event => {
+          console.log('Processing event:', event);  // 개별 이벤트 로그
           if (!event.calendar_id) {
-            console.warn('calendar_id is undefined for event:', event);
+            console.error('Missing calendar_id for event:', event);  // calendar_id가 누락된 경우 경고 출력
           }
           return {
-            id: event.calendar_id || event.id,
+            id: event.calendar_id,  // calendar_id를 id로 설정
             title: event.movie_title,
             start: new Date(event.watch_date).toISOString(),
             allDay: true,
@@ -64,15 +57,15 @@ function MycalPage() {
           };
         });
 
-        console.log('Filtered eventsData:', eventsData);
+        console.log('Processed eventsData:', eventsData);  // 처리된 이벤트 데이터를 출력
         setEvents(eventsData);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error:', error);
       }
     };
 
     fetchEvents();
-  }, [user]);
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -113,11 +106,6 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
-    if (!event.id) {
-      console.error('Event ID is undefined.');
-      return;
-    }
-
     try {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
@@ -142,7 +130,7 @@ function MycalPage() {
       });
       setIsPopupOpen(true);
     } catch (error) {
-      console.error('Error fetching event details:', error);
+      console.error('Error:', error);
     }
   };
 
