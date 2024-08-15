@@ -4,6 +4,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons'; // 여기에 아이콘을 추가합니다.
 import Popcal from './Popcal';
 import Sidebar from '../components/Sidebar';
 import '../css/MycalPage.css';
@@ -195,7 +196,7 @@ function MycalPage() {
         </Link>
         <Link to="/movie-search" className="searchIconContainer">
           <FontAwesomeIcon
-            icon={faSearch}
+            icon={faSearch} // 여기서 faSearch가 사용됩니다.
             size="2x"
             className="wish-searchIcon"
           />
