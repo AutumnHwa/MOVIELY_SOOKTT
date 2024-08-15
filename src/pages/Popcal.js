@@ -56,23 +56,22 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       start: new Date(movieData.watch_date).toISOString(),
       allDay: true,
       extendedProps: {
-        movie_content: movieData.movie_content || '내용 없음', // 기본값 설정
+        movie_content: movieData.movie_content || '내용 없음',
         created_at: movieData.created_at || new Date().toISOString(),
         created_by: movieData.created_by
       }
     };
 
     const calendarEvent = {
-      calendar_id: initialData ? initialData.id : Date.now().toString(), // calendar_id 사용
+      calendar_id: initialData ? initialData.id : Date.now().toString(),
       user_id: userId,
       watch_date: new Date(movieData.watch_date).toISOString(),
       movie_title: movieData.movie_title,
-      movie_content: movieData.movie_content || '내용 없음', // 기본값 설정
+      movie_content: movieData.movie_content || '내용 없음',
       created_at: movieData.created_at || new Date().toISOString(),
       created_by: movieData.created_by
     };
 
-    // 콘솔에 데이터를 출력합니다.
     console.log('eventDetails:', eventDetails);
     console.log('calendarEvent:', calendarEvent);
 
@@ -92,6 +91,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       }
 
       const responseData = await response.json();
+      console.log('Save Response Data:', responseData);
       onSave(eventDetails);
       onClose();
     } catch (error) {
@@ -103,7 +103,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
   const handleDelete = async () => {
     if (initialData && initialData.id) {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, { // URL 수정
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${initialData.id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
