@@ -17,9 +17,9 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       setMovieData({
         watch_date: initialData.start ? new Date(initialData.start).toISOString().split('T')[0] : '',
         movie_title: initialData.title || '',
-        movie_content: initialData.movie_content || '',
-        created_at: initialData.created_at || '',
-        created_by: initialData.created_by || userId
+        movie_content: initialData.extendedProps?.movie_content || '',
+        created_at: initialData.extendedProps?.created_at || '',
+        created_by: initialData.extendedProps?.created_by || userId
       });
     } else {
       setMovieData({
@@ -45,13 +45,18 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       return;
     }
 
+    if (!movieData.watch_date) {
+      alert('관람 일자를 선택해주세요.');
+      return;
+    }
+
     const eventDetails = {
       id: initialData ? initialData.id : Date.now().toString(),
       title: movieData.movie_title,
       start: new Date(movieData.watch_date).toISOString(),
       allDay: true,
       extendedProps: {
-        movie_content: movieData.movie_content,
+        movie_content: movieData.movie_content || '내용 없음', // 기본값 설정
         created_at: movieData.created_at || new Date().toISOString(),
         created_by: movieData.created_by
       }
@@ -62,7 +67,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       user_id: userId,
       watch_date: new Date(movieData.watch_date).toISOString(),
       movie_title: movieData.movie_title,
-      movie_content: movieData.movie_content,
+      movie_content: movieData.movie_content || '내용 없음', // 기본값 설정
       created_at: movieData.created_at || new Date().toISOString(),
       created_by: movieData.created_by
     };
