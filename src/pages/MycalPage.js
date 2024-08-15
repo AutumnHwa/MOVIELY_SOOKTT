@@ -49,20 +49,25 @@ function MycalPage() {
           console.log('Event ID:', event.calendar_id, 'Title:', event.movie_title);
         });
 
-        const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id || event.id,
-          title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(),
-          allDay: true,
-          extendedProps: {
-            movie_content: event.movie_content
+        const eventsData = fetchedEvents.map(event => {
+          if (!event.calendar_id) {
+            console.warn('calendar_id is undefined for event:', event);
           }
-        }));
+          return {
+            id: event.calendar_id || event.id,
+            title: event.movie_title,
+            start: new Date(event.watch_date).toISOString(),
+            allDay: true,
+            extendedProps: {
+              movie_content: event.movie_content
+            }
+          };
+        });
 
         console.log('Filtered eventsData:', eventsData);
         setEvents(eventsData);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching events:', error);
       }
     };
 
@@ -108,7 +113,6 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
-    // `event.id`가 `undefined`일 경우 요청하지 않도록 처리
     if (!event.id) {
       console.error('Event ID is undefined.');
       return;
@@ -138,7 +142,7 @@ function MycalPage() {
       });
       setIsPopupOpen(true);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error fetching event details:', error);
     }
   };
 
@@ -166,7 +170,7 @@ function MycalPage() {
       setEvents(updatedEvents);
       setIsPopupOpen(false);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error deleting event:', error);
       alert('이벤트를 삭제하는 중 오류가 발생했습니다.');
     }
   };
