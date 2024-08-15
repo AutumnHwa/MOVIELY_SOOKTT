@@ -1,4 +1,3 @@
-// 필요한 모듈과 컴포넌트를 가져옵니다.
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
@@ -44,14 +43,13 @@ function MycalPage() {
 
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
-        // 각 이벤트의 calendar_id와 관련된 데이터를 확인
         fetchedEvents.forEach(event => {
           console.log('Processing event:', event);  // 개별 이벤트 로그
           console.log('calendar_id:', event.calendar_id);  // calendar_id가 존재하는지 확인
         });
 
         const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id,  // calendar_id를 id로 사용
+          id: event.calendar_id,  // calendar_id를 id로 사용, long 타입으로 처리
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(), // 날짜를 ISO 형식으로 변환
           allDay: true,
@@ -109,13 +107,15 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
-    if (!event.id) {
-      console.error('Event ID is undefined. Skipping fetch request.');
+    const eventId = Number(event.id);  // ID를 long 타입으로 처리
+
+    if (!eventId) {
+      console.error('Event ID is undefined or invalid. Skipping fetch request.');
       return;
     }
 
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -144,13 +144,15 @@ function MycalPage() {
   };
 
   const handleDeleteEvent = async (eventId) => {
-    if (!eventId) {
+    const id = Number(eventId);  // ID를 long 타입으로 처리
+
+    if (!id) {
       alert('삭제할 이벤트가 없습니다.');
       return;
     }
 
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -163,7 +165,7 @@ function MycalPage() {
         throw new Error('Failed to delete event');
       }
 
-      const updatedEvents = events.filter(event => event.id !== eventId);
+      const updatedEvents = events.filter(event => event.id !== id);
       setEvents(updatedEvents);
       setIsPopupOpen(false);
     } catch (error) {
