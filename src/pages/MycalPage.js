@@ -142,15 +142,12 @@ function MycalPage() {
       }
 
       const responseData = await response.json();
-      console.log('Fetched event data:', responseData);
       setSelectedDate(responseData.watch_date);
       setSelectedEvent({
         id: responseData.calendar_id,
         title: responseData.movie_title,
         start: new Date(responseData.watch_date).toISOString(),
-        movie_content: responseData.movie_content,
-        created_at: responseData.created_at,
-        created_by: responseData.created_by,
+        movie_content: responseData.movie_content
       });
       setIsPopupOpen(true);
     } catch (error) {
