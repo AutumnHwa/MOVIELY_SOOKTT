@@ -39,11 +39,16 @@ function MycalPage() {
         }
 
         const responseData = await response.json();
-        console.log('Full responseData:', responseData);
+        console.log('Fetched events data:', responseData);
 
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
         const eventsData = fetchedEvents.map(event => {
+          if (!event.watch_date || !event.calendar_id) {
+            console.warn(`Invalid event data: ${JSON.stringify(event)}`);
+            return null;
+          }
+
           let eventDate = new Date(event.watch_date);
 
           if (isNaN(eventDate.getTime())) {
@@ -53,11 +58,11 @@ function MycalPage() {
 
           return {
             id: event.calendar_id,
-            title: event.movie_title || '제목 없음', // 기본값 설정
+            title: event.movie_title || '제목 없음',
             start: eventDate.toISOString(),
             allDay: true,
             extendedProps: {
-              movie_content: event.movie_content || '내용 없음', // 기본값 설정
+              movie_content: event.movie_content || '내용 없음',
               created_at: event.created_at || new Date().toISOString(),
               created_by: event.created_by || userId,
             }
@@ -98,22 +103,19 @@ function MycalPage() {
   };
 
   const handleSaveMovieData = (eventDetails) => {
-    // Validate eventDetails
     if (!eventDetails.title) {
       alert('영화 제목을 입력해주세요.');
       return;
     }
 
-    // Log eventDetails for debugging
     console.log('Event Details before update:', eventDetails);
 
-    // Clean up eventDetails
     const cleanedEventDetails = {
       ...eventDetails,
-      title: eventDetails.title || '제목 없음', // Default value if title is null
+      title: eventDetails.title || '제목 없음',
       extendedProps: {
         ...eventDetails.extendedProps,
-        movie_content: eventDetails.extendedProps?.movie_content || '내용 없음', // 기본값 설정
+        movie_content: eventDetails.extendedProps?.movie_content || '내용 없음',
       },
     };
 
@@ -154,14 +156,15 @@ function MycalPage() {
 
       const responseData = await response.json();
       console.log('Fetched event data:', responseData);
+
       setSelectedDate(responseData.watch_date);
       setSelectedEvent({
         id: responseData.calendar_id,
-        title: responseData.movie_title,
+        title: responseData.movie_title || '제목 없음',
         start: new Date(responseData.watch_date).toISOString(),
-        movie_content: responseData.movie_content,
-        created_at: responseData.created_at,
-        created_by: responseData.created_by,
+        movie_content: responseData.movie_content || '내용 없음',
+        created_at: responseData.created_at || new Date().toISOString(),
+        created_by: responseData.created_by || user.id,
       });
       setIsPopupOpen(true);
     } catch (error) {
