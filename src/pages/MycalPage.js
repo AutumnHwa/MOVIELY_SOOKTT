@@ -44,8 +44,13 @@ function MycalPage() {
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
         const eventsData = fetchedEvents.map(event => {
+          if (!event.watch_date || !event.calendar_id) {
+            console.warn(`Invalid event data: ${JSON.stringify(event)}`);
+            return null;
+          }
+
           let eventDate = new Date(event.watch_date);
-          
+
           if (isNaN(eventDate.getTime())) {
             console.warn(`Invalid date encountered for event ID ${event.calendar_id}`);
             return null;
@@ -62,7 +67,7 @@ function MycalPage() {
               created_by: event.created_by,
             }
           };
-        }).filter(event => event !== null);
+        }).filter(event => event !== null); // null 이벤트를 필터링
 
         setEvents(eventsData);
       } catch (error) {
