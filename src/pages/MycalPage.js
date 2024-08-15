@@ -103,14 +103,28 @@ function MycalPage() {
   };
 
   const handleSaveMovieData = (eventDetails) => {
+    // Validate eventDetails
     if (!eventDetails.title) {
       alert('영화 제목을 입력해주세요.');
       return;
     }
 
+    // Log eventDetails for debugging
+    console.log('Event Details before update:', eventDetails);
+
+    // Clean up eventDetails
+    const cleanedEventDetails = {
+      ...eventDetails,
+      title: eventDetails.title || '제목 없음', // Default value if title is null
+      movie_content: eventDetails.movie_content || '내용 없음', // Default value if movie_content is null
+      start: eventDetails.start || new Date().toISOString(), // Default value if start is null
+    };
+
+    console.log('Cleaned Event Details:', cleanedEventDetails);
+
     const updatedEvents = selectedEvent
-      ? events.map(event => (event.id === selectedEvent.id ? eventDetails : event))
-      : [...events, eventDetails];
+      ? events.map(event => (event.id === selectedEvent.id ? cleanedEventDetails : event))
+      : [...events, cleanedEventDetails];
 
     setEvents(updatedEvents);
     setIsPopupOpen(false);
@@ -142,12 +156,15 @@ function MycalPage() {
       }
 
       const responseData = await response.json();
+      console.log('Fetched event data:', responseData);
       setSelectedDate(responseData.watch_date);
       setSelectedEvent({
         id: responseData.calendar_id,
         title: responseData.movie_title,
         start: new Date(responseData.watch_date).toISOString(),
-        movie_content: responseData.movie_content
+        movie_content: responseData.movie_content,
+        created_at: responseData.created_at,
+        created_by: responseData.created_by,
       });
       setIsPopupOpen(true);
     } catch (error) {
