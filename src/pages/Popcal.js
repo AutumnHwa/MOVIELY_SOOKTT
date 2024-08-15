@@ -68,7 +68,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
     };
 
     // 콘솔에 데이터를 출력하여 디버깅
-    console.log('Final calendarEvent:', JSON.stringify(calendarEvent, null, 2));
+    console.log('Final calendarEvent:', calendarEvent);
 
     try {
       const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
