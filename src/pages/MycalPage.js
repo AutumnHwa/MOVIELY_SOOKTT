@@ -32,8 +32,8 @@ function MycalPage() {
       const userId = user.id;
 
       try {
-        // 사용자 ID를 쿼리 파라미터로 사용하여 캘린더 데이터를 가져옵니다.
-        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar?userId=${userId}`, {
+        // 캘린더 데이터를 가져옵니다.
+        const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -49,8 +49,8 @@ function MycalPage() {
         const responseData = await response.json();
         console.log('responseData:', responseData);
 
-        // 필터링된 이벤트 데이터를 설정합니다.
-        const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
+        // 로그인한 사용자의 ID와 일치하는 이벤트만 필터링합니다.
+        const fetchedEvents = responseData.filter(event => event.user_id === userId);
         const eventsData = fetchedEvents.map(event => ({
           id: event.calendar_id,
           title: event.movie_title,
@@ -61,6 +61,7 @@ function MycalPage() {
           }
         }));
 
+        console.log('Filtered eventsData:', eventsData); // 필터링된 이벤트 로그
         setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
