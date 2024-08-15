@@ -12,20 +12,15 @@ import '../css/MycalPage.css';
 import logoImage from '../logo.png';
 import { useAuth } from '../context/AuthContext';
 
-// MycalPage 컴포넌트를 정의합니다.
 function MycalPage() {
-  // useAuth 훅을 사용하여 사용자 정보를 가져옵니다.
   const { user } = useAuth();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
-  // useState 훅을 사용하여 상태를 정의합니다.
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // 팝업 창 열림 여부
-  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜
-  const [selectedEvent, setSelectedEvent] = useState(null); // 선택된 이벤트
-  const [events, setEvents] = useState([]); // 이벤트 목록
-  const [sidebarOpen, setSidebarOpen] = useState(false); // 사이드바 열림 여부
-  const navigate = useNavigate(); // useNavigate 훅을 사용하여 내비게이션 기능을 가져옵니다.
-
-  // 컴포넌트가 마운트될 때 이벤트를 가져오는 함수입니다.
   useEffect(() => {
     const fetchEvents = async () => {
       const userId = user.id;
@@ -45,28 +40,26 @@ function MycalPage() {
         }
 
         const responseData = await response.json();
-        console.log('Full responseData:', responseData); // API에서 받은 원본 데이터
+        console.log('Full responseData:', responseData);
 
-        // 로그인한 사용자의 ID와 일치하는 이벤트만 필터링합니다.
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
-        // 각 이벤트의 calendar_id와 관련된 데이터를 콘솔에 출력
         fetchedEvents.forEach(event => {
           console.log('Event:', event);
           console.log('Event ID:', event.calendar_id, 'Title:', event.movie_title);
         });
 
         const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id || event.id,  // 이 부분에서 제대로 된 id 설정
+          id: event.calendar_id || event.id,
           title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
+          start: new Date(event.watch_date).toISOString(),
           allDay: true,
           extendedProps: {
             movie_content: event.movie_content
           }
         }));
 
-        console.log('Filtered eventsData:', eventsData); // 필터링된 이벤트 로그
+        console.log('Filtered eventsData:', eventsData);
         setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
@@ -74,7 +67,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, [user]); // user 정보가 업데이트되면 다시 fetchEvents를 호출합니다.
+  }, [user]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -115,6 +108,12 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
+    // `event.id`가 `undefined`일 경우 요청하지 않도록 처리
+    if (!event.id) {
+      console.error('Event ID is undefined.');
+      return;
+    }
+
     try {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
