@@ -39,36 +39,25 @@ function MycalPage() {
         }
 
         const responseData = await response.json();
-        console.log('Full responseData:', responseData); // 서버에서 받은 원본 데이터를 출력
+        console.log('Full responseData:', responseData);
 
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
-        fetchedEvents.forEach(event => {
-          console.log('Processing event:', event);  // 개별 이벤트 로그
-          console.log('calendarId:', event.calendarId);  // calendarId가 존재하는지 확인
-        });
-
-        const eventsData = fetchedEvents.map(event => {
-          const watchDate = new Date(event.watchDate); // watchDate로 수정
-          if (isNaN(watchDate)) {
-            console.error('Invalid watchDate:', event.watchDate); // watchDate로 수정
-            return null; // 유효하지 않은 날짜는 건너뛰기
+        const eventsData = fetchedEvents.map(event => ({
+          id: event.calendar_id,
+          title: event.movie_title,
+          start: new Date(event.watch_date).toISOString(),
+          allDay: true,
+          extendedProps: {
+            movie_content: event.movie_content,
+            created_at: event.created_at,
+            created_by: event.created_by,
           }
-          return {
-            id: event.calendarId,  // calendarId로 수정
-            title: event.movieTitle,  // movieTitle로 수정
-            start: watchDate.toISOString(),
-            allDay: true,
-            extendedProps: {
-              movie_content: event.movieContent // movieContent로 수정
-            }
-          };
-        }).filter(event => event !== null); // 유효한 이벤트만 포함
+        }));
 
-        console.log('Processed eventsData:', eventsData); // 처리된 이벤트 데이터를 출력
         setEvents(eventsData);
       } catch (error) {
-        console.error('Error fetching events:', error); // 이벤트 가져오기 실패 시 오류 로그
+        console.error('Error fetching events:', error);
       }
     };
 
@@ -100,13 +89,13 @@ function MycalPage() {
   };
 
   const handleSaveMovieData = (eventDetails) => {
-    if (!eventDetails.title) {
+    if (!eventDetails.movie_title) {
       alert('영화 제목을 입력해주세요.');
       return;
     }
 
     const updatedEvents = selectedEvent
-      ? events.map(event => event.id === selectedEvent.id ? eventDetails : event)
+      ? events.map(event => (event.id === selectedEvent.id ? eventDetails : event))
       : [...events, eventDetails];
 
     setEvents(updatedEvents);
@@ -114,7 +103,7 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
-    console.log('Event object:', event); // event 객체 전체를 출력하여 확인
+    console.log('Event object:', event);
 
     if (!event || !event.id) {
       console.error('Event ID is undefined. Skipping fetch request.');
@@ -123,7 +112,7 @@ function MycalPage() {
 
     try {
       const url = `https://moviely.duckdns.org/mypage/calendar/${event.id}`;
-      console.log(`Request URL: ${url}`); // URL을 출력하여 확인
+      console.log(`Request URL: ${url}`);
 
       const response = await fetch(url, {
         method: 'GET',
@@ -139,30 +128,25 @@ function MycalPage() {
       }
 
       const responseData = await response.json();
-      console.log('Fetched event data:', responseData); // 개별 이벤트 데이터 로그
-      setSelectedDate(responseData.watchDate);
+      console.log('Fetched event data:', responseData);
+      setSelectedDate(responseData.watch_date);
       setSelectedEvent({
-        id: responseData.calendarId,
-        title: responseData.movieTitle,
-        start: new Date(responseData.watchDate).toISOString(),
-        movie_content: responseData.movieContent
+        id: responseData.calendar_id,
+        title: responseData.movie_title,
+        start: new Date(responseData.watch_date).toISOString(),
+        movie_content: responseData.movie_content,
+        created_at: responseData.created_at,
+        created_by: responseData.created_by,
       });
       setIsPopupOpen(true);
     } catch (error) {
-      console.error('Error fetching event details:', error); // 이벤트 가져오기 실패 시 오류 로그
+      console.error('Error fetching event details:', error);
     }
   };
 
   const handleDeleteEvent = async (eventId) => {
-    const id = Number(eventId);
-
-    if (!id) {
-      alert('삭제할 이벤트가 없습니다.');
-      return;
-    }
-
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${id}`, {
+      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -175,7 +159,7 @@ function MycalPage() {
         throw new Error('Failed to delete event');
       }
 
-      const updatedEvents = events.filter(event => event.id !== id);
+      const updatedEvents = events.filter(event => event.id !== eventId);
       setEvents(updatedEvents);
       setIsPopupOpen(false);
     } catch (error) {
