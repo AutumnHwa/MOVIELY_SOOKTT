@@ -44,25 +44,26 @@ function MycalPage() {
 
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
-        const eventsData = fetchedEvents.map(event => {
-          if (!event.calendar_id) {
-            console.error('Missing calendar_id for event:', event); // 누락된 경우 경고 출력
-          }
-          return {
-            id: event.calendar_id, // calendar_id를 id로 설정
-            title: event.movie_title,
-            start: new Date(event.watch_date).toISOString(),
-            allDay: true,
-            extendedProps: {
-              movie_content: event.movie_content
-            }
-          };
+        // 각 이벤트의 calendar_id와 관련된 데이터를 확인
+        fetchedEvents.forEach(event => {
+          console.log('Processing event:', event);  // 개별 이벤트 로그
+          console.log('calendar_id:', event.calendar_id);  // calendar_id가 존재하는지 확인
         });
+
+        const eventsData = fetchedEvents.map(event => ({
+          id: event.calendar_id,  // calendar_id를 id로 사용
+          title: event.movie_title,
+          start: new Date(event.watch_date).toISOString(), // 날짜를 ISO 형식으로 변환
+          allDay: true,
+          extendedProps: {
+            movie_content: event.movie_content
+          }
+        }));
 
         console.log('Processed eventsData:', eventsData); // 처리된 이벤트 데이터를 출력
         setEvents(eventsData);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching events:', error); // 이벤트 가져오기 실패 시 오류 로그
       }
     };
 
@@ -138,7 +139,7 @@ function MycalPage() {
       });
       setIsPopupOpen(true);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error fetching event details:', error); // 이벤트 가져오기 실패 시 오류 로그
     }
   };
 
