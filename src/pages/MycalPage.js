@@ -43,17 +43,26 @@ function MycalPage() {
 
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
-        const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id,
-          title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(),
-          allDay: true,
-          extendedProps: {
-            movie_content: event.movie_content,
-            created_at: event.created_at,
-            created_by: event.created_by,
+        const eventsData = fetchedEvents.map(event => {
+          // watch_date가 유효한지 확인
+          const watchDate = event.watch_date ? new Date(event.watch_date) : null;
+          if (!watchDate || isNaN(watchDate)) {
+            console.error('Invalid watch_date:', event.watch_date);
+            return null; // 유효하지 않은 날짜는 무시
           }
-        }));
+          
+          return {
+            id: event.calendar_id,
+            title: event.movie_title,
+            start: watchDate.toISOString(),
+            allDay: true,
+            extendedProps: {
+              movie_content: event.movie_content,
+              created_at: event.created_at,
+              created_by: event.created_by,
+            }
+          };
+        }).filter(event => event !== null); // 유효한 이벤트만 포함
 
         setEvents(eventsData);
       } catch (error) {
