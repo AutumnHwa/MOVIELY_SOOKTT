@@ -4,7 +4,6 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Popcal from './Popcal';
 import Sidebar from '../components/Sidebar';
 import '../css/MycalPage.css';
@@ -48,15 +47,22 @@ function MycalPage() {
           console.log('calendar_id:', event.calendar_id);  // calendar_id가 존재하는지 확인
         });
 
-        const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id,  // calendar_id를 id로 사용
-          title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(), // 날짜를 ISO 형식으로 변환
-          allDay: true,
-          extendedProps: {
-            movie_content: event.movie_content
+        const eventsData = fetchedEvents.map(event => {
+          const watchDate = new Date(event.watch_date);
+          if (isNaN(watchDate)) {
+            console.error('Invalid watch_date:', event.watch_date);
+            return null; // 유효하지 않은 날짜는 건너뛰기
           }
-        }));
+          return {
+            id: event.calendar_id,  // calendar_id를 id로 사용
+            title: event.movie_title,
+            start: watchDate.toISOString(), // 유효한 날짜를 ISO 형식으로 변환
+            allDay: true,
+            extendedProps: {
+              movie_content: event.movie_content
+            }
+          };
+        }).filter(event => event !== null); // 유효한 이벤트만 포함
 
         console.log('Processed eventsData:', eventsData); // 처리된 이벤트 데이터를 출력
         setEvents(eventsData);
