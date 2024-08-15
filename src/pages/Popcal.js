@@ -22,10 +22,10 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
         created_by: initialData.extendedProps?.created_by || userId
       });
     } else {
-      setMovieData({
-        ...movieData,
+      setMovieData(prevData => ({
+        ...prevData,
         watch_date: selectedDate || ''
-      });
+      }));
     }
   }, [initialData, selectedDate, userId]);
 
@@ -45,18 +45,13 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       return;
     }
 
-    if (!movieData.watch_date) {
-      alert('관람 일자를 선택해주세요.');
-      return;
-    }
-
     const eventDetails = {
       id: initialData ? initialData.id : Date.now().toString(),
       title: movieData.movie_title,
       start: new Date(movieData.watch_date).toISOString(),
       allDay: true,
       extendedProps: {
-        movie_content: movieData.movie_content || '내용 없음',
+        movie_content: movieData.movie_content,
         created_at: movieData.created_at || new Date().toISOString(),
         created_by: movieData.created_by
       }
@@ -67,13 +62,13 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       user_id: userId,
       watch_date: new Date(movieData.watch_date).toISOString(),
       movie_title: movieData.movie_title,
-      movie_content: movieData.movie_content || '내용 없음',
+      movie_content: movieData.movie_content,
       created_at: movieData.created_at || new Date().toISOString(),
       created_by: movieData.created_by
     };
 
-    console.log('eventDetails:', eventDetails);
-    console.log('calendarEvent:', calendarEvent);
+    // 콘솔에 데이터를 출력하여 디버깅
+    console.log('Final calendarEvent:', JSON.stringify(calendarEvent, null, 2));
 
     try {
       const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
