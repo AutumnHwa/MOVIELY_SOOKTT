@@ -23,8 +23,11 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       });
     } else {
       setMovieData({
-        ...movieData,
-        watch_date: selectedDate || ''
+        watch_date: selectedDate || '',
+        movie_title: '',
+        movie_content: '',
+        created_at: '',
+        created_by: userId
       });
     }
   }, [initialData, selectedDate, userId]);
@@ -58,7 +61,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
     };
 
     const calendarEvent = {
-      calendar_id: initialData ? initialData.id : Date.now().toString(),
+      calendar_id: eventDetails.id, // calendar_id와 eventDetails.id를 동일하게 설정
       user_id: userId,
       watch_date: new Date(movieData.watch_date).toISOString(),
       movie_title: movieData.movie_title,
@@ -67,6 +70,7 @@ const Popcal = ({ isOpen, onClose, onSave, onDelete, initialData, userId, select
       created_by: movieData.created_by
     };
 
+    // 콘솔에 데이터를 출력합니다.
     console.log('eventDetails:', eventDetails);
     console.log('calendarEvent:', calendarEvent);
 

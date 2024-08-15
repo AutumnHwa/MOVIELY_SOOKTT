@@ -46,10 +46,9 @@ function MycalPage() {
         const eventsData = fetchedEvents.map(event => {
           let eventDate = new Date(event.watch_date);
           
-          // 날짜가 유효한지 확인
           if (isNaN(eventDate.getTime())) {
             console.warn(`Invalid date encountered for event ID ${event.calendar_id}`);
-            return null; // 유효하지 않은 이벤트는 null로 반환
+            return null;
           }
 
           return {
@@ -63,7 +62,7 @@ function MycalPage() {
               created_by: event.created_by,
             }
           };
-        }).filter(event => event !== null); // null 이벤트를 필터링
+        }).filter(event => event !== null);
 
         setEvents(eventsData);
       } catch (error) {
@@ -99,7 +98,7 @@ function MycalPage() {
   };
 
   const handleSaveMovieData = (eventDetails) => {
-    if (!eventDetails.title) { // title로 확인하는 것이 맞습니다
+    if (!eventDetails.title) {
       alert('영화 제목을 입력해주세요.');
       return;
     }
