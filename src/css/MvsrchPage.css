@@ -74,7 +74,7 @@
   transition: background-color 0.3s;
 }
 
-.genreButton, .platformButton {
+.genreButton, .srch-platformButton {
   margin-right: 10px;
   width: 100px;
   height: 27px;

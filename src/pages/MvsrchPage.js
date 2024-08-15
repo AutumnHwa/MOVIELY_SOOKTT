@@ -176,7 +176,7 @@ function MvsrchPage() {
       </header>
       <div className="searchContainer">
         <div className="dropdownContainer">
-          <button onClick={() => setShowPlatforms(!showPlatforms)} className="platformButton">플랫폼ㅤ  ▼</button>
+          <button onClick={() => setShowPlatforms(!showPlatforms)} className="srch-platformButton">플랫폼ㅤ  ▼</button>
           {showPlatforms && (
             <div className="platformDropdown">
               {platforms.map((platform) => (

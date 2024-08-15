@@ -1,54 +1,117 @@
-.PlatRecom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .pageHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 600px;
-  }
-  
-  .recomlogo {
-    display: flex;
-    justify-content: flex-start; /* 왼쪽 정렬 */
-    width: 250px;
-    height: auto;
-  }
-  
-  .recomlogo img {
-    width: 220px;
-    height: auto;
-    margin-bottom: 20px;
-    margin-top: 30px;
-    margin-left: 0px;
-  }
-  
-  .sidebar-toggle {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 50px;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 20px;
-  }
-  
-  .greetingText {
-    color: white;
-    margin-top: 40px;
-    margin-bottom: 30px;
-    font-size: 25px;
-    font-weight: bold;
-  }
-  
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-  }
+.plat-PlatRecom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.plat-pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.plat-recomlogo {
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  width: 250px;
+  height: auto;
+}
+
+.plat-recomlogo img {
+  width: 220px;
+  height: auto;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-left: 0px;
+}
+
+.plat-sidebar-toggle {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 50px;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 20px;
+}
+
+.plat-greetingText {
+  color: white;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.plat-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+.plat-title {
+  color: white;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  font-size: 18px;
+}
+
+.plat-graphContainer {
+  background-color: white;
+  padding: 10px;
+  border-radius: 15px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center; /* 그래프를 가운데로 정렬 */
+  align-items: center; /* 그래프를 세로 가운데 정렬 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+  width: 420px; /* 네모 박스의 가로 길이 */
+  height: 220px; /* 네모 박스의 세로 길이 */
+}
+
+.plat-barGraph, .plat-pieGraph {
+  height: calc(100% - 30px); /* 그래프 높이를 컨테이너의 높이보다 15px 줄임 */
+  width: calc(100% - 40px); /* 그래프 너비를 컨테이너의 너비보다 15px 줄임 */
+}
+
+.plat-platformQuestion {
+  text-align: center;
+  margin-top: -30px;
+}
+
+.plat-platformButtons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.plat-platformButton {
+  width: 100px; /* 버튼 너비 */
+  height: 35px;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.plat-platformButton:hover,
+.plat-platformButton:focus {
+  background-color: #FBE64D;
+  color: black;
+}
+
+.plat-subtitle {
+  font-size: 15px; /* 원하는 폰트 크기 */
+  color: black; /* 텍스트 색상 */
+  margin-bottom: -5px; /* 제목과 그래프 사이의 간격 */
+  margin-top: 0px;
+  text-align: center; /* 제목을 가운데 정렬 */
+}
