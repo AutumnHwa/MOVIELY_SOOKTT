@@ -52,7 +52,7 @@ function MycalPage() {
         // 로그인한 사용자의 ID와 일치하는 이벤트만 필터링합니다.
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
         const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id,
+          id: event.calendar_id,  // 이 부분이 중요합니다. calendar_id를 id로 설정해야 합니다.
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
           allDay: true,
