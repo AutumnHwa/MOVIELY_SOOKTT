@@ -23,6 +23,8 @@ function MycalPage() {
 
   useEffect(() => {
     const fetchEvents = async () => {
+      const userId = user.id;
+
       try {
         const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
           method: 'GET',
@@ -38,26 +40,26 @@ function MycalPage() {
         }
 
         const responseData = await response.json();
-        console.log('responseData:', responseData);  // 서버에서 받은 원본 데이터를 출력
+        console.log('Full responseData:', responseData);
 
-        // 서버로부터 받은 데이터를 가공하여 화면에 표시할 이벤트로 변환
-        const eventsData = responseData.map(event => {
-          console.log('Processing event:', event);  // 개별 이벤트 로그
-          if (!event.calendar_id) {
-            console.error('Missing calendar_id for event:', event);  // calendar_id가 누락된 경우 경고 출력
-          }
-          return {
-            id: event.calendar_id,  // calendar_id를 id로 설정
-            title: event.movie_title,
-            start: new Date(event.watch_date).toISOString(),
-            allDay: true,
-            extendedProps: {
-              movie_content: event.movie_content
-            }
-          };
+        const fetchedEvents = responseData.filter(event => event.user_id === userId);
+
+        fetchedEvents.forEach(event => {
+          console.log('Event:', event);
+          console.log('Event ID:', event.calendar_id, 'Title:', event.movie_title);
         });
 
-        console.log('Processed eventsData:', eventsData);  // 처리된 이벤트 데이터를 출력
+        const eventsData = fetchedEvents.map(event => ({
+          id: event.calendar_id || event.id,
+          title: event.movie_title,
+          start: new Date(event.watch_date).toISOString(),
+          allDay: true,
+          extendedProps: {
+            movie_content: event.movie_content
+          }
+        }));
+
+        console.log('Filtered eventsData:', eventsData);
         setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
@@ -65,7 +67,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, []);
+  }, [user]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -106,6 +108,12 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
+    // `event.id`가 `undefined`일 경우 요청하지 않도록 처리
+    if (!event.id) {
+      console.error('Event ID is undefined.');
+      return;
+    }
+
     try {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
@@ -158,7 +166,7 @@ function MycalPage() {
       setEvents(updatedEvents);
       setIsPopupOpen(false);
     } catch (error) {
-      console.error('Error deleting event:', error);
+      console.error('Error:', error);
       alert('이벤트를 삭제하는 중 오류가 발생했습니다.');
     }
   };
