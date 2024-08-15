@@ -107,19 +107,16 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
-    // 디버깅을 위해 전체 event 객체를 출력합니다.
-    console.log('Event object:', event);
+    console.log('Event object:', event); // event 객체 전체를 출력하여 확인
 
-    if (!event.id) {
+    if (!event || !event.id) {
       console.error('Event ID is undefined. Skipping fetch request.');
       return;
     }
 
-    console.log(`Fetching details for event ID: ${event.id}`);
-
     try {
       const url = `https://moviely.duckdns.org/mypage/calendar/${event.id}`;
-      console.log(`Request URL: ${url}`);
+      console.log(`Request URL: ${url}`); // URL을 출력하여 확인
 
       const response = await fetch(url, {
         method: 'GET',
@@ -135,7 +132,7 @@ function MycalPage() {
       }
 
       const responseData = await response.json();
-      console.log('Fetched event data:', responseData);
+      console.log('Fetched event data:', responseData); // 개별 이벤트 데이터 로그
       setSelectedDate(responseData.watch_date);
       setSelectedEvent({
         id: responseData.calendar_id,
@@ -145,7 +142,7 @@ function MycalPage() {
       });
       setIsPopupOpen(true);
     } catch (error) {
-      console.error('Error fetching event details:', error);
+      console.error('Error fetching event details:', error); // 이벤트 가져오기 실패 시 오류 로그
     }
   };
 
