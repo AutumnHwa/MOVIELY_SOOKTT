@@ -48,24 +48,25 @@ function MycalPage() {
         // 서버에서 반환된 이벤트 데이터를 처리합니다.
         const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
         const eventsData = fetchedEvents.map((event) => {
-          if (!event.watch_date) {
-            console.error('Invalid or missing date:', event.watch_date);
+          const watchDate = event.watchDate; // watchDate로 수정
+          if (!watchDate) {
+            console.error('Invalid or missing date:', watchDate);
             return null; // 날짜가 없거나 유효하지 않은 경우 null 반환
           }
 
-          const watchDate = new Date(event.watch_date);
-          if (isNaN(watchDate.getTime())) {
-            console.error('Invalid date format:', event.watch_date);
+          const dateObject = new Date(watchDate);
+          if (isNaN(dateObject.getTime())) {
+            console.error('Invalid date format:', watchDate);
             return null; // 잘못된 날짜 포맷인 경우 null 반환
           }
 
           return {
-            id: event.calendar_id,
-            title: event.movie_title,
-            start: watchDate.toISOString(), // ISO 형식으로 변환
+            id: event.calendarId, // calendarId로 수정
+            title: event.movieTitle, // movieTitle로 수정
+            start: dateObject.toISOString(), // ISO 형식으로 변환
             allDay: true,
             extendedProps: {
-              movie_content: event.movie_content,
+              movie_content: event.movieContent, // movieContent로 수정
             },
           };
         }).filter(event => event !== null); // null 값 제거
@@ -133,12 +134,12 @@ function MycalPage() {
       }
 
       const responseData = await response.json();
-      setSelectedDate(responseData.watch_date);
+      setSelectedDate(responseData.watchDate); // watchDate로 수정
       setSelectedEvent({
-        id: responseData.calendar_id,
-        title: responseData.movie_title,
-        start: new Date(responseData.watch_date).toISOString(),
-        movie_content: responseData.movie_content,
+        id: responseData.calendarId, // calendarId로 수정
+        title: responseData.movieTitle, // movieTitle로 수정
+        start: new Date(responseData.watchDate).toISOString(), // watchDate로 수정
+        movie_content: responseData.movieContent, // movieContent로 수정
       });
       setIsPopupOpen(true);
     } catch (error) {
