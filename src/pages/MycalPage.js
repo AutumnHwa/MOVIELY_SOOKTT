@@ -49,7 +49,7 @@ function MycalPage() {
         });
 
         const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id,  // calendar_id를 id로 사용, long 타입으로 처리
+          id: event.calendar_id,  // calendar_id를 id로 사용
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(), // 날짜를 ISO 형식으로 변환
           allDay: true,
@@ -107,15 +107,19 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
-    const eventId = Number(event.id);  // ID를 long 타입으로 처리
-
-    if (!eventId) {
-      console.error('Event ID is undefined or invalid. Skipping fetch request.');
+    if (!event.id) {
+      console.error('Event ID is undefined. Skipping fetch request.');
       return;
     }
 
+    // 디버깅을 위해 ID를 출력합니다.
+    console.log(`Fetching details for event ID: ${event.id}`);
+
     try {
-      const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
+      const url = `https://moviely.duckdns.org/mypage/calendar/${event.id}`;
+      console.log(`Request URL: ${url}`); // URL을 출력하여 확인
+
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
