@@ -28,7 +28,6 @@ function MycalPage() {
   // 컴포넌트가 마운트될 때 이벤트를 가져오는 함수입니다.
   useEffect(() => {
     const fetchEvents = async () => {
-      // user.id를 사용하여 해당 유저의 캘린더 ID에 대한 이벤트를 가져옵니다.
       try {
         const response = await fetch(`https://moviely.duckdns.org/mypage/calendar?userId=${user.id}`, {
           method: 'GET',
@@ -49,6 +48,11 @@ function MycalPage() {
         // 서버에서 반환된 이벤트 데이터를 처리합니다.
         const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
         const eventsData = fetchedEvents.map((event) => {
+          if (!event.watch_date) {
+            console.error('Invalid or missing date:', event.watch_date);
+            return null; // 날짜가 없거나 유효하지 않은 경우 null 반환
+          }
+
           const watchDate = new Date(event.watch_date);
           if (isNaN(watchDate.getTime())) {
             console.error('Invalid date format:', event.watch_date);
