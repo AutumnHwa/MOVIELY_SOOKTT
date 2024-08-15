@@ -28,11 +28,8 @@ function MycalPage() {
   // 컴포넌트가 마운트될 때 이벤트를 가져오는 함수입니다.
   useEffect(() => {
     const fetchEvents = async () => {
-      // 로그인한 사용자의 user.id를 가져옵니다.
-      const userId = user.id;
-
+      // 여기에 calendar_id를 사용하여 모든 이벤트를 가져오는 로직을 추가합니다.
       try {
-        // 캘린더 데이터를 가져옵니다.
         const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
           method: 'GET',
           headers: {
@@ -49,10 +46,9 @@ function MycalPage() {
         const responseData = await response.json();
         console.log('responseData:', responseData);
 
-        // 로그인한 사용자의 ID와 일치하는 이벤트만 필터링합니다.
-        const fetchedEvents = responseData.filter(event => event.user_id === userId);
+        const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
         const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id,  // 이 부분이 중요합니다. calendar_id를 id로 설정해야 합니다.
+          id: event.calendar_id,
           title: event.movie_title,
           start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
           allDay: true,
@@ -61,7 +57,6 @@ function MycalPage() {
           }
         }));
 
-        console.log('Filtered eventsData:', eventsData); // 필터링된 이벤트 로그
         setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
@@ -69,7 +64,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, [user]); // user 정보가 업데이트되면 다시 fetchEvents를 호출합니다.
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
