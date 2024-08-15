@@ -44,11 +44,6 @@ function MycalPage() {
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
         const eventsData = fetchedEvents.map(event => {
-          if (!event.watch_date || !event.calendar_id) {
-            console.warn(`Invalid event data: ${JSON.stringify(event)}`);
-            return null;
-          }
-
           let eventDate = new Date(event.watch_date);
 
           if (isNaN(eventDate.getTime())) {
@@ -58,13 +53,13 @@ function MycalPage() {
 
           return {
             id: event.calendar_id,
-            title: event.movie_title,
+            title: event.movie_title || '제목 없음', // 기본값 설정
             start: eventDate.toISOString(),
             allDay: true,
             extendedProps: {
-              movie_content: event.movie_content,
-              created_at: event.created_at,
-              created_by: event.created_by,
+              movie_content: event.movie_content || '내용 없음', // 기본값 설정
+              created_at: event.created_at || new Date().toISOString(),
+              created_by: event.created_by || userId,
             }
           };
         }).filter(event => event !== null); // null 이벤트를 필터링
@@ -116,8 +111,10 @@ function MycalPage() {
     const cleanedEventDetails = {
       ...eventDetails,
       title: eventDetails.title || '제목 없음', // Default value if title is null
-      movie_content: eventDetails.movie_content || '내용 없음', // Default value if movie_content is null
-      start: eventDetails.start || new Date().toISOString(), // Default value if start is null
+      extendedProps: {
+        ...eventDetails.extendedProps,
+        movie_content: eventDetails.extendedProps?.movie_content || '내용 없음', // 기본값 설정
+      },
     };
 
     console.log('Cleaned Event Details:', cleanedEventDetails);
