@@ -40,26 +40,16 @@ function MycalPage() {
         }
 
         const responseData = await response.json();
-        console.log('Full responseData:', responseData);
+        console.log('Full responseData:', responseData); // 서버에서 받은 원본 데이터를 출력
 
         const fetchedEvents = responseData.filter(event => event.user_id === userId);
 
         const eventsData = fetchedEvents.map(event => {
           if (!event.calendar_id) {
-            console.error('Event is missing calendar_id:', event);
-            return {
-              id: `temp-${event.user_id}-${event.watch_date}`,  // 임시 ID 생성
-              title: event.movie_title,
-              start: new Date(event.watch_date).toISOString(),
-              allDay: true,
-              extendedProps: {
-                movie_content: event.movie_content,
-                missingCalendarId: true // 추가 필드로 누락된 `calendar_id` 표시
-              }
-            };
+            console.error('Missing calendar_id for event:', event); // 누락된 경우 경고 출력
           }
           return {
-            id: event.calendar_id,
+            id: event.calendar_id, // calendar_id를 id로 설정
             title: event.movie_title,
             start: new Date(event.watch_date).toISOString(),
             allDay: true,
@@ -69,7 +59,7 @@ function MycalPage() {
           };
         });
 
-        console.log('Processed eventsData:', eventsData);
+        console.log('Processed eventsData:', eventsData); // 처리된 이벤트 데이터를 출력
         setEvents(eventsData);
       } catch (error) {
         console.error('Error:', error);
@@ -118,8 +108,8 @@ function MycalPage() {
   };
 
   const handleEventClick = async ({ event }) => {
-    if (event.extendedProps.missingCalendarId) {
-      alert('이벤트에 할당된 캘린더 ID가 없습니다. 관리자에게 문의하세요.');
+    if (!event.id) {
+      console.error('Event ID is undefined. Skipping fetch request.');
       return;
     }
 
@@ -138,6 +128,7 @@ function MycalPage() {
       }
 
       const responseData = await response.json();
+      console.log('Fetched event data:', responseData); // 개별 이벤트 데이터 로그
       setSelectedDate(responseData.watch_date);
       setSelectedEvent({
         id: responseData.calendar_id,
