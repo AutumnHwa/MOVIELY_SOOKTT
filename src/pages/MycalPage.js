@@ -28,13 +28,13 @@ function MycalPage() {
   // 컴포넌트가 마운트될 때 이벤트를 가져오는 함수입니다.
   useEffect(() => {
     const fetchEvents = async () => {
-      // 여기에 calendar_id를 사용하여 모든 이벤트를 가져오는 로직을 추가합니다.
+      // user.id를 사용하여 해당 유저의 캘린더 ID에 대한 이벤트를 가져옵니다.
       try {
-        const response = await fetch('https://moviely.duckdns.org/mypage/calendar', {
+        const response = await fetch(`https://moviely.duckdns.org/mypage/calendar?userId=${user.id}`, {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         });
 
         if (!response.ok) {
@@ -46,16 +46,25 @@ function MycalPage() {
         const responseData = await response.json();
         console.log('responseData:', responseData);
 
+        // 서버에서 반환된 이벤트 데이터를 처리합니다.
         const fetchedEvents = Array.isArray(responseData) ? responseData : [responseData];
-        const eventsData = fetchedEvents.map(event => ({
-          id: event.calendar_id,
-          title: event.movie_title,
-          start: new Date(event.watch_date).toISOString(), // ISO 형식으로 변환
-          allDay: true,
-          extendedProps: {
-            movie_content: event.movie_content
+        const eventsData = fetchedEvents.map((event) => {
+          const watchDate = new Date(event.watch_date);
+          if (isNaN(watchDate.getTime())) {
+            console.error('Invalid date format:', event.watch_date);
+            return null; // 잘못된 날짜 포맷인 경우 null 반환
           }
-        }));
+
+          return {
+            id: event.calendar_id,
+            title: event.movie_title,
+            start: watchDate.toISOString(), // ISO 형식으로 변환
+            allDay: true,
+            extendedProps: {
+              movie_content: event.movie_content,
+            },
+          };
+        }).filter(event => event !== null); // null 값 제거
 
         setEvents(eventsData);
       } catch (error) {
@@ -64,7 +73,7 @@ function MycalPage() {
     };
 
     fetchEvents();
-  }, []);
+  }, [user.id]); // user.id가 변경될 때마다 이벤트를 다시 불러옵니다.
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -109,8 +118,8 @@ function MycalPage() {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${event.id}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
 
       if (!response.ok) {
@@ -125,7 +134,7 @@ function MycalPage() {
         id: responseData.calendar_id,
         title: responseData.movie_title,
         start: new Date(responseData.watch_date).toISOString(),
-        movie_content: responseData.movie_content
+        movie_content: responseData.movie_content,
       });
       setIsPopupOpen(true);
     } catch (error) {
@@ -143,8 +152,8 @@ function MycalPage() {
       const response = await fetch(`https://moviely.duckdns.org/mypage/calendar/${eventId}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
 
       if (!response.ok) {
