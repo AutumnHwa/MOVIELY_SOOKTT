@@ -217,10 +217,10 @@ const PlatRecom = () => {
           </div>
         </div>
         <div className="plat-recommendationText">
-          <p>{user?.name}님에게 맞는 플랫폼은 '{recommendation.platform}' 일지도?</p>
-          <p>{user?.name}님이 평가한 항목 중 {recommendation.platform}이 가장 많아요.</p>
-          <p>그리고 {recommendation.genre} 장르가 가장 많아요.</p>
-        </div>
+      <div>{user?.name}님에게 맞는 플랫폼은 '{recommendation.platform}' 일지도?</div>
+      <div>{user?.name}님이 평가한 항목 중 {recommendation.platform}이 가장 많아요.</div>
+      <div>그리고 {recommendation.genre} 장르가 가장 많아요.</div>
+      </div>
       </div>
     </div>
   );
