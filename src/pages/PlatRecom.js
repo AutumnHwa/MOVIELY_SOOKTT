@@ -33,7 +33,6 @@ const genreMapping = {
 
 const API_URL = 'https://moviely.duckdns.org/api/recommend_platform';
 
-// 여기에 subscriptionData와 contentData를 정의합니다.
 const subscriptionData = [
   { platform: '넷플릭스', cost: 5500, color: '#FBB4AE' },
   { platform: '왓챠', cost: 9900, color: '#CCEBC5' },
@@ -52,13 +51,11 @@ const PlatRecom = () => {
   const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [recommendation, setRecommendation] = useState({ platform: '', genre: '' });
-  const [selectedPlatform, setSelectedPlatform] = useState(null); // 선택된 플랫폼 상태 추가
+  const [selectedPlatform, setSelectedPlatform] = useState(null);
 
   useEffect(() => {
     if (user) {
-      // API 호출하여 데이터 가져오기
       const requestData = { user_id: user.id };
-      
       fetch(API_URL, {
         method: 'POST',
         headers: {
@@ -92,7 +89,6 @@ const PlatRecom = () => {
 
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
-    // 여기서는 데이터를 불러오지 않고, 단순히 플랫폼을 선택하면 빈 네모 박스들이 생기게 합니다.
   };
 
   return (
@@ -113,9 +109,14 @@ const PlatRecom = () => {
         </button>
       </header>
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
-      <div className="plat-greetingText">
-        {user ? `${user.name}님에게 딱 맞는 플랫폼을 골라보세요` : '플랫폼을 골라보세요'}
+      
+      <div className="plat-recommendationText">
+        <p>{user?.name}님에게 맞는 플랫폼은 <span className="highlighted-text">{recommendation.platform}</span> 일지도?</p>
+        <p>{user?.name}님이 평가한 항목 중 <span className="highlighted-text">{recommendation.platform}</span>이 가장 많아요.</p>
+        <p>그리고 <span className="highlighted-text">{recommendation.genre}</span> 장르가 가장 많아요.</p>
       </div>
+
+      
       <div className="plat-content">
         <h1 className="plat-title">나에게 맞는 OTT 플랫폼 찾아보기</h1>
         {/* 항상 표시되는 두 개의 그래프 */}
@@ -260,12 +261,6 @@ const PlatRecom = () => {
             </div>
           </div>
         )}
-
-        <div className="plat-recommendationText">
-          <p>{user?.name}님에게 맞는 플랫폼은 '{recommendation.platform}' 일지도?</p>
-          <p>{user?.name}님이 평가한 항목 중 {recommendation.platform}이 가장 많아요.</p>
-          <p>그리고 {recommendation.genre} 장르가 가장 많아요.</p>
-        </div>
       </div>
     </div>
   );

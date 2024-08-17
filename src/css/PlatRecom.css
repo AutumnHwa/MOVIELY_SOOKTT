@@ -57,7 +57,7 @@
 .plat-title {
   color: white;
   margin-bottom: 10px;
-  margin-top: 15px;
+  margin-top: 25px;
   font-size: 18px;
 }
 
@@ -79,9 +79,10 @@
   width: calc(100% - 40px);
 }
 
-.plat-platformQuestion {
+.plat-platformQuestion h2 {
   text-align: center;
-  margin-top: -30px;
+  margin-top: 50px;
+  font-size: 20px;
 }
 
 .plat-platformButtons {
@@ -92,7 +93,7 @@
 }
 
 .plat-platformButton {
-  width: 100px;
+  width: 95px;
   height: 35px;
   background: transparent;
   border: 1px solid white;
@@ -124,4 +125,8 @@
   margin-bottom: 10px;
   line-height: 2;
   font-weight: bold;
+}
+
+.highlighted-text {
+  color: #FBE64D; /* 강조하고 싶은 색상 */
 }
