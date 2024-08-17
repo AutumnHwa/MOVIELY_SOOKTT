@@ -31,7 +31,7 @@ const genreMapping = {
   '37': '서부',
 };
 
-const API_URL = 'http://moviely.duckdns.org/api/recommend_platform';
+const API_URL = 'https://moviely.duckdns.org/api/recommend_platform';
 
 // 여기에 subscriptionData와 contentData를 정의합니다.
 const subscriptionData = [
@@ -212,7 +212,9 @@ const PlatRecom = () => {
         {/* 플랫폼 버튼에 따른 그래프들 */}
         <div className="plat-platformQuestion">
           <h2>
-            {recommendation.platform ? `${recommendation.platform}, 나에게 맞을까?` : '나에게 맞는 OTT 플랫폼 찾아보기'}
+            {selectedPlatform
+              ? `${selectedPlatform}, 나에게 맞을까?`
+              : '나에게 맞는 OTT 플랫폼 찾아보기'}
           </h2>
           <div className="plat-platformButtons">
             {['넷플릭스', '왓챠', '디즈니플러스', '티빙'].map(platform => (
