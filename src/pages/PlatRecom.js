@@ -115,7 +115,6 @@ const PlatRecom = () => {
         <p>{user?.name}님이 평가한 항목 중 <span className="highlighted-text">{recommendation.platform}</span>의 컨텐츠가 가장 많아요.</p>
         <p>그리고 <span className="highlighted-text">{recommendation.genre}</span> 장르가 가장 많아요.</p>
       </div>
-
       
       <div className="plat-content">
         <h1 className="plat-title">나에게 맞는 OTT 플랫폼 찾아보기</h1>
