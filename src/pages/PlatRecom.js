@@ -34,7 +34,6 @@ const genreMapping = {
 const PlatRecom = () => {
   const { user } = useAuth(); 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedPlatform, setSelectedPlatform] = useState(null);
   const [recommendation, setRecommendation] = useState({ platform: '', genre: '' });
 
   useEffect(() => {
@@ -56,10 +55,6 @@ const PlatRecom = () => {
 
   const closeSidebar = () => {
     setSidebarOpen(false);
-  };
-
-  const handlePlatformSelect = (platform) => {
-    setSelectedPlatform(platform);
   };
 
   const subscriptionData = [
@@ -188,17 +183,9 @@ const PlatRecom = () => {
             />
           </div>
         </div>
-        <div className="plat-recommendationText">
-          <p>{user?.name}님에게 맞는 플랫폼은 '{recommendation.platform}' 일지도?</p>
-          <p>{user?.name}님이 평가한 항목 중 {recommendation.platform}이 가장 많아요.</p>
-          <p>그리고 {recommendation.genre} 장르가 가장 많아요.</p>
-        </div>
         <div className="plat-platformQuestion">
           <h2>
-            {selectedPlatform ? (
-              <span style={{ color: '#FBE64D' }}>{`${selectedPlatform}`}</span>
-            ) : '나에게 맞는 OTT 플랫폼 찾아보기'}
-            {selectedPlatform && ', 나에게 맞을까?'}
+            {recommendation.platform ? `${recommendation.platform}, 나에게 맞을까?` : '나에게 맞는 OTT 플랫폼 찾아보기'}
           </h2>
           <div className="plat-platformButtons">
             {['넷플릭스', '왓챠', '디즈니플러스', '티빙'].map(platform => (
@@ -211,6 +198,11 @@ const PlatRecom = () => {
               </button>
             ))}
           </div>
+        </div>
+        <div className="plat-recommendationText">
+          <p>{user?.name}님에게 맞는 플랫폼은 '{recommendation.platform}' 일지도?</p>
+          <p>{user?.name}님이 평가한 항목 중 {recommendation.platform}이 가장 많아요.</p>
+          <p>그리고 {recommendation.genre} 장르가 가장 많아요.</p>
         </div>
       </div>
     </div>
