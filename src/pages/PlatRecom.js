@@ -192,7 +192,6 @@ const PlatRecom = () => {
               <button
                 key={platform}
                 className="plat-platformButton"
-                onClick={() => handlePlatformSelect(platform)}
               >
                 {platform}
               </button>
