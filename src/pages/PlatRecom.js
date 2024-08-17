@@ -37,9 +37,9 @@ const PlatRecom = () => {
   const [recommendation, setRecommendation] = useState({ platform: '', genre: '' });
 
   useEffect(() => {
-    // 사용자 데이터를 POST 요청으로 전송하여 추천 플랫폼과 장르를 받아오기
+    // 서버로 POST 요청을 보내 사용자 데이터를 전송하고 추천 정보를 받아오기
     const requestData = {
-      userId: user ? user.id : null, // 사용자의 ID를 전송
+      user_id: user ? user.id : null, // 서버가 예상하는 필드 이름으로 수정
     };
 
     fetch('https://moviely.duckdns.org/api/recommend_platform', {
@@ -49,15 +49,21 @@ const PlatRecom = () => {
       },
       body: JSON.stringify(requestData),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => {
+        console.log("Response Data:", data); // 디버깅용 응답 데이터 출력
         const platform = data['추천 플랫폼'];
         const genreCode = data['추천 장르'];
         const genre = genreMapping[genreCode];
         setRecommendation({ platform, genre });
       })
       .catch(error => console.error('Error fetching recommendation:', error));
-  }, [user]); // 사용자 정보가 변경될 때마다 요청 실행
+  }, [user]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
