@@ -42,6 +42,8 @@ const PlatRecom = () => {
       user_id: user ? user.id : null, // 서버가 예상하는 필드 이름으로 수정
     };
 
+    console.log("Request Data:", requestData); // 보내는 데이터 확인
+
     fetch('https://moviely.duckdns.org/api/recommend_platform', {
       method: 'POST',
       headers: {
@@ -56,7 +58,7 @@ const PlatRecom = () => {
         return response.json();
       })
       .then(data => {
-        console.log("Response Data:", data); // 디버깅용 응답 데이터 출력
+        console.log("Response Data:", data); // 응답 데이터 확인
         const platform = data['추천 플랫폼'];
         const genreCode = data['추천 장르'];
         const genre = genreMapping[genreCode];
