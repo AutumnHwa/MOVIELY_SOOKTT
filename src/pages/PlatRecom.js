@@ -112,7 +112,7 @@ const PlatRecom = () => {
       
       <div className="plat-recommendationText">
         <p>{user?.name}님에게 맞는 플랫폼은 <span className="highlighted-text">{recommendation.platform}</span> 일지도?</p>
-        <p>{user?.name}님이 평가한 항목 중 <span className="highlighted-text">{recommendation.platform}</span>이 가장 많아요.</p>
+        <p>{user?.name}님이 평가한 항목 중 <span className="highlighted-text">{recommendation.platform}</span>의 컨텐츠가 가장 많아요.</p>
         <p>그리고 <span className="highlighted-text">{recommendation.genre}</span> 장르가 가장 많아요.</p>
       </div>
 
