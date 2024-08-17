@@ -31,26 +31,41 @@ const genreMapping = {
   '37': '서부',
 };
 
+const API_URL = 'http://moviely.duckdns.org/api/recommend_platform';
+
+// 여기에 subscriptionData와 contentData를 정의합니다.
+const subscriptionData = [
+  { platform: '넷플릭스', cost: 5500, color: '#FBB4AE' },
+  { platform: '왓챠', cost: 9900, color: '#CCEBC5' },
+  { platform: '디즈니플러스', cost: 7900, color: '#B3CDE3' },
+  { platform: '티빙', cost: 7900, color: '#DECBE4' }
+];
+
+const contentData = [
+  { platform: '넷플릭스', content: 500 },
+  { platform: '왓챠', content: 300 },
+  { platform: '디즈니플러스', content: 400 },
+  { platform: '티빙', content: 200 }
+];
+
 const PlatRecom = () => {
-  const { user } = useAuth(); 
+  const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [recommendation, setRecommendation] = useState({ platform: '', genre: '' });
+  const [selectedPlatform, setSelectedPlatform] = useState(null); // 선택된 플랫폼 상태 추가
 
   useEffect(() => {
-    // 서버로 POST 요청을 보내 사용자 데이터를 전송하고 추천 정보를 받아오기
-    const requestData = {
-      user_id: user ? user.id : null, // 서버가 예상하는 필드 이름으로 수정
-    };
-
-    console.log("Request Data:", requestData); // 보내는 데이터 확인
-
-    fetch('https://moviely.duckdns.org/api/recommend_platform', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestData),
-    })
+    if (user) {
+      // API 호출하여 데이터 가져오기
+      const requestData = { user_id: user.id };
+      
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      })
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -58,13 +73,13 @@ const PlatRecom = () => {
         return response.json();
       })
       .then(data => {
-        console.log("Response Data:", data); // 응답 데이터 확인
         const platform = data['추천 플랫폼'];
         const genreCode = data['추천 장르'];
         const genre = genreMapping[genreCode];
         setRecommendation({ platform, genre });
       })
       .catch(error => console.error('Error fetching recommendation:', error));
+    }
   }, [user]);
 
   const toggleSidebar = () => {
@@ -75,19 +90,10 @@ const PlatRecom = () => {
     setSidebarOpen(false);
   };
 
-  const subscriptionData = [
-    { platform: '넷플릭스', cost: 5500, color: '#FBB4AE' },
-    { platform: '왓챠', cost: 9900, color: '#CCEBC5' },
-    { platform: '디즈니플러스', cost: 7900, color: '#B3CDE3' },
-    { platform: '티빙', cost: 7900, color: '#DECBE4' }
-  ];
-
-  const contentData = [
-    { platform: '넷플릭스', content: 500 },
-    { platform: '왓챠', content: 500 },
-    { platform: '디즈니플러스', content: 500 },
-    { platform: '티빙', content: 500 }
-  ];
+  const handlePlatformSelect = (platform) => {
+    setSelectedPlatform(platform);
+    // 여기서는 데이터를 불러오지 않고, 단순히 플랫폼을 선택하면 빈 네모 박스들이 생기게 합니다.
+  };
 
   return (
     <div className="plat-PlatRecom">
@@ -112,6 +118,7 @@ const PlatRecom = () => {
       </div>
       <div className="plat-content">
         <h1 className="plat-title">나에게 맞는 OTT 플랫폼 찾아보기</h1>
+        {/* 항상 표시되는 두 개의 그래프 */}
         <div className="plat-graphContainer">
           <div className="plat-barGraph">
             <div className="plat-subtitle">OTT 플랫폼별 구독료 (최저가를 기준으로 함)</div>
@@ -201,6 +208,8 @@ const PlatRecom = () => {
             />
           </div>
         </div>
+
+        {/* 플랫폼 버튼에 따른 그래프들 */}
         <div className="plat-platformQuestion">
           <h2>
             {recommendation.platform ? `${recommendation.platform}, 나에게 맞을까?` : '나에게 맞는 OTT 플랫폼 찾아보기'}
@@ -210,17 +219,51 @@ const PlatRecom = () => {
               <button
                 key={platform}
                 className="plat-platformButton"
+                onClick={() => handlePlatformSelect(platform)}
               >
                 {platform}
               </button>
             ))}
           </div>
         </div>
+
+        {selectedPlatform && (
+          <div>
+            {/* 선택된 플랫폼에 따른 네모 박스 3개 표시 */}
+            <div className="plat-graphContainer">
+              <div className="plat-barGraph">
+                <div className="plat-subtitle">{selectedPlatform} 별점 TOP 10</div>
+                <div className="plat-placeholder">
+                  <p>{selectedPlatform} 별점 TOP 10 그래프 자리</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="plat-graphContainer">
+              <div className="plat-barGraph">
+                <div className="plat-subtitle">{selectedPlatform} 인기 TOP 10</div>
+                <div className="plat-placeholder">
+                  <p>{selectedPlatform} 인기 TOP 10 그래프 자리</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="plat-graphContainer">
+              <div className="plat-barGraph">
+                <div className="plat-subtitle">{selectedPlatform} 장르별 컨텐츠 양</div>
+                <div className="plat-placeholder">
+                  <p>{selectedPlatform} 장르별 컨텐츠 양 그래프 자리</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="plat-recommendationText">
-      <div>{user?.name}님에게 맞는 플랫폼은 '{recommendation.platform}' 일지도?</div>
-      <div>{user?.name}님이 평가한 항목 중 {recommendation.platform}이 가장 많아요.</div>
-      <div>그리고 {recommendation.genre} 장르가 가장 많아요.</div>
-      </div>
+          <p>{user?.name}님에게 맞는 플랫폼은 '{recommendation.platform}' 일지도?</p>
+          <p>{user?.name}님이 평가한 항목 중 {recommendation.platform}이 가장 많아요.</p>
+          <p>그리고 {recommendation.genre} 장르가 가장 많아요.</p>
+        </div>
       </div>
     </div>
   );
