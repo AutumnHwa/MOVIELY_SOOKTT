@@ -15,7 +15,7 @@
 
 .plat-recomlogo {
   display: flex;
-  justify-content: flex-start; /* 왼쪽 정렬 */
+  justify-content: flex-start;
   width: 250px;
   height: auto;
 }
@@ -67,16 +67,16 @@
   border-radius: 15px;
   margin-top: 20px;
   display: flex;
-  justify-content: center; /* 그래프를 가운데로 정렬 */
-  align-items: center; /* 그래프를 세로 가운데 정렬 */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
-  width: 420px; /* 네모 박스의 가로 길이 */
-  height: 220px; /* 네모 박스의 세로 길이 */
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 420px;
+  height: 220px;
 }
 
 .plat-barGraph, .plat-pieGraph {
-  height: calc(100% - 30px); /* 그래프 높이를 컨테이너의 높이보다 15px 줄임 */
-  width: calc(100% - 40px); /* 그래프 너비를 컨테이너의 너비보다 15px 줄임 */
+  height: calc(100% - 30px);
+  width: calc(100% - 40px);
 }
 
 .plat-platformQuestion {
@@ -92,7 +92,7 @@
 }
 
 .plat-platformButton {
-  width: 100px; /* 버튼 너비 */
+  width: 100px;
   height: 35px;
   background: transparent;
   border: 1px solid white;
@@ -109,9 +109,17 @@
 }
 
 .plat-subtitle {
-  font-size: 15px; /* 원하는 폰트 크기 */
-  color: black; /* 텍스트 색상 */
-  margin-bottom: -5px; /* 제목과 그래프 사이의 간격 */
+  font-size: 15px;
+  color: black;
+  margin-bottom: -5px;
   margin-top: 0px;
-  text-align: center; /* 제목을 가운데 정렬 */
+  text-align: center;
+}
+
+.plat-recommendationText {
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

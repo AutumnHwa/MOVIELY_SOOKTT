@@ -1,18 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
 import '../css/PlatRecom.css';
 import logoImage from '../logo.png';
 import { useAuth } from '../context/AuthContext';
 
+const genreMapping = {
+  '28': '액션',
+  '12': '모험',
+  '16': '애니메이션',
+  '35': '코미디',
+  '80': '범죄',
+  '99': '다큐멘터리',
+  '18': '드라마',
+  '10751': '가족',
+  '14': '판타지',
+  '36': '역사',
+  '27': '공포',
+  '10402': '음악',
+  '9648': '미스터리',
+  '10749': '로맨스',
+  '878': 'SF',
+  '10770': 'TV 영화',
+  '53': '스릴러',
+  '10752': '전쟁',
+  '37': '서부',
+};
+
 const PlatRecom = () => {
   const { user } = useAuth(); 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState(null);
+  const [recommendation, setRecommendation] = useState({ platform: '', genre: '' });
+
+  useEffect(() => {
+    // API 호출하여 데이터 가져오기
+    fetch('http://moviely.duckdns.org/api/recommend_platform')
+      .then(response => response.json())
+      .then(data => {
+        const platform = data['추천 플랫폼'];
+        const genreCode = data['추천 장르'];
+        const genre = genreMapping[genreCode];
+        setRecommendation({ platform, genre });
+      })
+      .catch(error => console.error('Error fetching recommendation:', error));
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -90,15 +125,15 @@ const PlatRecom = () => {
                 tickRotation: 0,
                 legend: '구독료 (원)',
                 legendPosition: 'middle',
-                legendOffset: -42, // 간격을 2픽셀로 조정
+                legendOffset: -42,
                 tickColor: '#000000',
                 tickTextColor: '#000000',
-                tickValues: [0, 2000, 4000, 6000, 8000], // 2000 단위로 설정
+                tickValues: [0, 2000, 4000, 6000, 8000],
               }}
               labelSkipWidth={12}
               labelSkipHeight={12}
               labelTextColor="#000000"
-              isInteractive={false} // 막대그래프 인터랙션 비활성화
+              isInteractive={false}
               theme={{
                 fontSize: 14,
               }}
@@ -110,16 +145,16 @@ const PlatRecom = () => {
             <div className="plat-subtitle">OTT 플랫폼별 컨텐츠 양</div>
             <ResponsivePie
               data={contentData.map(d => ({ id: d.platform, label: d.platform, value: d.content }))}
-              margin={{ top: 20, right: 20, bottom: 40, left: 20 }} // 아래쪽 여백을 늘려 범례 공간 확보
+              margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
               innerRadius={0.5}
               padAngle={0.7}
               cornerRadius={3}
               colors={['#FBB4AE', '#CCEBC5', '#B3CDE3', '#DECBE4']}
               borderWidth={1}
               borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-              enableRadialLabels={false} // Radial labels 비활성화
-              enableSliceLabels={false}  // Slice labels 비활성화
-              isInteractive={false}      // 파이그래프 인터랙션 비활성화
+              enableRadialLabels={false}
+              enableSliceLabels={false}
+              isInteractive={false}
               legends={[
                 {
                   anchor: 'bottom',
@@ -151,6 +186,11 @@ const PlatRecom = () => {
               }}
             />
           </div>
+        </div>
+        <div className="plat-recommendationText">
+          <p>{user?.name}님에게 맞는 플랫폼은 '{recommendation.platform}' 일지도?</p>
+          <p>{user?.name}님이 평가한 항목 중 {recommendation.platform}이 가장 많아요.</p>
+          <p>그리고 {recommendation.genre} 장르가 가장 많아요.</p>
         </div>
         <div className="plat-platformQuestion">
           <h2>
