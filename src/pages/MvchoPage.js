@@ -59,6 +59,8 @@ function MvchoPage() {
   const [selectedPlatform, setSelectedPlatform] = useState('전체');
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태 추가
+  const [hasMore, setHasMore] = useState(true); // 더 로딩할 데이터가 있는지 여부
   const [showPlatforms, setShowPlatforms] = useState(false);
   const [showGenres, setShowGenres] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -76,12 +78,20 @@ function MvchoPage() {
     try {
       const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
       const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
-      const url = new URL('https://moviely.duckdns.org/api/movies');
-      const params = { size: 2000, sort: 'popularity,desc', 'release_date.gte': '2000-01-01' };
+      const url = new URL('https://moviely.duckdns.org/api/movies/popular');
+      
+      // API 요청 시 필요한 쿼리 파라미터 설정
+      const params = {
+        size: 500, // 한 번에 500개의 영화만 가져옴
+        sort: 'popularity,desc', // 인기순으로 정렬
+        'release_date.gte': '2000-01-01', // 2000년 이후 개봉된 영화
+        page: currentPage // 현재 페이지 추가
+      };
 
       if (genre) params.genre = genre;
       if (platform) params.platform = platform;
 
+      // URL에 쿼리 파라미터 추가
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
       const response = await fetch(url, { mode: 'cors' });
@@ -91,12 +101,16 @@ function MvchoPage() {
       }
 
       const data = await response.json();
-      console.log("Fetched movies:", data.content); // 데이터 확인을 위한 콘솔 로그 추가
+      console.log("API 응답 데이터:", data);
 
       if (data && data.content) {
+        // 다음 페이지 로드 여부 확인
+        if (data.content.length < 500) {
+          setHasMore(false); // 더 이상 로드할 데이터가 없음을 표시
+        }
+
         const processedData = data.content.map(movie => {
           const genres = movie.genre ? movie.genre.split(', ').map(g => g.trim()) : [];
-          console.log(`Movie: ${movie.title}, Release Date: ${movie.release_date}, Genres: ${genres}`); // 각 영화의 파퓰러리티와 장르 확인을 위한 콘솔 로그 추가
           return {
             ...movie,
             flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
@@ -104,7 +118,7 @@ function MvchoPage() {
           };
         });
 
-        setMovies(processedData);
+        setMovies(prevMovies => [...prevMovies, ...processedData]); // 기존 영화 목록에 추가
       }
 
       setLoading(false);
@@ -112,7 +126,7 @@ function MvchoPage() {
       console.error('Error fetching movies:', error);
       setLoading(false);
     }
-  }, [selectedGenre, selectedPlatform, genreMapping, platformMapping]);
+  }, [selectedGenre, selectedPlatform, genreMapping, platformMapping, currentPage]);
 
   useEffect(() => {
     fetchMovies();
@@ -120,14 +134,24 @@ function MvchoPage() {
 
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
-    setShowGenres(false);
+    setCurrentPage(0); // 페이지를 초기화
+    setMovies([]); // 기존 영화 목록 초기화
+    setHasMore(true); // 더 로딩할 데이터가 있는지 여부 초기화
     fetchMovies();
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
-    setShowPlatforms(false);
+    setCurrentPage(0); // 페이지를 초기화
+    setMovies([]); // 기존 영화 목록 초기화
+    setHasMore(true); // 더 로딩할 데이터가 있는지 여부 초기화
     fetchMovies();
+  };
+
+  const loadMoreMovies = () => {
+    if (hasMore && !loading) {
+      setCurrentPage(prevPage => prevPage + 1); // 다음 페이지로 이동
+    }
   };
 
   let resultText = '';
@@ -208,7 +232,8 @@ function MvchoPage() {
         </div>
       </div>
       <div className="bannerGrid">
-        {loading ? <div className="loading">로딩 중...</div> : (movies.length > 0 ? (
+        {loading && <div className="loading">로딩 중...</div>}
+        {movies.length > 0 ? (
           movies.map((movie, index) => (
             <MvBanner
               key={index}
@@ -221,9 +246,14 @@ function MvchoPage() {
             />
           ))
         ) : (
-          <div className="noMovies">검색 결과가 없습니다.</div>
-        ))}
+          !loading && <div className="noMovies">검색 결과가 없습니다.</div>
+        )}
       </div>
+      {hasMore && !loading && (
+        <button className="loadMoreButton" onClick={loadMoreMovies}>
+          더 보기
+        </button>
+      )}
     </div>
   );
 }

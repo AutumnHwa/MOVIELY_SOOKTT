@@ -212,45 +212,27 @@ const PlatRecom = () => {
         {/* 플랫폼 버튼에 따른 그래프들 */}
         <div className="plat-platformQuestion">
           <h2>
-            {selectedPlatform
-              ? `${selectedPlatform}, 나에게 맞을까?`
-              : '나에게 맞는 OTT 플랫폼 찾아보기'}
+          {selectedPlatform
+            ? <><span className="highlighted-text">{selectedPlatform}</span>, 나에게 맞을까?</>
+            : '나에게 맞는 OTT 플랫폼 찾아보기'}
           </h2>
           <div className="plat-platformButtons">
-            {['넷플릭스', '왓챠', '디즈니플러스', '티빙'].map(platform => (
-              <button
-                key={platform}
-                className="plat-platformButton"
-                onClick={() => handlePlatformSelect(platform)}
-              >
-                {platform}
-              </button>
-            ))}
-          </div>
-        </div>
+          {['넷플릭스', '왓챠', '디즈니플러스', '티빙'].map(platform => (
+        <button
+          key={platform}
+          className="plat-platformButton"
+          onClick={() => handlePlatformSelect(platform)}
+        >
+          {platform}
+        </button>
+      ))}
+      </div>
+</div>
 
         {selectedPlatform && (
           <div>
-            {/* 선택된 플랫폼에 따른 네모 박스 3개 표시 */}
-            <div className="plat-graphContainer">
-              <div className="plat-barGraph">
-                <div className="plat-subtitle">{selectedPlatform} 별점 TOP 10</div>
-                <div className="plat-placeholder">
-                  <p>{selectedPlatform} 별점 TOP 10 그래프 자리</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="plat-graphContainer">
-              <div className="plat-barGraph">
-                <div className="plat-subtitle">{selectedPlatform} 인기 TOP 10</div>
-                <div className="plat-placeholder">
-                  <p>{selectedPlatform} 인기 TOP 10 그래프 자리</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="plat-graphContainer">
+            {/* 선택된 플랫폼에 따른 네모 박스 1개 표시 */}
+            <div className="plat-graphContainer3">
               <div className="plat-barGraph">
                 <div className="plat-subtitle">{selectedPlatform} 장르별 컨텐츠 양</div>
                 <div className="plat-placeholder">
