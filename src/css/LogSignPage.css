@@ -5,6 +5,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
+  overflow: hidden; /* 좌우 스크롤 방지 */
 }
 
 .logSignPage::before {
@@ -16,6 +17,7 @@
   bottom: 0;
   background-image: url('../Loginback.png');
   background-size: cover;
+  background-position: center;
   opacity: 0.7;
   z-index: 0;
 }
@@ -39,7 +41,9 @@
   background-color: rgba(0, 0, 0, 0.68);
   border: 1px solid white;
   width: 350px;
-  height: 416px;
+  max-width: 90%; /* 화면이 좁아질 때 상자가 줄어들도록 */
+  height: auto; /* 높이를 자동으로 설정하여 콘텐츠에 맞추기 */
+  padding: 20px; /* 안쪽 여백 추가 */
   margin-top: 10px;
   display: flex;
   flex-direction: column;
@@ -48,9 +52,10 @@
 }
 
 h2 {
-  margin-top: 100px;
+  margin-top: 50px;
   color: white;
   font-size: 22px;
+  text-align: center;
 }
 
 p {
@@ -58,11 +63,12 @@ p {
   color: white;
   font-size: 13px;
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 40px; /* 하단 마진을 줄여서 디자인 개선 */
 }
 
 .googleLoginButton {
   width: 320px;
+  max-width: 90%; /* 버튼도 화면 크기에 맞춰 조정 */
   height: 41px;
   background-color: white;
   color: #141414;
@@ -70,9 +76,44 @@ p {
   border: none;
   margin-top: 50px;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 .googleLoginButton:hover {
   background-color: #FBE64D;
   color: black;
+}
+
+/* 미디어 쿼리: 작은 화면에서 스타일 조정 */
+@media (max-width: 720px) {
+  .logSign-logo {
+    width: 130px; /* 작은 화면에서 로고 크기 줄이기 */
+    margin-top: 50px;
+    margin-bottom: 80px;
+  }
+
+  .logSignBox {
+    width: 300px; /* 작은 화면에서 상자 크기 줄이기 */
+    max-width: 60%; /* 화면 크기에 맞게 최대 너비 설정 */
+    padding: 15px; /* 상자 안쪽 여백 줄이기 */
+    height: 300px;
+  }
+
+  h2 {
+    font-size: 15px; /* 작은 화면에서 글씨 크기 줄이기 */
+    margin-top: 70px;
+  }
+
+  p {
+    font-size: 9px; /* 작은 화면에서 글씨 크기 줄이기 */
+    margin-top: 10px;
+    margin-bottom: 30px; /* 작은 화면에서 하단 마진 줄이기 */
+  }
+
+  .googleLoginButton {
+    width: 200px; /* 작은 화면에서 버튼 너비 줄이기 */
+    max-width: 60%; /* 화면 크기에 맞게 최대 너비 설정 */
+    height: 34px; /* 작은 화면에서 버튼 높이 줄이기 */
+    font-size: 14px; /* 작은 화면에서 버튼 글씨 크기 줄이기 */
+  }
 }
