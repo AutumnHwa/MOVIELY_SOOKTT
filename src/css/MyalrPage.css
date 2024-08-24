@@ -116,7 +116,7 @@
   .navButton {
     max-width: 30%; /* 작은 화면에서 각 버튼의 최대 너비를 설정 */
     margin: 0; /* 버튼 간격 없애기 */
-    font-size: 10px;
+    
   }
 
   .movieGridContainer {
@@ -136,8 +136,8 @@
 }
 
 .arl-searchIcon {
-  width: 23px; /* 화면이 작을 때 서치 아이콘 크기 조정 */
-  right: 70px; /* 서치 아이콘 위치 조정 */
-  margin-top: 10px; /* 위치 조정 */
+  width: 21px; /* 화면이 작을 때 서치 아이콘 크기 조정 */
+  right: 65px; /* 서치 아이콘 위치 조정 */
+  margin-top: 27px; /* 위치 조정 */
 }
 }

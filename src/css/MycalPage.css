@@ -197,6 +197,7 @@
     height: 35px; /* 화면이 작을 때 로고 크기 조정 */
     width: 120px;
     margin-top: 20px;
+    margin-left: 5px;
   }
   
   .myPageTitle {
@@ -204,7 +205,7 @@
   }
 
   .navButtons {
-    width: 300px;
+    max-width: 90%;
     padding: 10px;
     justify-content: space-around; /* 작은 화면에서도 버튼을 가로로 배치하고 균일하게 간격 유지 */
     height: 40px;
@@ -213,9 +214,15 @@
   .navButton {
     width: 150px; /* 작은 화면에서 각 버튼의 최대 너비를 설정 */
     margin: 3px; /* 버튼 간격 없애기 */
-    height: 10px;
-    font-size: 10px;
+    height: 6px;
+    font-size: 11px;
     
+  }
+
+  .cal-searchIcon {
+    width: 23px; /* 화면이 작을 때 서치 아이콘 크기 조정 */
+    right: 70px; /* 서치 아이콘 위치 조정 */
+    margin-top: 20px; /* 위치 조정 */
   }
 
 }
