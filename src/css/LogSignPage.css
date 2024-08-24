@@ -41,8 +41,8 @@
   background-color: rgba(0, 0, 0, 0.68);
   border: 1px solid white;
   width: 350px;
+  height: 400px;
   max-width: 90%; /* 화면이 좁아질 때 상자가 줄어들도록 */
-  height: auto; /* 높이를 자동으로 설정하여 콘텐츠에 맞추기 */
   padding: 20px; /* 안쪽 여백 추가 */
   margin-top: 10px;
   display: flex;
@@ -52,7 +52,7 @@
 }
 
 h2 {
-  margin-top: 50px;
+  margin-top: 100px;
   color: white;
   font-size: 22px;
   text-align: center;
@@ -89,7 +89,7 @@ p {
   .logSign-logo {
     width: 130px; /* 작은 화면에서 로고 크기 줄이기 */
     margin-top: 50px;
-    margin-bottom: 80px;
+    margin-bottom: 100px;
   }
 
   .logSignBox {
