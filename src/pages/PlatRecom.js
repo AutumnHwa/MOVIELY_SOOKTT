@@ -208,10 +208,10 @@ const PlatRecom = () => {
               margin={{ top: 20, right: 20, bottom: 40, left: 100 }} 
               innerRadius={0.5}
               padAngle={0.7}
-              cornerRadius={3}
+              cornerRadius={0}
               colors={['#FBB4AE', '#CCEBC5', '#B3CDE3', '#DECBE4']}
               borderWidth={1}
-              borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+              borderColor={{ from: 'color', modifiers: [['darker', 0.0]] }}
               enableRadialLabels={false}
               enableSliceLabels={false}
               enableArcLabels={true} 
@@ -256,7 +256,7 @@ const PlatRecom = () => {
         <div className="plat-platformQuestion">
           <h2>
           {selectedPlatform
-            ? <><span className="highlighted-text">{selectedPlatform}</span>, 나에게 맞을까?</>
+            ? <><span className="highlighted-text">{selectedPlatform}</span>, 나랑 맞을까?</>
             : '나에게 맞는 OTT 플랫폼 찾아보기'}
           </h2>
           <div className="plat-platformButtons">
@@ -281,10 +281,10 @@ const PlatRecom = () => {
         margin={{ top: 20, right: 20, bottom: 40, left: 100 }} 
         innerRadius={0.5}
         padAngle={0.7}
-        cornerRadius={3}
+        cornerRadius={0}
         colors={['#B3CDE3', '#CCEBC5', '#DECBE4', '#E5D8BD', '#FBB4AE', '#FED9A6', '#FFFFCC']}
         borderWidth={1}
-        borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+        borderColor={{ from: 'color', modifiers: [['darker', 0.0]] }}
         enableRadialLabels={false}
         enableSliceLabels={false}
         enableArcLabels={true} 
