@@ -50,8 +50,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   color: white;
   text-align: center;
+  width: 100%;
 }
 
 .plat-title {
@@ -87,6 +89,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 420px;
   height: 220px;
+  margin: 0 auto;
 }
 
 .plat-barGraph, .plat-pieGraph {
@@ -133,16 +136,99 @@
   text-align: center;
 }
 
-.plat-recommendationText p{
+.plat-recommendationText p {
   color: white;
   text-align: center;
   font-size: 16px;
-  margin-top:10px;
+  margin-top: 10px;
   margin-bottom: 10px;
   line-height: 2;
   font-weight: bold;
 }
 
 .highlighted-text {
-  color: #FBE64D; /* 강조하고 싶은 색상 */
+  color: #FBE64D;
+}
+
+/* 미디어 쿼리 추가: 화면이 작을 때 레이아웃 조정 */
+@media (max-width: 720px) {
+  .plat-PlatRecom {
+    padding: 10px;
+  }
+
+  .plat-pageHeader {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .plat-recomlogo {
+    width: 120px;
+  }
+
+  .plat-recomlogo img {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .plat-sidebar-toggle {
+    font-size: 30px;
+  }
+
+  .plat-content {
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .plat-title {
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .plat-graphContainer,
+  .plat-graphContainer3 {
+    width: 80%; /* 그래프 컨테이너의 너비를 80%로 설정하여 화면에 맞춤 */
+    height: 180px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .plat-barGraph, .plat-pieGraph {
+    width: 100%;
+    height: 100%;
+  }
+
+  .plat-platformButtons {
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .plat-platformButton {
+    width: 65px;
+    height: 25px;
+    font-size: 9px;
+  }
+
+  .plat-recommendationText p {
+    font-size: 12px;
+  }
+  
+  .plat-subtitle {
+    font-size: 12px;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  .highlighted-text {
+    font-size: 14px;
+  }
+
+  .plat-platformQuestion h2 {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
 }

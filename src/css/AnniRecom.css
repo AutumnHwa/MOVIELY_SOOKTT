@@ -181,3 +181,72 @@
     margin-top: -9px;
     width: 23px;
   }
+
+  /* 미디어 쿼리 추가: 화면이 작을 때 레이아웃 조정 */
+@media (max-width: 720px) {
+    .pageHeader {
+      width: 100%;
+      padding: 10px;
+      max-width: 100%; /* 전체 너비로 설정 */
+    }
+  
+    .recomlogo img {
+      width: 120px; /* 로고 크기 조정 */
+      margin-bottom: 10px;
+      margin-top: 30px;
+      margin-left: 30px;
+    }
+  
+    .sidebar-toggle {
+      font-size: 35px; /* 작은 화면에서 햄버거바 크기 조정 */
+    }
+  
+    .anni-sidebar-toggle {
+      font-size: 35px; /* 작은 화면에서 햄버거바 폰트 크기 35px로 줄이기 */
+      right: 40px; /* 위치 조정 */
+      top: 30px;
+    }
+  
+    .anni-searchIcon {
+      right: 70px; /* 위치 조정 */
+      width: 20px; /* 아이콘의 너비를 23px로 설정 */
+      margin-top: -10px; /* 상단 마진 제거 */
+    }
+  
+    .greetingText {
+      font-size: 16px; /* 텍스트 크기 줄이기 */
+      margin-bottom: 20px;
+    }
+  
+    .banner {
+      width: 80%; /* 배너의 너비를 줄여서 반응형 조정 */
+      height: 70px; /* 배너 높이 줄이기 */
+      margin-top: 10px;
+    }
+  
+    .banner-text {
+      font-size: 10px; /* 텍스트 크기 줄이기 */
+      margin-left: 5px; /* 마진 조정 */
+    }
+  
+    .banner-text div:first-child {
+      font-size: 10px; /* 배너 첫 번째 텍스트 크기 줄이기 */
+    }
+  
+    .banner-text div:last-child {
+      font-size: 12px; /* 배너 두 번째 텍스트 크기 줄이기 */
+    }
+  
+    .banner-image {
+      width: 40%; /* 배너 이미지 크기 조정 */
+      height: 110%; /* 높이 조정 */
+    }
+  
+    .moviesContainer {
+      max-width: 90%; /* 영화 컨테이너 너비 조정 */
+    }
+  
+    .swiper-slide {
+      height: 200px; /* 슬라이드 높이 줄이기 */
+    }
+  }

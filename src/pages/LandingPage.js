@@ -34,7 +34,7 @@ function LandingPage() {
       <Link to="/">
         <img src={logoImage} alt="Logo" className="logo" />
       </Link>
-      <h1 className="heading">오늘 뭘 볼지 모르겠다고요?<br />내 취향에 꼭 맞는 OTT 컨텐츠를 찾아보세요!</h1>
+      <h1 className="heading">오늘 뭘 봐야할 지 고민되나요?<br />내 취향에 꼭 맞는 OTT 컨텐츠를 찾아보세요!</h1>
       <div className="buttonContainer">
         <Link to="/log-sign" className="button">로그인 및 회원가입</Link>
       </div>

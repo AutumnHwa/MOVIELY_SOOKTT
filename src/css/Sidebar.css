@@ -1,3 +1,4 @@
+/* 기본 사이드바 스타일 */
 .sidebar {
     position: fixed;
     top: 0;
@@ -7,7 +8,7 @@
     background-color: white; /* 배경색을 하얀색으로 설정 */
     color: black; /* 기본 글씨 색상을 까만색으로 설정 */
     transition: right 0.3s ease;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .sidebar.open {
@@ -89,4 +90,36 @@
     font-size: 50px;
     cursor: pointer;
     padding: 0;
+}
+
+/* 미디어 쿼리 추가: 화면이 작을 때 사이드바 크기 조정 */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 150px; /* 작은 화면에서 사이드바 너비를 줄임 */
+  }
+
+  .sidebar-logo {
+    width: 70px; /* 작은 화면에서 로고 크기 줄임 */
+    padding-left: 20px; /* 패딩 조정 */
+  }
+
+  .auth-button {
+    width: 70px; /* 작은 화면에서 버튼 너비 줄임 */
+    height: auto; /* 높이를 자동으로 설정 */
+    padding: 5px 10px; /* 상하 패딩을 동일하게 설정하여 글씨가 가운데 정렬되도록 */
+    font-size: 10px; /* 글씨 크기 줄임 */
+    margin: 10px; /* 여백 줄임 */
+    line-height: 1.7; /* 텍스트 줄 높이 설정으로 가운데 정렬 */
+  }
+
+  .sidebar ul li a {
+    padding: 20px; /* 작은 화면에서 링크 요소의 패딩 줄임 */
+    font-size: 10px; /* 글씨 크기 줄임 */
+  }
+
+  .close-button {
+    font-size: 15px; /* 닫기 버튼 글씨 크기 줄임 */
+    margin-right: 0px;
+    margin-top: 10px;
+  }
 }

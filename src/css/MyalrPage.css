@@ -51,7 +51,7 @@
 
 .navButtons {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* 버튼 간격 유지 */
   align-items: center;
   width: 100%;
   max-width: 500px;
@@ -71,6 +71,8 @@
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
+  max-width: calc(33.33% - 10px); /* 가로로 배치된 버튼의 최대 너비 */
+  margin: 0 5px; /* 버튼 간격 추가 */
 }
 
 .navButton:hover, .navButton.active {
@@ -105,17 +107,37 @@
   }
 
   .navButtons {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    max-width: 80%;
+    padding: 10px;
+    justify-content: space-around; /* 작은 화면에서도 버튼을 가로로 배치하고 균일하게 간격 유지 */
+    height: 20px;
   }
 
   .navButton {
-    width: 100%;
+    max-width: 30%; /* 작은 화면에서 각 버튼의 최대 너비를 설정 */
+    margin: 0; /* 버튼 간격 없애기 */
+    
   }
 
   .movieGridContainer {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
+
+/* 로고, 햄버거바, 서치 아이콘 조정 */
+.myPageLogo {
+  height: 40px; /* 화면이 작을 때 로고 크기 조정 */
+  width: 100px;
+}
+
+.arl-sidebar-toggle {
+  font-size: 35px; /* 화면이 작을 때 햄버거바 폰트 크기 조정 */
+  right: 30px; /* 햄버거바 위치 조정 */
+}
+
+.arl-searchIcon {
+  width: 23px; /* 화면이 작을 때 서치 아이콘 크기 조정 */
+  right: 70px; /* 서치 아이콘 위치 조정 */
+  margin-top: 10px; /* 위치 조정 */
+}
 }

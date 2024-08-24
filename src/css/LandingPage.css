@@ -110,13 +110,13 @@
   }
 
   .logo {
-    width: 20vw;
+    width:40vw;
     margin-top: 50px; /* 로고 상단 여백을 50px로 줄임 */
     max-width: 200px;
   }
 
   .button {
-    width: 66px; /* 화면이 720px 이하일 때 버튼 너비 */
-    font-size: 14px; /* 화면이 720px 이하일 때 버튼 내 글씨 크기 */
+    width: 100px; /* 화면이 720px 이하일 때 버튼 너비 */
+    font-size: 12px; /* 화면이 720px 이하일 때 버튼 내 글씨 크기 */
   }
 }
