@@ -205,7 +205,7 @@ const PlatRecom = () => {
             <div className="plat-subtitle">OTT 플랫폼별 컨텐츠 양</div>
             <ResponsivePie
               data={contentData.map(d => ({ id: d.platform, label: d.platform, value: d.content }))}
-              margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
+              margin={{ top: 20, right: 20, bottom: 40, left: 100 }} 
               innerRadius={0.5}
               padAngle={0.7}
               cornerRadius={3}
@@ -214,12 +214,24 @@ const PlatRecom = () => {
               borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
               enableRadialLabels={false}
               enableSliceLabels={false}
-              isInteractive={false}
+              enableArcLabels={true} 
+              enableArcLinkLabels={false} 
               legends={[
+                {
+                  anchor: 'left',
+                  direction: 'column',
+                  translateX: -80,
+                  translateY: 0,
+                  itemsSpacing: 0,
+                  itemWidth: 100,
+                  itemHeight: 20,
+                  itemTextColor: '#000000',
+                  symbolSize: 12,
+                  symbolShape: 'circle'
+                },
                 {
                   anchor: 'bottom',
                   direction: 'row',
-                  justify: false,
                   translateX: 0,
                   translateY: 30,
                   itemsSpacing: 0,
@@ -228,14 +240,6 @@ const PlatRecom = () => {
                   itemTextColor: '#000000',
                   symbolSize: 12,
                   symbolShape: 'circle',
-                  effects: [
-                    {
-                      on: 'hover',
-                      style: {
-                        itemTextColor: '#000000',
-                      },
-                    },
-                  ],
                   data: [
                     { id: '단위', label: '단위: 개', color: '#000000' },
                   ],
@@ -269,72 +273,59 @@ const PlatRecom = () => {
 </div>
 
 {selectedPlatform && genreData[selectedPlatform] && (
-  <div>
-    {/* 선택된 플랫폼에 따른 원형 그래프 1개 표시 */}
-    <div className="plat-graphContainer3">
-      <div className="plat-pieGraph"> {/* 원형 그래프로 변경 */}
-        <div className="plat-subtitle">{selectedPlatform} 장르별 컨텐츠 양</div>
-        <ResponsivePie
-  data={genreData[selectedPlatform].map(d => ({ id: d.genre, label: d.genre, value: d.count }))}
-  margin={{ top: 20, right: 20, bottom: 40, left: 120 }}  // 왼쪽 여백 더 증가
-  innerRadius={0.5}
-  padAngle={0.7}
-  cornerRadius={3}
-  colors={['#B3CDE3', '#CCEBC5', '#DECBE4', '#E5D8BD', '#FBB4AE', '#FED9A6', '#FFFFCC']} // 색상 배열 설정
-  borderWidth={1}
-  borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
-  enableRadialLabels={false} // 반지름 라벨 사용하지 않음
-  enableSliceLabels={false}  // 슬라이스 라벨 사용하지 않음
-  enableArcLabels={true}    // 호 라벨 사용
-  enableArcLinkLabels={false} // 호 링크 라벨 사용하지 않음
-  legends={[
-    {
-      anchor: 'left',
-      direction: 'column',
-      justify: false,
-      translateX: -100, // 더 왼쪽으로 이동
-      translateY: 0,
-      itemsSpacing: 1,
-      itemWidth: 100,
-      itemHeight: 20,
-      itemTextColor: '#000000',
-      symbolSize: 12,
-      symbolShape: 'circle',
-      effects: [
-        {
-          on: 'hover',
-          style: {
-            itemTextColor: '#000000'
+  <div className="plat-graphContainer">
+    <div className="plat-pieGraph"> 
+      <div className="plat-subtitle">{selectedPlatform} 장르별 컨텐츠 양</div>
+      <ResponsivePie
+        data={genreData[selectedPlatform].map(d => ({ id: d.genre, label: d.genre, value: d.count }))}
+        margin={{ top: 20, right: 20, bottom: 40, left: 100 }} 
+        innerRadius={0.5}
+        padAngle={0.7}
+        cornerRadius={3}
+        colors={['#B3CDE3', '#CCEBC5', '#DECBE4', '#E5D8BD', '#FBB4AE', '#FED9A6', '#FFFFCC']}
+        borderWidth={1}
+        borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+        enableRadialLabels={false}
+        enableSliceLabels={false}
+        enableArcLabels={true} 
+        enableArcLinkLabels={false} 
+        legends={[
+          {
+            anchor: 'left', 
+            direction: 'column',
+            translateX: -80,
+            translateY: 0,
+            itemsSpacing: 0,
+            itemWidth: 100,
+            itemHeight: 20,
+            itemTextColor: '#000000',
+            symbolSize: 12,
+            symbolShape: 'circle'
+          },
+          {
+            anchor: 'bottom',
+            direction: 'row',
+            translateX: 0,
+            translateY: 30,
+            itemsSpacing: 0,
+            itemWidth: 80,
+            itemHeight: 18,
+            itemTextColor: '#000000',
+            symbolSize: 12,
+            symbolShape: 'circle',
+            data: [
+              { id: '단위', label: '단위: 개', color: '#000000' },
+            ],
           }
-        }
-      ]
-    },
-    {
-      anchor: 'bottom',
-      direction: 'row',
-      justify: false,
-      translateX: 0,
-      translateY: 25,
-      itemsSpacing: 0,
-      itemWidth: 80,
-      itemHeight: 18,
-      itemTextColor: '#000000',
-      symbolSize: 12,
-      symbolShape: 'circle',
-      data: [
-        { id: '단위', label: '단위: 개', color: '#000000' },
-      ],
-    }
-  ]}
-  theme={{
-    fontSize: 14,
-  }}
-/>
-
-      </div>
+        ]}
+        theme={{
+          fontSize: 14,
+        }}
+      />
     </div>
   </div>
 )}
+
 
       </div>
     </div>

@@ -77,20 +77,6 @@
   height: 220px;
 }
 
-.plat-graphContainer3 {
-  background-color: white;
-  padding: 10px;
-  border-radius: 15px;
-  margin-top: 20px;
-  margin-bottom: 70px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 420px;
-  height: 220px;
-}
-
 .plat-barGraph, .plat-pieGraph {
   height: calc(100% - 30px);
   width: calc(100% - 40px);
@@ -183,24 +169,8 @@
     margin-bottom: 10px;
   }
 
-  /* 첫 번째와 두 번째 그래프의 설정을 유지합니다. */
   .plat-graphContainer {
     width: 80%;
-    height: 180px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: white;
-  }
-
-  /* 세 번째 그래프(플랫폼별 콘텐츠 양 그래프)에 대한 설정 */
-  .plat-graphContainer3 {
-    width: 332px;
     height: 180px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -234,7 +204,7 @@
   .plat-recommendationText p {
     font-size: 12px;
   }
-  
+
   .plat-subtitle {
     font-size: 12px;
     margin-bottom: 0;
