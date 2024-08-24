@@ -103,7 +103,7 @@
 
 @media (max-width: 720px) {
   .myPageTitle {
-    font-size: 17px;
+    font-size: 15px;
   }
 
   .navButtons {
@@ -116,7 +116,7 @@
   .navButton {
     max-width: 30%; /* 작은 화면에서 각 버튼의 최대 너비를 설정 */
     margin: 0; /* 버튼 간격 없애기 */
-    
+    font-size: 10px;
   }
 
   .movieGridContainer {

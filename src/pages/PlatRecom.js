@@ -37,15 +37,54 @@ const subscriptionData = [
   { platform: '넷플릭스', cost: 5500, color: '#FBB4AE' },
   { platform: '왓챠', cost: 9900, color: '#CCEBC5' },
   { platform: '디즈니플러스', cost: 7900, color: '#B3CDE3' },
-  { platform: '티빙', cost: 7900, color: '#DECBE4' }
+  { platform: '웨이브', cost: 7900, color: '#DECBE4' }
 ];
 
 const contentData = [
-  { platform: '넷플릭스', content: 500 },
-  { platform: '왓챠', content: 300 },
-  { platform: '디즈니플러스', content: 400 },
-  { platform: '티빙', content: 200 }
+  { platform: '넷플릭스', content: 4298 },
+  { platform: '왓챠', content: 8344 },
+  { platform: '디즈니플러스', content: 1487 },
+  { platform: '웨이브', content: 12982 }
 ];
+
+const genreData = {
+  '웨이브': [
+    { genre: '드라마', count: 7187 },
+    { genre: '스릴러', count: 4256 },
+    { genre: '액션', count: 4155 },
+    { genre: '코미디', count: 3386 },
+    { genre: '범죄', count: 2049 },
+    { genre: '로맨스', count: 2466 },
+    { genre: '유럽 제작', count: 1674 }
+  ],
+  '디즈니플러스': [
+    { genre: '코미디', count: 626 },
+    { genre: '가족', count: 549 },
+    { genre: '애니메이션', count: 401 },
+    { genre: '드라마', count: 430 },
+    { genre: '유럽 제작', count: 430 },
+    { genre: '액션', count: 459 },
+    { genre: '판타지', count: 321 }
+  ],
+  '왓챠': [
+    { genre: '드라마', count: 4792 },
+    { genre: '액션', count: 2469 },
+    { genre: '코미디', count: 2000 },
+    { genre: '스릴러', count: 1200 },
+    { genre: '범죄', count: 1119 },
+    { genre: '로맨스', count: 1000 },
+    { genre: '유럽 제작', count: 900 }
+  ],
+  '넷플릭스': [
+    { genre: '코미디', count: 1718 },
+    { genre: '스릴러', count: 1129 },
+    { genre: '액션', count: 1081 },
+    { genre: '로맨스', count: 857 },
+    { genre: '범죄', count: 770 },
+    { genre: '다큐멘터리', count: 598 },
+    { genre: '애니메이션', count: 409 }
+  ]
+};
 
 const PlatRecom = () => {
   const { user } = useAuth();
@@ -217,7 +256,7 @@ const PlatRecom = () => {
             : '나에게 맞는 OTT 플랫폼 찾아보기'}
           </h2>
           <div className="plat-platformButtons">
-          {['넷플릭스', '왓챠', '디즈니플러스', '티빙'].map(platform => (
+          {['넷플릭스', '왓챠', '디즈니플러스', '웨이브'].map(platform => (
         <button
           key={platform}
           className="plat-platformButton"
@@ -229,19 +268,74 @@ const PlatRecom = () => {
       </div>
 </div>
 
-        {selectedPlatform && (
-          <div>
-            {/* 선택된 플랫폼에 따른 네모 박스 1개 표시 */}
-            <div className="plat-graphContainer3">
-              <div className="plat-barGraph">
-                <div className="plat-subtitle">{selectedPlatform} 장르별 컨텐츠 양</div>
-                <div className="plat-placeholder">
-                  <p>{selectedPlatform} 장르별 컨텐츠 양 그래프 자리</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+{selectedPlatform && genreData[selectedPlatform] && (
+  <div>
+    {/* 선택된 플랫폼에 따른 원형 그래프 1개 표시 */}
+    <div className="plat-graphContainer3">
+      <div className="plat-pieGraph"> {/* 원형 그래프로 변경 */}
+        <div className="plat-subtitle">{selectedPlatform} 장르별 컨텐츠 양</div>
+        <ResponsivePie
+  data={genreData[selectedPlatform].map(d => ({ id: d.genre, label: d.genre, value: d.count }))}
+  margin={{ top: 20, right: 20, bottom: 40, left: 120 }}  // 왼쪽 여백 더 증가
+  innerRadius={0.5}
+  padAngle={0.7}
+  cornerRadius={3}
+  colors={['#B3CDE3', '#CCEBC5', '#DECBE4', '#E5D8BD', '#FBB4AE', '#FED9A6', '#FFFFCC']} // 색상 배열 설정
+  borderWidth={1}
+  borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+  enableRadialLabels={false} // 반지름 라벨 사용하지 않음
+  enableSliceLabels={false}  // 슬라이스 라벨 사용하지 않음
+  enableArcLabels={true}    // 호 라벨 사용
+  enableArcLinkLabels={false} // 호 링크 라벨 사용하지 않음
+  legends={[
+    {
+      anchor: 'left',
+      direction: 'column',
+      justify: false,
+      translateX: -100, // 더 왼쪽으로 이동
+      translateY: 0,
+      itemsSpacing: 1,
+      itemWidth: 100,
+      itemHeight: 20,
+      itemTextColor: '#000000',
+      symbolSize: 12,
+      symbolShape: 'circle',
+      effects: [
+        {
+          on: 'hover',
+          style: {
+            itemTextColor: '#000000'
+          }
+        }
+      ]
+    },
+    {
+      anchor: 'bottom',
+      direction: 'row',
+      justify: false,
+      translateX: 0,
+      translateY: 25,
+      itemsSpacing: 0,
+      itemWidth: 80,
+      itemHeight: 18,
+      itemTextColor: '#000000',
+      symbolSize: 12,
+      symbolShape: 'circle',
+      data: [
+        { id: '단위', label: '단위: 개', color: '#000000' },
+      ],
+    }
+  ]}
+  theme={{
+    fontSize: 14,
+  }}
+/>
+
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );

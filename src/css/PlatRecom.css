@@ -89,7 +89,6 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 420px;
   height: 220px;
-  margin: 0 auto;
 }
 
 .plat-barGraph, .plat-pieGraph {
@@ -131,8 +130,8 @@
 .plat-subtitle {
   font-size: 15px;
   color: black;
-  margin-bottom: -5px;
-  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-top: -5px;
   text-align: center;
 }
 
@@ -150,7 +149,6 @@
   color: #FBE64D;
 }
 
-/* 미디어 쿼리 추가: 화면이 작을 때 레이아웃 조정 */
 @media (max-width: 720px) {
   .plat-PlatRecom {
     padding: 0px;
@@ -176,7 +174,7 @@
 
   .plat-content {
     width: 100%;
-    padding: 0 px;
+    padding: 0;
   }
 
   .plat-title {
@@ -185,12 +183,34 @@
     margin-bottom: 10px;
   }
 
-  .plat-graphContainer,
-  .plat-graphContainer3 {
-    width: 80%; /* 그래프 컨테이너의 너비를 80%로 설정하여 화면에 맞춤 */
+  /* 첫 번째와 두 번째 그래프의 설정을 유지합니다. */
+  .plat-graphContainer {
+    width: 80%;
     height: 180px;
     margin-top: 10px;
     margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+  }
+
+  /* 세 번째 그래프(플랫폼별 콘텐츠 양 그래프)에 대한 설정 */
+  .plat-graphContainer3 {
+    width: 332px;
+    height: 180px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
   }
 
   .plat-barGraph, .plat-pieGraph {
