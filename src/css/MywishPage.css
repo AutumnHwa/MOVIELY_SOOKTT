@@ -99,3 +99,17 @@
   margin-top: 50px;
   color: white;
 }
+
+@media (max-width: 720px) {
+
+  .wish-sidebar-toggle {
+    font-size: 35px; /* 화면이 작을 때 햄버거바 폰트 크기 조정 */
+    right: 30px; /* 햄버거바 위치 조정 */
+  }
+  
+  .wish-searchIcon {
+    width: 21px; /* 화면이 작을 때 서치 아이콘 크기 조정 */
+    right: 65px; /* 서치 아이콘 위치 조정 */
+    margin-top: -4px; /* 위치 조정 */
+  }
+}
