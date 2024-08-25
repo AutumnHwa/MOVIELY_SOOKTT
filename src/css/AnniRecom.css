@@ -220,7 +220,8 @@
     .banner {
         width: 80%;
         height: 70px;
-        margin-bottom: 5px;
+        margin-bottom: 7px;
+        margin-top: 7px;
     }
 
     .banner-text {
@@ -256,7 +257,7 @@
         width: 100%; /* 슬라이드 전체 너비 */
         height: auto;
         box-sizing: border-box;
-        transform: scale(0.7); /* 전체 크기를 줄임 */
+        transform: scale(0.6); /* 전체 크기를 줄임 */
         transform-origin: center; /* 중심을 기준으로 크기 조정 */
         transition: transform 0.3s ease-in-out; /* 부드러운 효과 */
     }
