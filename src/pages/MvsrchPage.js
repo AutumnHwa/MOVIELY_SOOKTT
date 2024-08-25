@@ -80,7 +80,7 @@ function MvsrchPage() {
   const fetchInitialMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const url = new URL('https://moviely.duckdns.org/api/movies/popular');
+      const url = new URL('https://moviely.duckdns.org/api/movies');
       const params = { size: 1000, sort: 'popularity,desc' };
 
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
