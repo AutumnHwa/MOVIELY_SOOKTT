@@ -249,6 +249,8 @@
         justify-content: center;
         align-items: center; /* 수직 중앙 정렬 */
         gap: 25px;
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
 
     .swiper-slide {
