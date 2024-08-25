@@ -120,12 +120,12 @@ function MvsrchPage() {
     try {
       const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
       const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
-      const url = new URL('https://moviely.duckdns.org/api/movies/popular');
-      const params = { size: 1000, sort: 'popularity,desc' };
+      const url = new URL('https://moviely.duckdns.org/api/movies'); // 엔드포인트 변경
+      const params = { size: 1000, sort: 'popularity,desc', popular: true }; // popular 파라미터 추가
 
       if (genre && genre !== 'All') params.genre = genre;
-      if (platform && platform !== 'All') params.platform = platform;
-      if (searchTerm) params.search = searchTerm; // 검색어가 있는 경우에만 쿼리 파라미터 추가
+      if (platform && platform !== 'All') params.flatrate = platform; // 플랫폼 필터링 쿼리 파라미터 수정
+      if (searchTerm) params.title = searchTerm; // 검색어 필터링 쿼리 파라미터 수정
 
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
