@@ -221,15 +221,21 @@
   }
 
   .searchInput {
-    width: calc(70% - 70px); /* Adjust width to leave space for button */
+    width: 100px; /* Adjust width to leave space for button */
     margin-left: 5px; /* 요소 간 간격 조정 */
+    height: 27px; /* 검색창 높이 설정 */
     font-size: 11px;
+    padding: 5px; /* 패딩 추가 */
+    box-sizing: border-box; /* box-sizing 설정 */
   }
 
   .searchButton {
-    width: 20%; /* Adjust width to fit on the same line */
+    width: 40px; /* Adjust width to fit on the same line */
     margin: 5px 0; /* 요소 간 간격 조정 */
+    height: 27px; /* 검색 버튼 높이 설정 */
     font-size: 11px;
+    padding: 5px; /* 패딩 추가 */
+    box-sizing: border-box; /* box-sizing 설정 */
   }
 
   .genreButton,
@@ -349,6 +355,4 @@
     width: 20px; /* 로고 크기 줄이기 */
     height: 20px;
   }
-
-  
 }

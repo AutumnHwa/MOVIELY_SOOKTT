@@ -15,7 +15,6 @@ import { useAuth } from '../context/AuthContext';
 function MvsrchPage() {
   const { user } = useAuth();
 
-  // Genre and platform mappings
   const genreMapping = useMemo(() => ({
     '장르 전체': 'All',
     '액션': '28',
@@ -59,8 +58,9 @@ function MvsrchPage() {
 
   const [selectedGenre, setSelectedGenre] = useState('장르 전체');
   const [selectedPlatform, setSelectedPlatform] = useState('전체');
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [allMovies, setAllMovies] = useState([]); // 전체 영화 데이터 저장
+  const [filteredMovies, setFilteredMovies] = useState([]); // 필터링된 영화 데이터 저장
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPlatforms, setShowPlatforms] = useState(false);
   const [showGenres, setShowGenres] = useState(false);
@@ -76,19 +76,12 @@ function MvsrchPage() {
     setSidebarOpen(false);
   };
 
-  // Fetch movies based on filters and search term
-  const fetchMovies = useCallback(async () => {
+  // 페이지 로드시 처음 1000개의 영화를 불러옴
+  const fetchInitialMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
-      const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
       const url = new URL('https://moviely.duckdns.org/api/movies/popular');
-      const params = { size: 1000, sort: 'popularity,desc' };  // 데이터 양을 고려하여 size 조정 가능
-
-      // 'All'이 아닌 경우에만 필터 파라미터 추가
-      if (genre && genre !== 'All') params.genre = genre;
-      if (platform && platform !== 'All') params.platform = platform;
-      if (searchTerm) params.search = searchTerm;
+      const params = { size: 1000, sort: 'popularity,desc' };
 
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
@@ -101,17 +94,59 @@ function MvsrchPage() {
       const data = await response.json();
 
       if (data && data.content) {
-        const processedData = data.content.map(movie => {
-          return {
-            ...movie,
-            flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
-            genre: movie.genre ? movie.genre.split(', ').map(g => g.trim()) : []
-          };
-        });
+        const processedData = data.content.map(movie => ({
+          ...movie,
+          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+          genre: movie.genre ? movie.genre.split(',').map(g => g.trim()) : [] // 장르 데이터를 배열로 변환
+        }));
 
-        setMovies(processedData);
+        setAllMovies(processedData); // 전체 영화 목록 설정
+        setFilteredMovies(processedData); // 필터링된 영화 목록 초기화
       } else {
-        setMovies([]); // No movies found
+        setAllMovies([]); // No movies found
+        setFilteredMovies([]); // No movies found
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+      setLoading(false);
+    }
+  }, []);
+
+  // 검색을 위해 필터링된 영화 목록을 갱신
+  const fetchMovies = useCallback(async () => {
+    setLoading(true);
+    try {
+      const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
+      const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
+      const url = new URL('https://moviely.duckdns.org/api/movies/popular');
+      const params = { size: 1000, sort: 'popularity,desc' };
+
+      if (genre && genre !== 'All') params.genre = genre;
+      if (platform && platform !== 'All') params.platform = platform;
+      if (searchTerm) params.search = searchTerm; // 검색어가 있는 경우에만 쿼리 파라미터 추가
+
+      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+      const response = await fetch(url, { mode: 'cors' });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data && data.content) {
+        const processedData = data.content.map(movie => ({
+          ...movie,
+          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+          genre: movie.genre ? movie.genre.split(',').map(g => g.trim()) : [] // 장르 데이터를 배열로 변환
+        }));
+
+        setFilteredMovies(processedData); // 검색어에 따라 필터링된 영화 목록 설정
+      } else {
+        setFilteredMovies([]); // No movies found
       }
 
       setLoading(false);
@@ -121,24 +156,42 @@ function MvsrchPage() {
     }
   }, [selectedGenre, selectedPlatform, searchTerm, genreMapping, platformMapping]);
 
+  // 페이지 로드시 처음 1000개의 영화를 불러옴
   useEffect(() => {
-    fetchMovies();
-  }, [fetchMovies]);
+    fetchInitialMovies();
+  }, [fetchInitialMovies]);
+
+  // 장르 또는 플랫폼이 변경될 때마다 필터링 적용
+  useEffect(() => {
+    let filtered = allMovies;
+
+    if (selectedGenre !== '장르 전체') {
+      const genreCode = genreMapping[selectedGenre];
+      filtered = filtered.filter(movie => movie.genre.includes(genreCode));
+    }
+
+    if (selectedPlatform !== '전체') {
+      const platformName = platformMapping[selectedPlatform];
+      filtered = filtered.filter(movie => movie.flatrate.includes(platformName));
+    }
+
+    setFilteredMovies(filtered);
+  }, [selectedGenre, selectedPlatform, allMovies, genreMapping, platformMapping]);
 
   const handleSearchClick = () => {
-    fetchMovies();
+    fetchMovies(); // 검색 버튼 클릭 시에만 API 요청
   };
 
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
-    setShowGenres(false);
-    fetchMovies(); // 상태 업데이트 후 영화 데이터 가져오기
+    setSelectedPlatform('전체'); // 장르 선택 시 플랫폼 선택 초기화
+    setSearchTerm(''); // 장르 선택 시 검색어 초기화
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
-    setShowPlatforms(false);
-    fetchMovies(); // 상태 업데이트 후 영화 데이터 가져오기
+    setSelectedGenre('장르 전체'); // 플랫폼 선택 시 장르 선택 초기화
+    setSearchTerm(''); // 플랫폼 선택 시 검색어 초기화
   };
 
   let resultText = '';
@@ -221,7 +274,7 @@ function MvsrchPage() {
             placeholder="검색"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearchClick()} 
+            onKeyDown={(e) => e.key === 'Enter' && handleSearchClick()}
           />
           <button className="searchButton" onClick={handleSearchClick}>검색</button>
         </div>
@@ -233,9 +286,9 @@ function MvsrchPage() {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          movies.length > 0 ? (
+          filteredMovies.length > 0 ? (
             <div className="movieGrid">
-              {movies.map((movie, index) => (
+              {filteredMovies.map((movie, index) => (
                 <MvBanner
                   key={index}
                   title={movie.title}
