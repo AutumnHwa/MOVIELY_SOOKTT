@@ -208,7 +208,7 @@
     height: auto;
     margin-bottom: 20px;
     margin-top: 30px;
-    margin-left: 20px;
+    margin-left: 25px;
   }
 
   .searchContainer {
@@ -221,7 +221,7 @@
   }
 
   .searchInput {
-    width: 100px; /* Adjust width to leave space for button */
+    width: 200px; /* Adjust width to leave space for button */
     margin-left: 5px; /* 요소 간 간격 조정 */
     height: 27px; /* 검색창 높이 설정 */
     font-size: 11px;
