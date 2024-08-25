@@ -221,7 +221,7 @@
   }
 
   .searchInput {
-    width: 200px; /* Adjust width to leave space for button */
+    width: 250px; /* Adjust width to leave space for button */
     margin-left: 5px; /* 요소 간 간격 조정 */
     height: 27px; /* 검색창 높이 설정 */
     font-size: 11px;
