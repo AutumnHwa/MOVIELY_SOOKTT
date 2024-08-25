@@ -14,6 +14,8 @@ import { useAuth } from '../context/AuthContext';
 
 function MvsrchPage() {
   const { user } = useAuth();
+
+  // Genre and platform mappings
   const genreMapping = useMemo(() => ({
     '장르 전체': 'All',
     '액션': '28',
@@ -54,6 +56,7 @@ function MvsrchPage() {
   ], []);
 
   const genres = useMemo(() => Object.keys(genreMapping), [genreMapping]);
+
   const [selectedGenre, setSelectedGenre] = useState('장르 전체');
   const [selectedPlatform, setSelectedPlatform] = useState('전체');
   const [movies, setMovies] = useState([]);
@@ -73,16 +76,18 @@ function MvsrchPage() {
     setSidebarOpen(false);
   };
 
+  // Fetch movies based on filters and search term
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
       const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
       const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
-      const url = new URL('https://moviely.duckdns.org/api/movies');
-      const params = { size: 1000, sort: 'popularity,desc' };
+      const url = new URL('https://moviely.duckdns.org/api/movies/popular');
+      const params = { size: 1000, sort: 'popularity,desc' };  // 데이터 양을 고려하여 size 조정 가능
 
-      if (genre) params.genre = genre;
-      if (platform) params.platform = platform;
+      // 'All'이 아닌 경우에만 필터 파라미터 추가
+      if (genre && genre !== 'All') params.genre = genre;
+      if (platform && platform !== 'All') params.platform = platform;
       if (searchTerm) params.search = searchTerm;
 
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
@@ -97,7 +102,6 @@ function MvsrchPage() {
 
       if (data && data.content) {
         const processedData = data.content.map(movie => {
-          console.log('Fetched movie:', movie); // 디버깅용 로그 추가
           return {
             ...movie,
             flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
@@ -106,6 +110,8 @@ function MvsrchPage() {
         });
 
         setMovies(processedData);
+      } else {
+        setMovies([]); // No movies found
       }
 
       setLoading(false);
@@ -126,13 +132,13 @@ function MvsrchPage() {
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
     setShowGenres(false);
-    fetchMovies();
+    fetchMovies(); // 상태 업데이트 후 영화 데이터 가져오기
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
     setShowPlatforms(false);
-    fetchMovies();
+    fetchMovies(); // 상태 업데이트 후 영화 데이터 가져오기
   };
 
   let resultText = '';
@@ -208,15 +214,17 @@ function MvsrchPage() {
             </div>
           )}
         </div>
-        <input
-          type="text"
-          className="searchInput"
-          placeholder="검색"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearchClick()} 
-        />
-        <button className="searchButton" onClick={handleSearchClick}>검색</button>
+        <div className="searchWrapper">
+          <input
+            type="text"
+            className="searchInput"
+            placeholder="검색"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearchClick()} 
+          />
+          <button className="searchButton" onClick={handleSearchClick}>검색</button>
+        </div>
       </div>
       <div className="resultText" style={{ marginTop: '20px' }}>
         <span dangerouslySetInnerHTML={{ __html: resultText }} />
@@ -234,8 +242,8 @@ function MvsrchPage() {
                   poster={movie.poster_path}
                   flatrate={movie.flatrate}
                   rating={Math.round(movie.vote_average / 2)}
-                  movieId={movie.id || movie.movie_id} // 이 부분 수정
-                  userId={user?.id} // userId를 useAuth 훅을 통해 가져와 전달
+                  movieId={movie.id || movie.movie_id}
+                  userId={user?.id}
                 />
               ))}
             </div>

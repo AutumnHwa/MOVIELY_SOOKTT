@@ -15,6 +15,7 @@ import { useAuth } from '../context/AuthContext';
 function MvchoPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+
   const genreMapping = useMemo(() => ({
     '장르 전체': 'All',
     '액션': '28',
@@ -55,12 +56,14 @@ function MvchoPage() {
   ], []);
 
   const genres = useMemo(() => Object.keys(genreMapping), [genreMapping]);
+
   const [selectedGenre, setSelectedGenre] = useState('장르 전체');
   const [selectedPlatform, setSelectedPlatform] = useState('전체');
-  const [movies, setMovies] = useState([]);
+  const [allMovies, setAllMovies] = useState([]); // 전체 영화 데이터 저장
+  const [filteredMovies, setFilteredMovies] = useState([]); // 필터링된 영화 데이터 저장
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 상태 추가
-  const [hasMore, setHasMore] = useState(true); // 더 로딩할 데이터가 있는지 여부
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   const [showPlatforms, setShowPlatforms] = useState(false);
   const [showGenres, setShowGenres] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -76,25 +79,19 @@ function MvchoPage() {
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
-      const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
       const url = new URL('https://moviely.duckdns.org/api/movies/popular');
-      
-      // API 요청 시 필요한 쿼리 파라미터 설정
       const params = {
-        size: 500, // 한 번에 500개의 영화만 가져옴
-        sort: 'popularity,desc', // 인기순으로 정렬
-        'release_date.gte': '2000-01-01', // 2000년 이후 개봉된 영화
-        page: currentPage // 현재 페이지 추가
+        size: 500,
+        sort: 'popularity,desc',
+        'release_date.gte': '2000-01-01',
+        page: currentPage
       };
 
-      if (genre) params.genre = genre;
-      if (platform) params.platform = platform;
-
-      // URL에 쿼리 파라미터 추가
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
-      const response = await fetch(url, { mode: 'cors' });
+      console.log("API 요청 URL:", url.toString());
+
+      const response = await fetch(url, { mode: 'cors', cache: 'no-store' });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -104,21 +101,18 @@ function MvchoPage() {
       console.log("API 응답 데이터:", data);
 
       if (data && data.content) {
-        // 다음 페이지 로드 여부 확인
         if (data.content.length < 500) {
-          setHasMore(false); // 더 이상 로드할 데이터가 없음을 표시
+          setHasMore(false);
         }
 
-        const processedData = data.content.map(movie => {
-          const genres = movie.genre ? movie.genre.split(', ').map(g => g.trim()) : [];
-          return {
-            ...movie,
-            flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
-            genre: genres
-          };
-        });
+        const processedData = data.content.map((movie, index) => ({
+          ...movie,
+          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
+          genre: movie.genre ? movie.genre.split(',').map(g => g.trim()) : [] // 장르 데이터를 배열로 변환
+        }));
 
-        setMovies(prevMovies => [...prevMovies, ...processedData]); // 기존 영화 목록에 추가
+        setAllMovies(processedData); // 전체 영화 목록 설정
+        setFilteredMovies(processedData); // 필터링된 영화 목록 초기화
       }
 
       setLoading(false);
@@ -126,31 +120,42 @@ function MvchoPage() {
       console.error('Error fetching movies:', error);
       setLoading(false);
     }
-  }, [selectedGenre, selectedPlatform, genreMapping, platformMapping, currentPage]);
+  }, [currentPage]);
 
   useEffect(() => {
     fetchMovies();
   }, [fetchMovies]);
 
+  // 필터링 함수
+  useEffect(() => {
+    let filtered = allMovies;
+
+    if (selectedGenre !== '장르 전체') {
+      const genreCode = genreMapping[selectedGenre];
+      filtered = filtered.filter(movie => movie.genre.includes(genreCode));
+    }
+
+    if (selectedPlatform !== '전체') {
+      const platformName = platformMapping[selectedPlatform];
+      filtered = filtered.filter(movie => movie.flatrate.includes(platformName));
+    }
+
+    setFilteredMovies(filtered);
+  }, [selectedGenre, selectedPlatform, allMovies, genreMapping, platformMapping]);
+
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
-    setCurrentPage(0); // 페이지를 초기화
-    setMovies([]); // 기존 영화 목록 초기화
-    setHasMore(true); // 더 로딩할 데이터가 있는지 여부 초기화
-    fetchMovies();
+    setSelectedPlatform('전체'); // 장르 선택 시 플랫폼 선택 초기화
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
-    setCurrentPage(0); // 페이지를 초기화
-    setMovies([]); // 기존 영화 목록 초기화
-    setHasMore(true); // 더 로딩할 데이터가 있는지 여부 초기화
-    fetchMovies();
+    setSelectedGenre('장르 전체'); // 플랫폼 선택 시 장르 선택 초기화
   };
 
   const loadMoreMovies = () => {
     if (hasMore && !loading) {
-      setCurrentPage(prevPage => prevPage + 1); // 다음 페이지로 이동
+      setCurrentPage(prevPage => prevPage + 1);
     }
   };
 
@@ -233,8 +238,8 @@ function MvchoPage() {
       </div>
       <div className="bannerGrid">
         {loading && <div className="loading">로딩 중...</div>}
-        {movies.length > 0 ? (
-          movies.map((movie, index) => (
+        {filteredMovies.length > 0 ? (
+          filteredMovies.map((movie, index) => (
             <MvBanner
               key={index}
               title={movie.title}
