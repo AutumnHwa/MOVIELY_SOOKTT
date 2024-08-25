@@ -152,7 +152,7 @@
 }
 
 .overview {
-  margin-top: -30px;
+  margin-top: 0px;
   font-size: 20px;
   text-align: left;
 }
@@ -166,7 +166,7 @@
   width: 100%;
   max-width: 550px;
   margin-top: 10px;
-  margin-bottom: -90px;
+  margin-bottom: -10px;
   font-size: 15px;
   text-align: left; /* 왼쪽 정렬 */
 }
@@ -232,7 +232,7 @@
   height: 3px;
   width: 550px;
   background-color: white;
-  margin: 40px auto;
+  margin: 30px auto;
   opacity: 50%;
 }
 
@@ -244,4 +244,60 @@
   margin-top: -12px;
   cursor: pointer;
   width : 26px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 720px) {
+  .custom-hr {
+    width: 100%; /* 화면에 맞게 hr의 길이를 조정 */
+  }
+
+  .detail-add-button {
+    margin-left: 5px; /* + 버튼을 왼쪽으로 이동 */
+    font-size: 30px; /* + 버튼 크기 줄이기 */
+  }
+
+  .movie-detail-page .movie-rating .star {
+    font-size: 18px; /* 별 크기 줄이기 */
+  }
+
+  .ott-button {
+    height: 35px; /* 플랫폼 바로가기 버튼의 높이 줄이기 */
+    font-size: 10px; /* 플랫폼 바로가기 버튼의 글씨 크기 줄이기 */
+  }
+
+  .ott-button img.ott-logo {
+    width: 20px; /* 플랫폼 로고 크기 줄이기 */
+    height: 20px;
+  }
+
+  .detail-searchIcon {
+    right: 40px; /* 서치 아이콘의 위치 조정 */
+    margin-top: -8px;
+    font-size: 20px; /* 서치 아이콘 크기 줄이기 */
+  }
+
+  .detail-sidebar-toggle {
+    font-size: 35px; /* 햄버거바 크기 줄이기 */
+    right: 5px; /* 햄버거바의 위치 조정 */
+  }
+
+  .detail-movie-title {
+    font-size: 16px; /* 영화 제목 크기 줄이기 */
+  }
+
+  .movie-details,
+  .movie-runtime,
+  .movie-cast {
+    font-size: 11px; /* 장르 등의 영화 정보 크기 줄이기 */
+  }
+
+  .overview {
+    font-size: 16px; /* '개요' 글씨 크기 줄이기 */
+  }
+
+  .ott-title {
+    font-size: 16px; /* '바로가기' 글씨 크기 줄이기 */
+    margin-top: 3px;
+  }
 }
