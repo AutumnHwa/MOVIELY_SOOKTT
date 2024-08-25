@@ -296,6 +296,10 @@
     font-size: 16px; /* '개요' 글씨 크기 줄이기 */
   }
 
+  .fulloverview{
+    font-size: 11px;
+  }
+
   .ott-title {
     font-size: 16px; /* '바로가기' 글씨 크기 줄이기 */
     margin-top: 3px;
