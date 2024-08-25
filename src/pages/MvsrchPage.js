@@ -76,12 +76,18 @@ function MvsrchPage() {
     setSidebarOpen(false);
   };
 
-  // 페이지 로드시 처음 1000개의 영화를 불러옴
-  const fetchInitialMovies = useCallback(async () => {
+  // 영화 데이터를 가져오는 함수 (초기 로드 및 검색/필터링 시)
+  const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
+      const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
+      const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
       const url = new URL('https://moviely.duckdns.org/api/movies');
-      const params = { size: 1000, sort: 'popularity,desc' };
+      const params = { size: 1000, sort: 'popularity,desc', popular: true }; // popular 파라미터 추가
+
+      if (genre && genre !== 'All') params.genre = genre;
+      if (platform && platform !== 'All') params.flatrate = platform;
+      if (searchTerm) params.title = searchTerm;
 
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
@@ -112,54 +118,12 @@ function MvsrchPage() {
       console.error('Error fetching movies:', error);
       setLoading(false);
     }
-  }, []);
-
-  // 검색을 위해 필터링된 영화 목록을 갱신
-  const fetchMovies = useCallback(async () => {
-    setLoading(true);
-    try {
-      const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
-      const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
-      const url = new URL('https://moviely.duckdns.org/api/movies'); // 엔드포인트 변경
-      const params = { size: 1000, sort: 'popularity,desc', popular: true }; // popular 파라미터 추가
-
-      if (genre && genre !== 'All') params.genre = genre;
-      if (platform && platform !== 'All') params.flatrate = platform; // 플랫폼 필터링 쿼리 파라미터 수정
-      if (searchTerm) params.title = searchTerm; // 검색어 필터링 쿼리 파라미터 수정
-
-      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-
-      const response = await fetch(url, { mode: 'cors' });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data && data.content) {
-        const processedData = data.content.map(movie => ({
-          ...movie,
-          flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
-          genre: movie.genre ? movie.genre.split(',').map(g => g.trim()) : [] // 장르 데이터를 배열로 변환
-        }));
-
-        setFilteredMovies(processedData); // 검색어에 따라 필터링된 영화 목록 설정
-      } else {
-        setFilteredMovies([]); // No movies found
-      }
-
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-      setLoading(false);
-    }
   }, [selectedGenre, selectedPlatform, searchTerm, genreMapping, platformMapping]);
 
   // 페이지 로드시 처음 1000개의 영화를 불러옴
   useEffect(() => {
-    fetchInitialMovies();
-  }, [fetchInitialMovies]);
+    fetchMovies();
+  }, [fetchMovies]);
 
   // 장르 또는 플랫폼이 변경될 때마다 필터링 적용
   useEffect(() => {
