@@ -246,7 +246,6 @@ function RecomPage() {
               spaceBetween={0}
               slidesPerView={4.5}
               navigation
-              pagination={{ clickable: true }}
               modules={[Navigation, Pagination]}
               className="movieSwiper"
               loop={true}
