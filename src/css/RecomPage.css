@@ -343,7 +343,7 @@
   .movieListContainer {
     width: 80%; /* 리스트 컨테이너의 너비 줄이기 */
     height: 300px;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     margin: 0 auto 20px auto; /* 상하 중앙 정렬 및 여백 조정 */
     margin-top: 60px;
