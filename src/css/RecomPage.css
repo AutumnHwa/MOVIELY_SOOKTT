@@ -257,6 +257,7 @@
 
 /* 반응형 스타일 수정 */
 /* 반응형 스타일 */
+/* 반응형 스타일 */
 @media (max-width: 720px) {
   .RecomPage {
     display: flex;
@@ -308,6 +309,7 @@
     color: white;
     font-size: 20px;
   }
+
   .greetingText-recom {
     margin: 10px 0;
     text-align: center; /* 화면 중앙 정렬 */
@@ -324,20 +326,29 @@
     padding: 0 10px;
   }
 
-  .topMovieContainer, .movieListContainer {
-    width: 70%;
+  .topMovieContainer {
+    width: 70%; /* 컨테이너 크기 줄이기 */
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .topMovieContainer .movie-banner {
+    max-width: 100%; /* 배너 크기를 컨테이너에 맞추기 */
+    transform: scale(0.8); /* 배너의 크기 줄이기 */
+  }
+
+  .movieListContainer {
+    width: 80%; /* 리스트 컨테이너의 너비 줄이기 */
+    height: auto;
+    max-height: 200px;
+    overflow-y: auto;
     margin-bottom: 20px;
   }
 
   .anniversaryMoviesContainer {
     width: 100%;
     margin-bottom: 20px;
-  }
-
-  .movieListContainer {
-    height: auto;
-    max-height: 200px;
-    overflow-y: auto;
   }
 
   .anniversaryMoviesContainer {
@@ -350,7 +361,6 @@
     width: 100%;
     padding: 0 15px;
   }
-
 
   .recomani-text {
     margin: 10px 0;
