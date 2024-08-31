@@ -5,7 +5,6 @@ import netflixLogo from '../netflix.png';
 import disneyPlusLogo from '../disneyplus.png';
 import wavveLogo from '../wavve.png';
 import detailLogoImage from '../logo.png';
-import Popcho from '../pages/Popcho';
 import Sidebar from '../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -68,8 +67,6 @@ const MvdetailPage = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-  const [message, setMessage] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -90,11 +87,9 @@ const MvdetailPage = () => {
           console.log('Movie data fetched:', data);
         } else {
           console.error('Failed to fetch movie:', data.message || 'Unknown error');
-          setMessage('Failed to fetch movie: ' + (data.message || 'Unknown error'));
         }
       } catch (error) {
         console.error('Error fetching movie:', error);
-        setMessage('Error fetching movie.');
       } finally {
         setLoading(false);
       }
@@ -104,17 +99,6 @@ const MvdetailPage = () => {
   }, [id]);
 
   const handleStarClick = async (index) => {
-    if (loading) {
-      console.log('Data is still loading...');
-      return;
-    }
-
-    if (!user?.id || !movie?.movie_id) {
-      setMessage('User or Movie data is missing.');
-      console.log('User or Movie data is missing:', { userId: user?.id, movieId: movie?.movie_id });
-      return;
-    }
-
     const newRating = index + 1;
     setRating(newRating);
 
@@ -123,8 +107,6 @@ const MvdetailPage = () => {
       movie_id: movie.movie_id,
       rating: parseFloat(newRating)
     };
-
-    console.log('Submitting rating data:', ratingData); // 디버깅용 로그 추가
 
     try {
       const response = await fetch('https://moviely.duckdns.org/ratings', {
@@ -135,51 +117,27 @@ const MvdetailPage = () => {
         body: JSON.stringify(ratingData),
       });
 
-      if (response.ok) {
-        setMessage('Rating submitted successfully!');
-        console.log('Rating submitted successfully!');
-      } else {
-        const responseData = await response.json();
-        console.error('Rating submission failed:', responseData);
-        setMessage('Failed to submit rating: ' + (responseData.message || 'Unknown error'));
+      const responseData = await response.text();
+
+      try {
+        const jsonResponse = JSON.parse(responseData);
+        if (response.ok) {
+          console.log('Rating submitted successfully!');
+        } else {
+          console.error('Rating submission failed:', jsonResponse);
+        }
+      } catch (e) {
+        console.error('JSON parsing error:', responseData);
       }
+
     } catch (error) {
       console.error('Error:', error);
-      setMessage('Failed to submit rating.');
     }
-
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
   };
 
-  const handleAddClick = () => {
-    if (loading) {
-      console.log('Data is still loading...');
-      return;
-    }
-
-    if (!user?.id || !movie?.movie_id) {
-      setMessage('User or Movie data is missing.');
-      console.log('User or Movie data is missing:', { userId: user?.id, movieId: movie?.movie_id });
-      return;
-    }
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
-  const handleSaveModal = async (option) => {
-    if (loading) {
-      console.log('Data is still loading...');
-      return;
-    }
-
-    if (!user?.id || !movie?.movie_id) {
-      setMessage('User ID and Movie ID must not be null');
-      console.log('User ID or Movie ID is null:', { userId: user?.id, movieId: movie?.movie_id });
+  const handleAddClick = async (option) => {
+    if (!user.id || !movie.movie_id) {
+      console.log('User ID or Movie ID is null:', { userId: user.id, movie_id: movie.movie_id });
       return;
     }
 
@@ -188,7 +146,7 @@ const MvdetailPage = () => {
       movie_id: movie.movie_id
     };
 
-    console.log('Data being sent:', JSON.stringify(listData)); // 디버깅용 로그 추가
+    console.log('Data being sent:', JSON.stringify(listData));
 
     try {
       let url = '';
@@ -208,23 +166,17 @@ const MvdetailPage = () => {
         body: JSON.stringify(listData),
       });
 
+      const responseData = await response.json();
+      console.log('Response from server:', responseData);
+
       if (response.ok) {
-        setMessage('List updated successfully!');
         console.log('List updated successfully!');
       } else {
-        const responseData = await response.json();
         console.error('List update failed:', responseData);
-        setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
       }
     } catch (error) {
-      console.error('Error updating list:', error);
-      setMessage('Failed to update list.');
+      console.error('Error:', error);
     }
-
-    setShowModal(false);
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
   };
 
   if (loading) {
@@ -238,6 +190,8 @@ const MvdetailPage = () => {
   const validFlatrate = typeof movie.flatrate === 'string'
     ? movie.flatrate.split(',').map(service => service.trim().toLowerCase()).filter(Boolean)
     : [];
+
+  console.log('Valid Flatrate:', validFlatrate); // 디버깅 로그 추가
 
   const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image';
 
@@ -308,13 +262,6 @@ const MvdetailPage = () => {
           </button>
         ))}
       </div>
-      {showModal && <Popcho onClose={handleCloseModal} onSave={handleSaveModal} />}
-      {message && <div className="popupContainer">
-        <div className="popupContent">
-          <p>{message}</p>
-          <button onClick={() => setMessage('')}>닫기</button>
-        </div>
-      </div>}
     </div>
   );
 };
