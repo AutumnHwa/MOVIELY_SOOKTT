@@ -31,6 +31,13 @@ const genreMapping = {
   '37': '서부',
 };
 
+const platformNameMapping = {
+  'disney plus': '디즈니 플러스',
+  'netflix': '넷플릭스',
+  'watcha': '왓챠',
+  'wavve': '웨이브'
+};
+
 const API_URL = 'https://moviely.duckdns.org/api/recommend_platform';
 
 const subscriptionData = [
@@ -109,7 +116,7 @@ const PlatRecom = () => {
         return response.json();
       })
       .then(data => {
-        const platform = data['추천 플랫폼'];
+        const platform = platformNameMapping[data['추천 플랫폼']] || data['추천 플랫폼'];
         const genreCode = data['추천 장르'];
         const genre = genreMapping[genreCode];
         setRecommendation({ platform, genre });
@@ -117,6 +124,7 @@ const PlatRecom = () => {
       .catch(error => console.error('Error fetching recommendation:', error));
     }
   }, [user]);
+  
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
