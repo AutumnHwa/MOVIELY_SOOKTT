@@ -229,7 +229,7 @@
 
   .cal-searchIcon {
     width: 23px; /* 화면이 작을 때 서치 아이콘 크기 조정 */
-    right: 70px; /* 서치 아이콘 위치 조정 */
+    right: 68px; /* 서치 아이콘 위치 조정 */
     margin-top: 20px; /* 위치 조정 */
   }
 }
