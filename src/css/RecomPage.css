@@ -308,6 +308,13 @@
     color: white;
     font-size: 20px;
   }
+  .greetingText-recom {
+    margin: 10px 0;
+    text-align: center; /* 화면 중앙 정렬 */
+    font-size: 15px;
+    font-weight: bold;
+    width: 100%; /* 가로 폭 100% */
+  }
 
   .topMovieAndListContainer {
     display: flex;
@@ -317,7 +324,12 @@
     padding: 0 10px;
   }
 
-  .topMovieContainer, .movieListContainer, .anniversaryMoviesContainer {
+  .topMovieContainer, .movieListContainer {
+    width: 70%;
+    margin-bottom: 20px;
+  }
+
+  .anniversaryMoviesContainer {
     width: 100%;
     margin-bottom: 20px;
   }
