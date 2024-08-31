@@ -114,6 +114,10 @@ body, html {
     font-size: 15px; /* 화면이 720px 이하일 때 글씨 크기 조정 */
   }
 
+  .container {
+    height: 750px;
+  }
+
   .logo {
     width:40vw;
     margin-top: 30px; /* 로고 상단 여백을 50px로 줄임 */

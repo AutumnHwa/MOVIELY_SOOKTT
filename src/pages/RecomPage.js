@@ -249,6 +249,7 @@ function RecomPage() {
               pagination={{ clickable: true }}
               modules={[Navigation, Pagination]}
               className="movieSwiper"
+              loop={true}
             >
               {anniversaryMovies.map((movie, index) => {
                 const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
