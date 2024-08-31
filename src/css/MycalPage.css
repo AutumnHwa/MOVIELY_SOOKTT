@@ -224,6 +224,7 @@
     width: 90%; /* 작은 화면에서 캘린더 너비를 90%로 설정 */
     padding: 10px; /* 작은 화면에서 패딩 조정 */
     max-width: none; /* 최대 너비 제한 해제 */
+    margin-bottom: 40px;
   }
 
   .cal-searchIcon {
