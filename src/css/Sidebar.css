@@ -108,7 +108,7 @@
     height: auto; /* 높이를 자동으로 설정 */
     padding: 5px 10px; /* 상하 패딩을 동일하게 설정하여 글씨가 가운데 정렬되도록 */
     font-size: 10px; /* 글씨 크기 줄임 */
-    margin: 10px; /* 여백 줄임 */
+    margin: 17px; /* 여백 줄임 */
     line-height: 1.7; /* 텍스트 줄 높이 설정으로 가운데 정렬 */
   }
 
