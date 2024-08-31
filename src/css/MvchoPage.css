@@ -225,6 +225,19 @@
     font-size: 10px;
   }
 
+  .stickyTop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: transparent;
+    padding: 10px 0;
+    width: 300px;
+    height: auto;
+}
+
   .MvchoDropdownContainer {
     width: 100%;
     padding: 15px 0;

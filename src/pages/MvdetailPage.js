@@ -85,6 +85,8 @@ const MvdetailPage = () => {
       try {
         const response = await fetch(`https://moviely.duckdns.org/api/movies/${movieId}`);
         const data = await response.json();
+        console.log('Fetched movie data:', data); // API 응답 데이터 확인
+
         if (response.ok) {
           setMovie(data);
           console.log('Movie data fetched:', data);
@@ -104,8 +106,8 @@ const MvdetailPage = () => {
   }, [movieId]);
 
   const handleStarClick = async (index) => {
-    if (loading) {
-      console.log('Data is still loading...');
+    if (loading || !movie) { // 추가된 movie null 체크
+      console.log('Data is still loading or movie is not yet set.');
       return;
     }
 
@@ -154,8 +156,8 @@ const MvdetailPage = () => {
   };
 
   const handleAddClick = () => {
-    if (loading) {
-      console.log('Data is still loading...');
+    if (loading || !movie) { // movie null 체크 추가
+      console.log('Data is still loading or movie is not yet set.');
       return;
     }
 
@@ -172,8 +174,8 @@ const MvdetailPage = () => {
   };
 
   const handleSaveModal = async (option) => {
-    if (loading) {
-      console.log('Data is still loading...');
+    if (loading || !movie) { // 추가된 movie null 체크
+      console.log('Data is still loading or movie is not yet set.');
       return;
     }
 
@@ -233,6 +235,12 @@ const MvdetailPage = () => {
 
   if (!movie) {
     return <div style={{ color: 'white', textAlign: 'center' }}>Movie not found</div>;
+  }
+
+  // movie.movie_id를 사용하기 전에 항상 유효성 체크
+  if (!movie.movie_id) {
+    console.error('Movie ID is undefined. Movie data:', movie);
+    return <div style={{ color: 'white', textAlign: 'center' }}>Invalid Movie Data</div>;
   }
 
   const validFlatrate = typeof movie.flatrate === 'string'
