@@ -351,12 +351,7 @@
   }
 
   .anniversaryMoviesContainer {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .anniversaryMoviesContainer {
-    width: 400px;
+    width: 360px;
     margin: 0 auto;
     align-items: center;
     margin-bottom: 50px;
