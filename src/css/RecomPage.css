@@ -258,6 +258,7 @@
 /* 반응형 스타일 수정 */
 /* 반응형 스타일 */
 /* 반응형 스타일 */
+/* 반응형 스타일 */
 @media (max-width: 720px) {
   .RecomPage {
     display: flex;
@@ -344,8 +345,9 @@
     height: auto;
     max-height: 200px;
     overflow-y: auto;
-    margin-bottom: 20px;
-    margin-top: 70px;
+    margin: 0 auto 20px auto; /* 상하 중앙 정렬 및 여백 조정 */
+    margin-top: 60px;
+    box-sizing: border-box; /* 스크롤바 공간을 포함한 너비 설정 */
   }
 
   .anniversaryMoviesContainer {
