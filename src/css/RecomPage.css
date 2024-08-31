@@ -313,10 +313,10 @@
   .greetingText-recom {
     margin: 10px 0;
     margin-bottom: 70px;
-    text-align: left; /* 화면 중앙 정렬 */
+    text-align: start; /* 화면 중앙 정렬 */
     font-size: 15px;
     font-weight: bold;
-    width: 100%; /* 가로 폭 100% */
+    width: 50%; /* 가로 폭 100% */
   }
 
   .topMovieAndListContainer {
@@ -370,5 +370,6 @@
     margin: 10px 0;
     text-align: left;
     font-size: 15px;
+    margin-left: 0px;
   }
 }
