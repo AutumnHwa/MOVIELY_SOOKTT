@@ -311,7 +311,7 @@
 
   .greetingText-recom {
     margin: 10px 0;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     text-align: center; /* 화면 중앙 정렬 */
     font-size: 15px;
     font-weight: bold;
@@ -336,11 +336,11 @@
 
   .topMovieContainer .movie-banner {
     max-width: 100%; /* 배너 크기를 컨테이너에 맞추기 */
-    transform: scale(0.75); /* 배너의 크기 줄이기 */
+    transform: scale(0.85); /* 배너의 크기 줄이기 */
   }
 
   .movieListContainer {
-    width: 80%; /* 리스트 컨테이너의 너비 줄이기 */
+    width: 75%; /* 리스트 컨테이너의 너비 줄이기 */
     height: auto;
     max-height: 200px;
     overflow-y: auto;
