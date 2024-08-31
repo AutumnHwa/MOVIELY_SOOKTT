@@ -359,6 +359,7 @@
     width: 400px;
     margin: 0 auto;
     align-items: center;
+    margin-bottom: 30px;
   }
 
   .swiper-container {
@@ -372,7 +373,4 @@
     font-size: 15px;
   }
 
-  .swiper-pagination{
-    margin-bottom: 30px;
-  }
 }
