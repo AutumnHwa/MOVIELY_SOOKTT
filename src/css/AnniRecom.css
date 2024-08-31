@@ -70,7 +70,6 @@
 }
 
 .banner-text {
-    font-size: 1px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -227,6 +226,7 @@
     .banner-text {
         font-size: 10px;
         margin-left: 5px;
+        white-space: nowrap; /* 줄 바꿈을 방지 */
     }
 
     .banner-text div:first-child {
@@ -261,7 +261,7 @@
 
     .swiper-slide {
         display: flex;
-        justify-content: center;
+        justify-content: left;
         align-items: flex-start; /* 위쪽부터 정렬하여 하단 잘림 방지 */
         width: 100%; /* 슬라이드 전체 너비 */
         height: auto;
