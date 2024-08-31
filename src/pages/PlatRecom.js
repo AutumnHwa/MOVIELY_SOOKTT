@@ -31,6 +31,14 @@ const genreMapping = {
   '37': '서부',
 };
 
+// 플랫폼 이름을 한글로 변환하는 매핑 객체
+const platformMapping = {
+  'Netflix': '넷플릭스',
+  'Watcha': '왓챠',
+  'DisneyPlus': '디즈니플러스',
+  'Wavve': '웨이브'
+};
+
 const API_URL = 'https://moviely.duckdns.org/api/recommend_platform';
 
 const subscriptionData = [
@@ -112,8 +120,12 @@ const PlatRecom = () => {
         const platform = data['추천 플랫폼'];
         const genreCode = data['추천 장르'];
         const genre = genreMapping[genreCode];
-        setRecommendation({ platform, genre });
-        setSelectedPlatform(platform); // 추천 플랫폼을 기본 선택 상태로 설정
+
+        // API로부터 받은 플랫폼을 한글로 변환
+        const koreanPlatform = platformMapping[platform] || platform;
+
+        setRecommendation({ platform: koreanPlatform, genre });
+        setSelectedPlatform(koreanPlatform); // 추천 플랫폼을 기본 선택 상태로 설정
       })
       .catch(error => console.error('Error fetching recommendation:', error));
     }
@@ -262,71 +274,71 @@ const PlatRecom = () => {
           </h2>
           <div className="plat-platformButtons">
           {['넷플릭스', '왓챠', '디즈니플러스', '웨이브'].map(platform => (
-        <button
-          key={platform}
-          className="plat-platformButton"
-          onClick={() => handlePlatformSelect(platform)}
-        >
-          {platform}
-        </button>
-      ))}
-      </div>
-</div>
+            <button
+              key={platform}
+              className={`plat-platformButton ${selectedPlatform === platform ? 'active' : ''}`} // 선택된 플랫폼에 'active' 클래스 추가
+              onClick={() => handlePlatformSelect(platform)}
+            >
+              {platform}
+            </button>
+          ))}
+          </div>
+        </div>
 
-{selectedPlatform && genreData[selectedPlatform] && (
-  <div className="plat-graphContainer">
-    <div className="plat-pieGraph"> 
-      <div className="plat-subtitle">{selectedPlatform} 장르별 컨텐츠 양</div>
-      <ResponsivePie
-        data={genreData[selectedPlatform].map(d => ({ id: d.genre, label: d.genre, value: d.count }))}
-        margin={{ top: 20, right: 20, bottom: 40, left: 100 }} 
-        innerRadius={0.5}
-        padAngle={0.7}
-        cornerRadius={0}
-        colors={['#B3CDE3', '#CCEBC5', '#DECBE4', '#E5D8BD', '#FBB4AE', '#FED9A6', '#FFFFCC']}
-        borderWidth={1}
-        borderColor={{ from: 'color', modifiers: [['darker', 0.0]] }}
-        enableRadialLabels={false}
-        enableSliceLabels={false}
-        enableArcLabels={true} 
-        enableArcLinkLabels={false} 
-        legends={[
-          {
-            anchor: 'left', 
-            direction: 'column',
-            translateX: -80,
-            translateY: 0,
-            itemsSpacing: 0,
-            itemWidth: 100,
-            itemHeight: 20,
-            itemTextColor: '#000000',
-            symbolSize: 12,
-            symbolShape: 'circle'
-          },
-          {
-            anchor: 'bottom',
-            direction: 'row',
-            translateX: 0,
-            translateY: 30,
-            itemsSpacing: 0,
-            itemWidth: 80,
-            itemHeight: 18,
-            itemTextColor: '#000000',
-            symbolSize: 12,
-            symbolShape: 'circle',
-            data: [
-              { id: '단위', label: '단위: 개', color: '#000000' },
-            ],
-          }
-        ]}
-        theme={{
-          fontSize: 14,
-        }}
-      />
-    </div>
-  </div>
-)}
-
+        {/* 선택된 플랫폼에 맞는 장르별 컨텐츠 그래프 표시 */}
+        {selectedPlatform && genreData[selectedPlatform] && (
+          <div className="plat-graphContainer">
+            <div className="plat-pieGraph"> 
+              <div className="plat-subtitle">{selectedPlatform} 장르별 컨텐츠 양</div>
+              <ResponsivePie
+                data={genreData[selectedPlatform].map(d => ({ id: d.genre, label: d.genre, value: d.count }))}
+                margin={{ top: 20, right: 20, bottom: 40, left: 100 }} 
+                innerRadius={0.5}
+                padAngle={0.7}
+                cornerRadius={0}
+                colors={['#B3CDE3', '#CCEBC5', '#DECBE4', '#E5D8BD', '#FBB4AE', '#FED9A6', '#FFFFCC']}
+                borderWidth={1}
+                borderColor={{ from: 'color', modifiers: [['darker', 0.0]] }}
+                enableRadialLabels={false}
+                enableSliceLabels={false}
+                enableArcLabels={true} 
+                enableArcLinkLabels={false} 
+                legends={[
+                  {
+                    anchor: 'left', 
+                    direction: 'column',
+                    translateX: -80,
+                    translateY: 0,
+                    itemsSpacing: 0,
+                    itemWidth: 100,
+                    itemHeight: 20,
+                    itemTextColor: '#000000',
+                    symbolSize: 12,
+                    symbolShape: 'circle'
+                  },
+                  {
+                    anchor: 'bottom',
+                    direction: 'row',
+                    translateX: 0,
+                    translateY: 30,
+                    itemsSpacing: 0,
+                    itemWidth: 80,
+                    itemHeight: 18,
+                    itemTextColor: '#000000',
+                    symbolSize: 12,
+                    symbolShape: 'circle',
+                    data: [
+                      { id: '단위', label: '단위: 개', color: '#000000' },
+                    ],
+                  }
+                ]}
+                theme={{
+                  fontSize: 14,
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
