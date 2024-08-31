@@ -310,25 +310,13 @@
     font-size: 20px;
   }
 
-  /* Ensure both texts align consistently from the left */
-  .tabContent {
-    padding-left: 20px; /* Adds consistent left padding for alignment */
-    width: 100%;
-  }
-
   .greetingText-recom {
     margin: 10px 0;
     margin-bottom: 70px;
-    text-align: start;
+    text-align: start; /* 화면 중앙 정렬 */
     font-size: 15px;
     font-weight: bold;
-    width: 100%; /* Ensure it takes full width */
-  }
-
-  .recomani-text {
-    margin: 10px 0;
-    text-align: left;
-    font-size: 15px;
+    width: 50%; /* 가로 폭 100% */
   }
 
   .topMovieAndListContainer {
@@ -341,25 +329,25 @@
   }
 
   .topMovieContainer {
-    width: 70%;
+    width: 70%; /* 컨테이너 크기 줄이기 */
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
   }
 
   .topMovieContainer .movie-banner {
-    max-width: 100%;
-    transform: scale(0.85);
+    max-width: 100%; /* 배너 크기를 컨테이너에 맞추기 */
+    transform: scale(0.85); /* 배너의 크기 줄이기 */
   }
 
   .movieListContainer {
-    width: 80%;
+    width: 80%; /* 리스트 컨테이너의 너비 줄이기 */
     height: auto;
     max-height: 200px;
     overflow-y: auto;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 20px auto; /* 상하 중앙 정렬 및 여백 조정 */
     margin-top: 60px;
-    box-sizing: border-box;
+    box-sizing: border-box; /* 스크롤바 공간을 포함한 너비 설정 */
   }
 
   .anniversaryMoviesContainer {
@@ -376,5 +364,11 @@
   .swiper-container {
     width: 100%;
     padding: 0 15px;
+  }
+
+  .recomani-text {
+    margin: 10px 0;
+    text-align: left;
+    font-size: 15px;
   }
 }
