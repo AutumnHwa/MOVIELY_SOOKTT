@@ -104,8 +104,14 @@ const MvdetailPage = () => {
   }, [id]);
 
   const handleStarClick = async (index) => {
-    if (!user || !movie) {
+    if (loading) {
+      console.log('Data is still loading...');
+      return;
+    }
+
+    if (!user?.id || !movie?.movie_id) {
       setMessage('User or Movie data is missing.');
+      console.log('User or Movie data is missing:', { userId: user?.id, movieId: movie?.movie_id });
       return;
     }
 
@@ -118,6 +124,8 @@ const MvdetailPage = () => {
       rating: parseFloat(newRating)
     };
 
+    console.log('Submitting rating data:', ratingData); // 디버깅용 로그 추가
+
     try {
       const response = await fetch('https://moviely.duckdns.org/ratings', {
         method: 'POST',
@@ -127,28 +135,17 @@ const MvdetailPage = () => {
         body: JSON.stringify(ratingData),
       });
 
-      const responseData = await response.text();
-
-      try {
-        const jsonResponse = JSON.parse(responseData);
-        if (response.ok) {
-          setMessage('Rating submitted successfully!');
-          console.log('Rating submitted successfully!');
-        } else {
-          console.error('Rating submission failed:', jsonResponse);
-          setMessage('Failed to submit rating: ' + (jsonResponse.message || 'Unknown error'));
-          console.log('Rating submission failed:', jsonResponse.message || 'Unknown error');
-        }
-      } catch (e) {
-        console.error('JSON parsing error:', responseData);
-        setMessage('Failed to submit rating: Invalid JSON response.');
-        console.log('Failed to submit rating: Invalid JSON response.');
+      if (response.ok) {
+        setMessage('Rating submitted successfully!');
+        console.log('Rating submitted successfully!');
+      } else {
+        const responseData = await response.json();
+        console.error('Rating submission failed:', responseData);
+        setMessage('Failed to submit rating: ' + (responseData.message || 'Unknown error'));
       }
-
     } catch (error) {
       console.error('Error:', error);
       setMessage('Failed to submit rating.');
-      console.log('Error:', error);
     }
 
     setTimeout(() => {
@@ -157,8 +154,14 @@ const MvdetailPage = () => {
   };
 
   const handleAddClick = () => {
-    if (!user || !movie) {
+    if (loading) {
+      console.log('Data is still loading...');
+      return;
+    }
+
+    if (!user?.id || !movie?.movie_id) {
       setMessage('User or Movie data is missing.');
+      console.log('User or Movie data is missing:', { userId: user?.id, movieId: movie?.movie_id });
       return;
     }
     setShowModal(true);
@@ -169,9 +172,14 @@ const MvdetailPage = () => {
   };
 
   const handleSaveModal = async (option) => {
-    if (!user || !movie) {
+    if (loading) {
+      console.log('Data is still loading...');
+      return;
+    }
+
+    if (!user?.id || !movie?.movie_id) {
       setMessage('User ID and Movie ID must not be null');
-      console.log('User ID or Movie ID is null:', { userId: user?.id, movie_id: movie?.movie_id });
+      console.log('User ID or Movie ID is null:', { userId: user?.id, movieId: movie?.movie_id });
       return;
     }
 
@@ -180,7 +188,7 @@ const MvdetailPage = () => {
       movie_id: movie.movie_id
     };
 
-    console.log('Data being sent:', JSON.stringify(listData));
+    console.log('Data being sent:', JSON.stringify(listData)); // 디버깅용 로그 추가
 
     try {
       let url = '';
@@ -200,21 +208,17 @@ const MvdetailPage = () => {
         body: JSON.stringify(listData),
       });
 
-      const responseData = await response.json();
-      console.log('Response from server:', responseData);
-
       if (response.ok) {
         setMessage('List updated successfully!');
         console.log('List updated successfully!');
       } else {
+        const responseData = await response.json();
         console.error('List update failed:', responseData);
         setMessage('Failed to update list: ' + (responseData.message || 'Unknown error'));
-        console.log('List update failed:', responseData.message || 'Unknown error');
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error updating list:', error);
       setMessage('Failed to update list.');
-      console.log('Error:', error);
     }
 
     setShowModal(false);
@@ -234,8 +238,6 @@ const MvdetailPage = () => {
   const validFlatrate = typeof movie.flatrate === 'string'
     ? movie.flatrate.split(',').map(service => service.trim().toLowerCase()).filter(Boolean)
     : [];
-
-  console.log('Valid Flatrate:', validFlatrate); // 디버깅 로그 추가
 
   const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image';
 
