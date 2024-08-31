@@ -311,6 +311,7 @@
 
   .greetingText-recom {
     margin: 10px 0;
+    margin-bottom: 20px;
     text-align: center; /* 화면 중앙 정렬 */
     font-size: 15px;
     font-weight: bold;
