@@ -313,10 +313,10 @@
   .greetingText-recom {
     margin: 10px 0;
     margin-bottom: 70px;
-    text-align: start; /* 화면 중앙 정렬 */
+    text-align: center; /* 화면 중앙 정렬 */
     font-size: 15px;
     font-weight: bold;
-    width: 50%; /* 가로 폭 100% */
+    width: 100%; /* 가로 폭 100% */
   }
 
   .topMovieAndListContainer {
@@ -329,7 +329,7 @@
   }
 
   .topMovieContainer {
-    width: 70%; /* 컨테이너 크기 줄이기 */
+    width: 75%; /* 컨테이너 크기 줄이기 */
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
@@ -368,7 +368,7 @@
 
   .recomani-text {
     margin: 10px 0;
-    text-align: left;
+    text-align: center;
     font-size: 15px;
   }
 }
