@@ -21,8 +21,8 @@ function Sidebar({ isOpen, onClose }) {
     <div className={`sidebar ${isOpen ? 'open' : ''}`} onClick={onClose}>
       <div className="sidebar-content" onClick={(e) => e.stopPropagation()}>
         <div className="sidebar-header">
-          <button className="close-button" onClick={onClose}>X</button>
           <img src={logoImage} alt="Logo" className="sidebar-logo" />
+          <button className="close-button" onClick={onClose}>X</button>
         </div>
         <button className="auth-button" onClick={handleAuthButtonClick}>
           {authToken ? '로그아웃' : '로그인'}

@@ -138,8 +138,8 @@ const MvdetailPage = () => {
       });
 
       if (response.ok) {
-        setMessage('Rating submitted successfully!');
         console.log('Rating submitted successfully!');
+        // 성공 메시지 설정 제거
       } else {
         const responseData = await response.json();
         console.error('Rating submission failed:', responseData);
@@ -211,8 +211,8 @@ const MvdetailPage = () => {
       });
 
       if (response.ok) {
-        setMessage('List updated successfully!');
         console.log('List updated successfully!');
+        // 성공 메시지 설정 제거
       } else {
         const responseData = await response.json();
         console.error('List update failed:', responseData);
