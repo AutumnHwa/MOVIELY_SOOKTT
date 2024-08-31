@@ -143,7 +143,7 @@ const AnniRecom = () => {
                   <div>영화를 불러오는 중입니다...</div>
                 ) : (
                   <div className="movies">
-                    <Swiper spaceBetween={4} slidesPerView={3.5} navigation modules={[Navigation]} className="movieSwiper">
+                    <Swiper spaceBetween={4} slidesPerView={3.5} navigation modules={[Navigation]} className="movieSwiper" loop={true}>
                       {movies.length > 0 ? (
                         movies.map((movie, index) => (
                           <SwiperSlide key={index}>
