@@ -111,9 +111,9 @@ const MvdetailPage = () => {
       return;
     }
 
-    if (!user?.id || !movie?.movie_id) {
-      setMessage('User or Movie data is missing.');
-      console.log('User or Movie data is missing:', { userId: user?.id, movieId: movie?.movie_id });
+    if (!user?.id || !movieId) {
+      setMessage('User or Movie ID is missing.');
+      console.log('User or Movie ID is missing:', { userId: user?.id, movieId: movieId });
       return;
     }
 
@@ -122,7 +122,7 @@ const MvdetailPage = () => {
 
     const ratingData = {
       user_id: user.id,
-      movie_id: movie.movie_id,
+      movie_id: movieId, // movie_id 대신 movieId 사용
       rating: parseFloat(newRating)
     };
 
@@ -161,9 +161,9 @@ const MvdetailPage = () => {
       return;
     }
 
-    if (!user?.id || !movie?.movie_id) {
-      setMessage('User or Movie data is missing.');
-      console.log('User or Movie data is missing:', { userId: user?.id, movieId: movie?.movie_id });
+    if (!user?.id || !movieId) {
+      setMessage('User or Movie ID is missing.');
+      console.log('User or Movie ID is missing:', { userId: user?.id, movieId: movieId });
       return;
     }
     setShowModal(true);
@@ -179,15 +179,15 @@ const MvdetailPage = () => {
       return;
     }
 
-    if (!user?.id || !movie?.movie_id) {
+    if (!user?.id || !movieId) {
       setMessage('User ID and Movie ID must not be null');
-      console.log('User ID or Movie ID is null:', { userId: user?.id, movieId: movie?.movie_id });
+      console.log('User ID or Movie ID is null:', { userId: user?.id, movieId: movieId });
       return;
     }
 
     const listData = {
       user_id: user.id,
-      movie_id: movie.movie_id
+      movie_id: movieId // movie_id 대신 movieId 사용
     };
 
     console.log('Data being sent:', JSON.stringify(listData)); // 디버깅용 로그 추가
@@ -237,8 +237,8 @@ const MvdetailPage = () => {
     return <div style={{ color: 'white', textAlign: 'center' }}>Movie not found</div>;
   }
 
-  // movie.movie_id를 사용하기 전에 항상 유효성 체크
-  if (!movie.movie_id) {
+  // movie_id 대신 movieId 사용
+  if (!movieId) {
     console.error('Movie ID is undefined. Movie data:', movie);
     return <div style={{ color: 'white', textAlign: 'center' }}>Invalid Movie Data</div>;
   }
