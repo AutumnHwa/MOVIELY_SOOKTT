@@ -335,7 +335,7 @@
 
   .topMovieContainer .movie-banner {
     max-width: 100%; /* 배너 크기를 컨테이너에 맞추기 */
-    transform: scale(0.5); /* 배너의 크기 줄이기 */
+    transform: scale(0.75); /* 배너의 크기 줄이기 */
   }
 
   .movieListContainer {
