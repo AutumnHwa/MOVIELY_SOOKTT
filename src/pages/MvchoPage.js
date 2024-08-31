@@ -79,13 +79,17 @@ function MvchoPage() {
   const fetchMovies = useCallback(async () => {
     setLoading(true);
     try {
-      const url = new URL('https://moviely.duckdns.org/api/movies/popular');
-      const params = {
-        size: 500,
-        sort: 'popularity,desc',
-        'release_date.gte': '2000-01-01',
-        page: currentPage
+      const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
+      const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
+      const url = new URL('https://moviely.duckdns.org/api/movies');
+      const params = { 
+        size: 1000, 
+        sort: 'popularity,desc', 
+        popular: true 
       };
+
+      if (genre) params.genre = genre;
+      if (platform) params.flatrate = platform;
 
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
@@ -101,11 +105,7 @@ function MvchoPage() {
       console.log("API 응답 데이터:", data);
 
       if (data && data.content) {
-        if (data.content.length < 500) {
-          setHasMore(false);
-        }
-
-        const processedData = data.content.map((movie, index) => ({
+        const processedData = data.content.map((movie) => ({
           ...movie,
           flatrate: movie.flatrate ? movie.flatrate.split(', ').map(f => f.trim().toLowerCase()) : [],
           genre: movie.genre ? movie.genre.split(',').map(g => g.trim()) : [] // 장르 데이터를 배열로 변환
@@ -120,7 +120,7 @@ function MvchoPage() {
       console.error('Error fetching movies:', error);
       setLoading(false);
     }
-  }, [currentPage]);
+  }, [selectedGenre, selectedPlatform, genreMapping, platformMapping]);
 
   useEffect(() => {
     fetchMovies();
