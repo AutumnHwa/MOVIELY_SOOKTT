@@ -100,8 +100,7 @@
 
   .sidebar-logo {
     width: 70px; /* 작은 화면에서 로고 크기 줄임 */
-    padding-left: 10px; /* 패딩 조정 */
-    margin-right: 15px;
+    padding-left: 10px;
   }
 
   .auth-button {
