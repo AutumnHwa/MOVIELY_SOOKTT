@@ -104,6 +104,11 @@ const MvdetailPage = () => {
   }, [id]);
 
   const handleStarClick = async (index) => {
+    if (!user || !movie) {
+      setMessage('User or Movie data is missing.');
+      return;
+    }
+
     const newRating = index + 1;
     setRating(newRating);
 
@@ -152,6 +157,10 @@ const MvdetailPage = () => {
   };
 
   const handleAddClick = () => {
+    if (!user || !movie) {
+      setMessage('User or Movie data is missing.');
+      return;
+    }
     setShowModal(true);
   };
 
@@ -160,9 +169,9 @@ const MvdetailPage = () => {
   };
 
   const handleSaveModal = async (option) => {
-    if (!user.id || !movie.movie_id) {
+    if (!user || !movie) {
       setMessage('User ID and Movie ID must not be null');
-      console.log('User ID or Movie ID is null:', { userId: user.id, movie_id: movie.movie_id });
+      console.log('User ID or Movie ID is null:', { userId: user?.id, movie_id: movie?.movie_id });
       return;
     }
 
