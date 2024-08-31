@@ -63,7 +63,7 @@ const genreMapping = {
 };
 
 const MvdetailPage = () => {
-  const { id } = useParams();
+  const { id: movieId } = useParams(); // URL에서 movieId 가져오기
   const { user } = useAuth();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -83,7 +83,7 @@ const MvdetailPage = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/api/movies/${id}`);
+        const response = await fetch(`https://moviely.duckdns.org/api/movies/${movieId}`);
         const data = await response.json();
         if (response.ok) {
           setMovie(data);
@@ -101,7 +101,7 @@ const MvdetailPage = () => {
     };
 
     fetchMovie();
-  }, [id]);
+  }, [movieId]);
 
   const handleStarClick = async (index) => {
     if (loading) {
