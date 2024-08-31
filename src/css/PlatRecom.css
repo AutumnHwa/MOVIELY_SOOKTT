@@ -161,6 +161,7 @@
   .plat-content {
     width: 100%;
     padding: 0;
+    height: 950px;
   }
 
   .plat-title {
@@ -173,7 +174,7 @@
     width: 80%;
     height: 180px;
     margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     padding: 10px;
     border-radius: 15px;
     display: flex;
