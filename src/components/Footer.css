@@ -10,6 +10,7 @@
 .footer .top-line {
   border-top: 1px solid rgba(255, 255, 255, 0.7); /* 하얀색 선 투명도 70% */
   margin-bottom: 10px;
+  margin-top: 50px;
   margin-left: 10px; /* 좌측 여백 추가 */
   margin-right: 10px; /* 우측 여백 추가 */
 }

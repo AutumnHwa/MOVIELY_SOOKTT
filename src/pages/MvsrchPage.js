@@ -83,13 +83,15 @@ function MvsrchPage() {
       const genre = selectedGenre !== '장르 전체' ? genreMapping[selectedGenre] : '';
       const platform = selectedPlatform !== '전체' ? platformMapping[selectedPlatform] : '';
       const url = new URL('https://moviely.duckdns.org/api/movies');
-      const params = { size: 1000, sort: 'popularity,desc', popular: true }; // popular 파라미터 추가
+      const params = { size: 1000, sort: 'popularity,desc', popular: true };
 
       if (genre && genre !== 'All') params.genre = genre;
       if (platform && platform !== 'All') params.flatrate = platform;
       if (searchTerm) params.title = searchTerm;
 
-      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+      url.search = new URLSearchParams(params).toString(); // Use URLSearchParams to build query string
+
+      console.log('Request URL:', url.toString()); // Log request URL for debugging
 
       const response = await fetch(url, { mode: 'cors' });
 
@@ -98,6 +100,8 @@ function MvsrchPage() {
       }
 
       const data = await response.json();
+
+      console.log('Response Data:', data); // Log response data for debugging
 
       if (data && data.content) {
         const processedData = data.content.map(movie => ({
@@ -129,12 +133,12 @@ function MvsrchPage() {
   useEffect(() => {
     let filtered = allMovies;
 
-    if (selectedGenre !== '장르 전체') {
+    if (selectedGenre !== '장르 전체' && selectedGenre !== 'All') {
       const genreCode = genreMapping[selectedGenre];
       filtered = filtered.filter(movie => movie.genre.includes(genreCode));
     }
 
-    if (selectedPlatform !== '전체') {
+    if (selectedPlatform !== '전체' && selectedPlatform !== 'All') {
       const platformName = platformMapping[selectedPlatform];
       filtered = filtered.filter(movie => movie.flatrate.includes(platformName));
     }
@@ -148,21 +152,25 @@ function MvsrchPage() {
 
   const handleGenreClick = (genre) => {
     setSelectedGenre(genre);
-    setSelectedPlatform('전체'); // 장르 선택 시 플랫폼 선택 초기화
-    setSearchTerm(''); // 장르 선택 시 검색어 초기화
+    // 필터링을 장르와 플랫폼이 동시에 적용되도록 함
+    if (selectedPlatform !== '전체') {
+      setShowPlatforms(false);
+    }
   };
 
   const handlePlatformClick = (platform) => {
     setSelectedPlatform(platform);
-    setSelectedGenre('장르 전체'); // 플랫폼 선택 시 장르 선택 초기화
-    setSearchTerm(''); // 플랫폼 선택 시 검색어 초기화
+    // 필터링을 장르와 플랫폼이 동시에 적용되도록 함
+    if (selectedGenre !== '장르 전체') {
+      setShowGenres(false);
+    }
   };
 
   let resultText = '';
-  if (selectedPlatform !== '전체') {
+  if (selectedPlatform !== '전체' && selectedPlatform !== 'All') {
     resultText += `플랫폼 : <span style="color: yellow;">${selectedPlatform}</span>`;
   }
-  if (selectedGenre !== '장르 전체') {
+  if (selectedGenre !== '장르 전체' && selectedGenre !== 'All') {
     if (resultText) {
       resultText += ', ';
     }

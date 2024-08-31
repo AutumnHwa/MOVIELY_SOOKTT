@@ -235,7 +235,9 @@ const MvdetailPage = () => {
             <button onClick={handleAddClick} className="detail-add-button">+</button>
           </div>
           <p className="movie-details">개봉일 : {movie.release_date}</p>
-          <p className="movie-details">장르: {movie.genre}</p>
+          <p className="movie-details">
+            장르: {movie.genre.split(',').map(code => genreMapping[code.trim()] || code).join(', ')}
+          </p>
           <p className="movie-runtime">상영시간: {movie.run_time}분</p>
         </div>
         <div className="right-column">
