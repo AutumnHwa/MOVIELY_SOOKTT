@@ -90,7 +90,7 @@ const PlatRecom = () => {
   const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [recommendation, setRecommendation] = useState({ platform: '', genre: '' });
-  const [selectedPlatform, setSelectedPlatform] = useState(null);
+  const [selectedPlatform, setSelectedPlatform] = useState(null); // 초기값을 null로 설정
 
   useEffect(() => {
     if (user) {
@@ -113,6 +113,7 @@ const PlatRecom = () => {
         const genreCode = data['추천 장르'];
         const genre = genreMapping[genreCode];
         setRecommendation({ platform, genre });
+        setSelectedPlatform(platform); // 추천 플랫폼을 기본 선택 상태로 설정
       })
       .catch(error => console.error('Error fetching recommendation:', error));
     }
@@ -325,7 +326,6 @@ const PlatRecom = () => {
     </div>
   </div>
 )}
-
 
       </div>
     </div>

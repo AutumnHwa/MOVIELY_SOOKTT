@@ -1,3 +1,8 @@
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
 .loginPage {
   display: flex;
   flex-direction: column;
@@ -10,7 +15,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; /* 상단 정렬을 유지 */
-  min-height: 100vh; /* 높이를 최소 100vh로 설정 */
+  /* min-height: 100vh; 제거 또는 수정 */
   padding-top: 20px; /* 상단 여백을 20px로 조정 */
   background-color: rgba(0, 26, 86, 1);
   background-image: linear-gradient(
@@ -120,5 +125,21 @@
     font-size: 12px; /* 화면이 720px 이하일 때 버튼 내 글씨 크기 */
   }
 
+  .poster-1 {
+    top: 60px; 
+    left: -160px; 
+    transform: rotate(-10deg); 
+  }
   
+  .poster-2 {
+    top: 110px;
+    left: 15px; 
+    transform: rotate(10deg);
+  }
+  
+  .poster-3 {
+    top: 240px; 
+    left: -100px; 
+    transform: rotate(0deg); 
+  }
 }
