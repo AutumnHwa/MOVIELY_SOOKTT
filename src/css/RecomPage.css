@@ -342,7 +342,7 @@
 
   .movieListContainer {
     width: 80%; /* 리스트 컨테이너의 너비 줄이기 */
-    height: auto;
+    height: 80%;
     max-height: 200px;
     overflow-y: auto;
     margin: 0 auto 20px auto; /* 상하 중앙 정렬 및 여백 조정 */
@@ -351,7 +351,7 @@
   }
 
   .anniversaryMoviesContainer {
-    width: 360px;
+    width: 400px;
     margin: 0 auto;
     align-items: center;
     margin-bottom: 50px;
