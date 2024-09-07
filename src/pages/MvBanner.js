@@ -197,7 +197,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
           {[...Array(5)].map((_, index) => (
             <span
               key={index}
-              className={`star ${rating > index ? 'filled' : ''}`}
+              className={`star ${rating > index ? 'filled' : ''}`}  // rating에 따라 filled 클래스 적용
               onClick={() => handleStarClick(index)}
             >
               ★
