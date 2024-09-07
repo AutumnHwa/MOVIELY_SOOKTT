@@ -28,13 +28,14 @@
     font-size: 20px;
     cursor: pointer;
     margin-right: 10px;
+    margin-left: 50px;
     margin-top: 10px;
 }
 
 .sidebar-logo {
     width: 85px;
     height: auto; /* 비율을 유지하면서 높이를 자동으로 설정 */
-    padding-left: 50px;
+    padding-left: 0px;
     padding-top: 10px;
 }
 
