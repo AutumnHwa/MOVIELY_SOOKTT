@@ -30,18 +30,29 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
         if (response.ok) {
           const data = await response.json();
           console.log('Fetched rating data:', data); // 응답 데이터 로그로 확인
-          if (data && data.rating) {
-            setRating(data.rating); // 서버에서 받은 별점으로 상태 설정
-            console.log(`Set rating to: ${data.rating}`);
+          
+          // 서버에서 배열 형태로 별점 데이터를 반환한다면, 해당 유저의 별점을 찾아야 함
+          if (Array.isArray(data)) {
+            const userRating = data.find(r => r.user_id === userId && r.movie_id === movieId);
+            
+            if (userRating) {
+              setRating(userRating.rating); // 해당 유저의 별점을 설정
+              console.log(`Set rating to: ${userRating.rating}`);
+            } else {
+              setRating(0); // 유저의 별점이 없을 경우 0으로 설정
+              console.log('No rating found for this user, setting default rating to 0');
+            }
           } else {
-            setRating(0); // 별점이 없는 경우 기본 값 설정
-            console.log('No rating found, setting default rating to 0');
+            console.log('Invalid rating data structure');
+            setRating(0); // 잘못된 데이터 구조가 반환될 경우
           }
         } else {
           console.error('Failed to fetch rating from the server:', response.status);
+          setRating(0); // 서버 응답 실패 시 기본값 설정
         }
       } catch (error) {
         console.error('Error fetching rating:', error);
+        setRating(0); // 에러 발생 시 기본값 설정
       }
     };
 
