@@ -7,24 +7,23 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #001A56; /* 배경색 추가 */
+  background-color: #001A56; 
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* 상단 정렬을 유지 */
-  /* min-height: 100vh; 제거 또는 수정 */
-  padding-top: 20px; /* 상단 여백을 20px로 조정 */
+  justify-content: flex-start; 
+  padding-top: 20px; 
   background-color: rgba(0, 26, 86, 1);
   background-image: linear-gradient(
     to right,
     rgba(255, 255, 255, 0.2) 1px,
     transparent 2px
   );
-  background-size: 21px 100%; /* 간격 20px + 두께 1px */
-  background-attachment: fixed; /* 배경이 고정되도록 설정 */
+  background-size: 21px 100%;
+  background-attachment: fixed; 
 }
 
 .logo {
@@ -47,7 +46,7 @@ body, html {
   font-weight: 400;
   line-height: 150%;
   letter-spacing: -0.5px;
-  padding-top: 0px; /* heading 상단 여백 추가 */
+  padding-top: 0px; 
 }
 
 .buttonContainer {
@@ -55,7 +54,7 @@ body, html {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-  padding-top: 0px; /* 버튼 컨테이너 상단 여백 추가 */
+  padding-top: 0px;
 }
 
 .button {
@@ -64,20 +63,20 @@ body, html {
   height: 19px;
   margin: 10px;
   font-size: 13px;
-  background-color: transparent; /* 초기 배경색은 투명 */
-  color: white; /* 글자 색상 */
+  background-color: transparent; 
+  color: white; 
   text-align: center;
-  line-height: 17px; /* 세로 정렬을 위해 버튼 높이와 동일하게 설정 */
+  line-height: 17px; 
   text-decoration: none;
-  border: 1px solid white; /* 테두리 설정 */
-  border-radius: 24px; /* 둥근 모서리 */
-  transition: background-color 0.3s ease, border-color 0.3s ease; /* 배경색과 테두리 색상 전환 효과 */
+  border: 1px solid white;
+  border-radius: 24px; 
+  transition: background-color 0.3s ease, border-color 0.3s ease; 
 }
 
 .button:hover {
-  background-color: #FBE64D; /* 커서를 올렸을 때의 배경색 */
-  color: black; /* 커서를 올렸을 때의 글자 색상 변경, 필요에 따라 조정 */
-  border-color: transparent; /* 테두리를 투명하게 하여 사라지게 함 */
+  background-color: #FBE64D; 
+  color: black; 
+  border-color: transparent; 
 }
 
 .movie-posters {
@@ -111,7 +110,7 @@ body, html {
 
 @media (max-width: 720px) {
   .heading {
-    font-size: 15px; /* 화면이 720px 이하일 때 글씨 크기 조정 */
+    font-size: 15px; 
   }
 
   .container {
@@ -120,7 +119,7 @@ body, html {
 
   .logo {
     width:40vw;
-    margin-top: 30px; /* 로고 상단 여백을 50px로 줄임 */
+    margin-top: 30px;
     max-width: 200px;
   }
 
