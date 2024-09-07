@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Mvbanner.css';
 import Popcho from '../pages/Popcho';
@@ -16,9 +16,30 @@ const flatrateLogos = {
 };
 
 const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(0); // 기본 값은 0
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+
+  // 컴포넌트가 마운트될 때 서버에서 별점을 가져오는 부분
+  useEffect(() => {
+    const fetchRating = async () => {
+      try {
+        const response = await fetch(`https://moviely.duckdns.org/ratings?user_id=${userId}&movie_id=${movieId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setRating(data.rating || 0); // 서버에서 받은 별점이 없을 경우 0으로 설정
+        } else {
+          console.error('Failed to fetch rating');
+        }
+      } catch (error) {
+        console.error('Error fetching rating:', error);
+      }
+    };
+
+    if (userId && movieId) {
+      fetchRating(); // 유저 ID와 영화 ID가 있을 때만 별점 가져오기
+    }
+  }, [userId, movieId]);
 
   // 별점 클릭 핸들러
   const handleStarClick = async (index) => {
