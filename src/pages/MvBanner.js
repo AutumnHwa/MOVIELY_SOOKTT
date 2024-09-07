@@ -24,7 +24,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
   useEffect(() => {
     const fetchRating = async () => {
       try {
-        const response = await fetch(`https://moviely.duckdns.org/ratings?user_id=${userId}&movie_id=${movieId}`);
+        const response = await fetch(`https://moviely.duckdns.org/ratings/${movieId}?user_id=${userId}`);
         if (response.ok) {
           const data = await response.json();
           setRating(data.rating || 0); // 서버에서 받은 별점이 없을 경우 0으로 설정
