@@ -24,12 +24,21 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
   useEffect(() => {
     const fetchRating = async () => {
       try {
+        console.log(`Fetching rating for movieId: ${movieId}, userId: ${userId}`);
+        // 서버에서 영화의 별점을 가져오는 API 요청
         const response = await fetch(`https://moviely.duckdns.org/ratings/${movieId}?user_id=${userId}`);
         if (response.ok) {
           const data = await response.json();
-          setRating(data.rating || 0); // 서버에서 받은 별점이 없을 경우 0으로 설정
+          console.log('Fetched rating data:', data); // 응답 데이터 로그로 확인
+          if (data && data.rating) {
+            setRating(data.rating); // 서버에서 받은 별점으로 상태 설정
+            console.log(`Set rating to: ${data.rating}`);
+          } else {
+            setRating(0); // 별점이 없는 경우 기본 값 설정
+            console.log('No rating found, setting default rating to 0');
+          }
         } else {
-          console.error('Failed to fetch rating');
+          console.error('Failed to fetch rating from the server:', response.status);
         }
       } catch (error) {
         console.error('Error fetching rating:', error);
@@ -53,6 +62,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
     };
 
     try {
+      console.log('Submitting rating:', ratingData); // 제출하는 데이터 확인
       const response = await fetch('https://moviely.duckdns.org/ratings', {
         method: 'POST',
         headers: {
@@ -62,6 +72,7 @@ const MvBanner = ({ title, poster, flatrate, movieId, userId }) => {
       });
 
       const responseData = await response.text();
+      console.log('Response from rating submission:', responseData); // 응답 확인
 
       try {
         const jsonResponse = JSON.parse(responseData);
