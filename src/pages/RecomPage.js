@@ -40,9 +40,9 @@ const anniversaryDates = {
   '현충일': '06-06',
   '할로윈': '10-31',
   '크리스마스': '12-25',
-  '추석': '09-24', // 예시 날짜
+  '추석': '09-24',
   '여성의날': '03-08',
-  '설날': '02-10', // 예시 날짜
+  '설날': '02-10',
   '발렌타인데이': '02-14',
   '과학의날': '04-21'
 };
@@ -81,6 +81,15 @@ function RecomPage() {
 
   const closeSidebar = () => {
     setSidebarOpen(false);
+  };
+
+  // 슬라이드를 복제하는 함수
+  const duplicateSlides = (slides, minCount) => {
+    let duplicatedSlides = [...slides];
+    while (duplicatedSlides.length < minCount) {
+      duplicatedSlides = duplicatedSlides.concat(slides); // 슬라이드 복제
+    }
+    return duplicatedSlides;
   };
 
   useEffect(() => {
@@ -135,7 +144,7 @@ function RecomPage() {
         setClosestAnniversary(closestAnniv);
         setAllMovies(data.content || []);
         const filteredMovies = data.content.filter(movie => movie.anniversary_name === closestAnniv);
-        setAnniversaryMovies(filteredMovies);
+        setAnniversaryMovies(duplicateSlides(filteredMovies, 10)); // 최소 10개의 슬라이드로 복제
         setLoadingAnniversaryMovies(false);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
