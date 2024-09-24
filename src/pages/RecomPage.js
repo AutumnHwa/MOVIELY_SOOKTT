@@ -59,6 +59,7 @@ const getClosestAnniversary = () => {
   });
 
   dates.sort((a, b) => a.date - b.date);
+  console.log("Next closest anniversary: ", dates[0].name);  // 디버깅용 로그 추가
   return dates[0].name;
 };
 
