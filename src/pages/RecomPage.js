@@ -40,9 +40,9 @@ const anniversaryDates = {
   '현충일': '06-06',
   '할로윈': '10-31',
   '크리스마스': '12-25',
-  '추석': '09-24', // 예시 날짜
+  '추석': '09-24',
   '여성의날': '03-08',
-  '설날': '02-10', // 예시 날짜
+  '설날': '02-10',
   '발렌타인데이': '02-14',
   '과학의날': '04-21'
 };
@@ -137,6 +137,9 @@ function RecomPage() {
         const filteredMovies = data.content.filter(movie => movie.anniversary_name === closestAnniv);
         setAnniversaryMovies(filteredMovies);
         setLoadingAnniversaryMovies(false);
+
+        console.log("Filtered movies: ", filteredMovies);
+        console.log("Closest anniversary: ", closestAnniv);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
         setLoadingAnniversaryMovies(false);
@@ -243,12 +246,13 @@ function RecomPage() {
             <div>Fetching anniversary movies...</div>
           ) : (
             <Swiper
-              spaceBetween={4}
-              slidesPerView={3.5}  
+              spaceBetween={0}
+              slidesPerView={4.5}
               navigation
               modules={[Navigation, Pagination]}
               className="movieSwiper"
-              loop={true}
+              loop={anniversaryMovies.length > 4}  // 슬라이드가 4개 이상일 때만 루프 사용
+              loopFillGroupWithBlank={true}  // 슬라이드 부족 시 빈 슬라이드로 채워서 루프 유지
             >
               {anniversaryMovies.map((movie, index) => {
                 const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
