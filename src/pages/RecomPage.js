@@ -244,7 +244,7 @@ function RecomPage() {
           ) : (
             <Swiper
               spaceBetween={0}
-              slidesPerView={2.5}  
+              slidesPerView={2}  
               slidesPerGroup={1}   
               navigation
               modules={[Navigation, Pagination]}
