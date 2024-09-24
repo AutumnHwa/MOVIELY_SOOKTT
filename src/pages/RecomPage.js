@@ -243,9 +243,8 @@ function RecomPage() {
             <div>Fetching anniversary movies...</div>
           ) : (
             <Swiper
-              spaceBetween={0}
-              slidesPerView={2}  
-              slidesPerGroup={1}   
+              spaceBetween={4}
+              slidesPerView={3.5}  
               navigation
               modules={[Navigation, Pagination]}
               className="movieSwiper"
