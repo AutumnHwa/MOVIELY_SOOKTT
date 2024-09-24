@@ -47,19 +47,25 @@ const anniversaryDates = {
   '과학의날': '04-21'
 };
 
+// 가장 가까운 기념일을 계산하는 함수
 const getClosestAnniversary = () => {
   const today = new Date();
   const dates = Object.entries(anniversaryDates).map(([name, date]) => {
     const [month, day] = date.split('-');
     const anniversaryDate = new Date(today.getFullYear(), parseInt(month) - 1, parseInt(day));
+    
+    // 오늘 날짜가 기념일 날짜를 지나면, 내년으로 설정
     if (anniversaryDate < today) {
       anniversaryDate.setFullYear(today.getFullYear() + 1);
     }
+    
     return { name, date: anniversaryDate };
   });
 
+  // 가장 가까운 기념일을 찾는 로직
   dates.sort((a, b) => a.date - b.date);
-  console.log("Next closest anniversary: ", dates[0].name);  // 디버깅용 로그 추가
+
+  console.log("Next closest anniversary: ", dates[0].name);  // 디버깅용 로그
   return dates[0].name;
 };
 
@@ -135,12 +141,15 @@ function RecomPage() {
         const closestAnniv = getClosestAnniversary();
         setClosestAnniversary(closestAnniv);
         setAllMovies(data.content || []);
+
+        // 디버깅용 콘솔 로그: 전체 기념일 영화와 필터링된 영화 출력
+        console.log("All anniversary movies: ", data.content);
+        
         const filteredMovies = data.content.filter(movie => movie.anniversary_name === closestAnniv);
+        console.log("Filtered movies for closest anniversary: ", filteredMovies);
+        
         setAnniversaryMovies(filteredMovies);
         setLoadingAnniversaryMovies(false);
-
-        console.log("Filtered movies: ", filteredMovies);
-        console.log("Closest anniversary: ", closestAnniv);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
         setLoadingAnniversaryMovies(false);
