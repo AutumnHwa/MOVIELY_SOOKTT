@@ -40,32 +40,31 @@ const anniversaryDates = {
   '현충일': '06-06',
   '할로윈': '10-31',
   '크리스마스': '12-25',
-  '추석': '09-24',
+  '추석': '09-24', // 예시 날짜
   '여성의날': '03-08',
-  '설날': '02-10',
+  '설날': '02-10', // 예시 날짜
   '발렌타인데이': '02-14',
   '과학의날': '04-21'
 };
 
-// 수정된 getClosestAnniversary 함수
 const getClosestAnniversary = () => {
   const today = new Date();
   const dates = Object.entries(anniversaryDates).map(([name, date]) => {
     const [month, day] = date.split('-');
     const anniversaryDate = new Date(today.getFullYear(), parseInt(month) - 1, parseInt(day));
 
-    // 기념일이 오늘보다 이전이면 다음 해로 설정
+    // 오늘 날짜가 기념일 날짜를 지나면 내년으로 설정
     if (anniversaryDate < today) {
       anniversaryDate.setFullYear(today.getFullYear() + 1);
     }
 
-    const timeDiff = Math.abs(anniversaryDate - today);
-    return { name, date: anniversaryDate, diff: timeDiff };  // 기념일까지의 차이를 저장
+    return { name, date: anniversaryDate };
   });
 
-  // 기념일까지의 차이가 가장 적은 기념일을 찾음
-  dates.sort((a, b) => a.diff - b.diff);
-  console.log("Next closest anniversary: ", dates[0].name);  // 디버깅용 로그 추가
+  // 가장 가까운 기념일을 찾는 로직
+  dates.sort((a, b) => a.date - b.date);
+  
+  console.log("Next closest anniversary: ", dates[0].name);  // 디버깅용 로그
   return dates[0].name;
 };
 
@@ -73,11 +72,7 @@ function RecomPage() {
   const { authToken, user } = useAuth();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [allMovies, setAllMovies] = useState([]);
   const [anniversaryMovies, setAnniversaryMovies] = useState([]);
-  const [topMovie, setTopMovie] = useState(null);
-  const [movieItems, setMovieItems] = useState([]);
-  const [loadingRecommendations, setLoadingRecommendations] = useState(true);
   const [loadingAnniversaryMovies, setLoadingAnniversaryMovies] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [closestAnniversary, setClosestAnniversary] = useState('');
@@ -91,39 +86,6 @@ function RecomPage() {
   };
 
   useEffect(() => {
-    const fetchRecommendations = async () => {
-      if (!authToken || !user) {
-        setLoadingRecommendations(false);
-        return;
-      }
-
-      try {
-        const response = await fetch('https://moviely.duckdns.org/api/recommend', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({ user_id: user.id }),
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Failed to fetch recommendations: ${response.statusText} - ${errorText}`);
-        }
-
-        const data = await response.json();
-        if (data.length > 0) {
-          setTopMovie(data[0]);
-          setMovieItems(data.slice(1, 6));
-        }
-        setLoadingRecommendations(false);
-      } catch (error) {
-        console.error('Error fetching recommendations:', error.message);
-        setLoadingRecommendations(false);
-      }
-    };
-
     const fetchAnniversaryMovies = async () => {
       try {
         const response = await fetch('https://moviely.duckdns.org/api/anniversary?page=0&size=150', {
@@ -138,37 +100,24 @@ function RecomPage() {
         }
 
         const data = await response.json();
+        console.log("All anniversary movies: ", data.content);  // 전체 데이터 로그
+
         const closestAnniv = getClosestAnniversary();
         setClosestAnniversary(closestAnniv);
-        setAllMovies(data.content || []);
+        
         const filteredMovies = data.content.filter(movie => movie.anniversary_name === closestAnniv);
+        console.log("Filtered Halloween movies: ", filteredMovies);  // 할로윈 영화 로그
+        
         setAnniversaryMovies(filteredMovies);
         setLoadingAnniversaryMovies(false);
-
-        console.log("Filtered movies: ", filteredMovies);
-        console.log("Closest anniversary: ", closestAnniv);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
         setLoadingAnniversaryMovies(false);
       }
     };
 
-    fetchRecommendations();
     fetchAnniversaryMovies();
   }, [authToken, user]);
-
-  const shuffleArray = (array) => {
-    let shuffled = array.slice();
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-  const handleSearchClick = () => {
-    navigate('/movie-search', { state: { searchTerm } });
-  };
 
   const handlePosterClick = (movieId) => {
     navigate(`/movie/${movieId}`);
@@ -194,90 +143,41 @@ function RecomPage() {
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
       <div className="tabContent">
         <div className="greetingText-recom">{user ? `${user.name}님을 위한 취향저격 영화를 찾아봤어요.` : '취향저격 영화를 찾아봤어요.'}</div>
-        <div className="topMovieAndListContainer">
-          <div className="topMovieContainer">
-            {loadingRecommendations ? (
-              <div>Fetching recommendations...</div>
-            ) : (
-              topMovie ? (
-                <div style={{ transform: 'scale(1.57)' }}>
-                  <MvBanner
-                    title={topMovie.title}
-                    poster={topMovie.poster_path ? `https://image.tmdb.org/t/p/w500${topMovie.poster_path}` : 'https://via.placeholder.com/154x231?text=No+Image'}
-                    flatrate={topMovie.flatrate ? topMovie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
-                    userId={user ? user.id : null}
-                    movieId={topMovie.id || topMovie.movie_id}
-                    onPosterClick={handlePosterClick}
-                  />
-                </div>
-              ) : (
-                <div>No recommendations found.</div>
-              )
-            )}
-          </div>
-          <div className="movieListContainer">
-            {loadingRecommendations ? (
-              <div>Fetching recommendations...</div>
-            ) : (
-              movieItems.length > 0 ? (
-                movieItems.map((movie, index) => {
-                  const genreList = movie.genre ? movie.genre.split(',').map(g => genreMapping[g.trim()]).filter(Boolean) : [];
-                  const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
-                  return (
-                    <div key={index} className="movieItem" onClick={() => handlePosterClick(movie.id || movie.movie_id)}>
-                      <img
-                        src={posterUrl}
-                        alt={movie.title}
-                        className="moviePoster"
-                      />
-                      <div className="movieDetails">
-                        <div className="movieTitle">{movie.title}</div>
-                        <div className="movieReleaseDate">{new Date(movie.release_date).toLocaleDateString()}</div>
-                        <div className="movieGenre">{genreList.length ? genreList.join(', ') : 'No Genre'}</div>
-                        <div className="movieOverview">{movie.overview || 'No overview available'}</div>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <div>No recommendations found.</div>
-              )
-            )}
-          </div>
-        </div>
-        <div className="recomani-text">
-          {closestAnniversary}에 딱 맞는 영화를 추천드립니다!!
-        </div>
         <div className="anniversaryMoviesContainer">
           {loadingAnniversaryMovies ? (
             <div>Fetching anniversary movies...</div>
           ) : (
             <Swiper
               spaceBetween={0}
-              slidesPerView={4.5}
+              slidesPerView={2}
+              slidesPerGroup={1}
               navigation
               modules={[Navigation, Pagination]}
+              loop={anniversaryMovies.length > 1}  // 슬라이드가 2개 이상일 때만 루프 활성화
               className="movieSwiper"
-              loop={anniversaryMovies.length > 4}  // 슬라이드가 4개 이상일 때만 루프 사용
-              loopFillGroupWithBlank={true}  // 슬라이드 부족 시 빈 슬라이드로 채워서 루프 유지
             >
-              {anniversaryMovies.map((movie, index) => {
-                const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';
-                return (
-                  <SwiperSlide key={index}>
-                    <div style={{ transform: 'scale(0.8)' }}>
-                      <MvBanner
-                        title={movie.title}
-                        poster={posterUrl}
-                        flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
-                        userId={user ? user.id : null}
-                        movieId={movie.id || movie.movie_id}
-                        onPosterClick={handlePosterClick}
-                      />
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
+              {anniversaryMovies.length > 0 ? (
+                anniversaryMovies.map((movie, index) => {
+                  const posterUrl = movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    : 'https://via.placeholder.com/70x105?text=No+Image';
+                  return (
+                    <SwiperSlide key={index}>
+                      <div style={{ transform: 'scale(0.8)' }}>
+                        <MvBanner
+                          title={movie.title}
+                          poster={posterUrl}
+                          flatrate={movie.flatrate ? movie.flatrate.split(', ').map(platform => platform.toLowerCase()) : []}
+                          movieId={movie.id || movie.movie_id}
+                          onPosterClick={() => handlePosterClick(movie.id || movie.movie_id)}
+                        />
+                      </div>
+                    </SwiperSlide>
+                  );
+                })
+              ) : (
+                <div>No movies found for {closestAnniversary}.</div>
+              )}
             </Swiper>
           )}
         </div>
