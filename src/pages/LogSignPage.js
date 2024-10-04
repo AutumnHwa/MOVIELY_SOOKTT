@@ -26,6 +26,12 @@ function LogSignPage() {
 
       console.log("Backend response data:", data); // 서버 응답 확인
 
+
+
+
+
+
+      
       try {
         if (data.jwtToken) {
           login(data.jwtToken, data.user);

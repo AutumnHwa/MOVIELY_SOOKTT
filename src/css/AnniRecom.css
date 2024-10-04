@@ -60,7 +60,7 @@
 .banner {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* 공간을 양쪽 끝으로 배치 */
+    justify-content: space-between; 
     width: 550px;
     height: 100px;
     background: rgba(210, 210, 210, 0.53);
@@ -191,7 +191,7 @@
     .recomlogo img {
         width: 120px;
         margin-bottom: 10px;
-        margin-top: 30px; /* 간격을 10픽셀로 통일 */
+        margin-top: 30px; 
         margin-left: 30px;
     }
 
@@ -253,7 +253,7 @@
         width: 100%;
         height: 100%;
         justify-content: center;
-        align-items: center; /* 수직 중앙 정렬 */
+        align-items: center; 
         gap: 50px;
         margin-top: 5px;
         margin-bottom: 5px;
@@ -262,13 +262,13 @@
     .swiper-slide {
         display: flex;
         justify-content: left;
-        align-items: flex-start; /* 위쪽부터 정렬하여 하단 잘림 방지 */
-        width: 100%; /* 슬라이드 전체 너비 */
+        align-items: flex-start; 
+        width: 100%; 
         height: auto;
         box-sizing: border-box;
-        transform: scale(0.6); /* 전체 크기를 줄임 */
-        transform-origin: center; /* 중심을 기준으로 크기 조정 */
-        transition: transform 0.3s ease-in-out; /* 부드러운 효과 */
+        transform: scale(0.6);
+        transform-origin: center;
+        transition: transform 0.3s ease-in-out;
     }
 
 

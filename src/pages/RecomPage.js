@@ -40,32 +40,25 @@ const anniversaryDates = {
   '현충일': '06-06',
   '할러윈': '10-31',
   '크리스마스': '12-25',
-  '추석': '09-24',
+  '추석': '09-17', // 예시 날짜
   '여성의날': '03-08',
-  '설날': '02-10',
+  '설날': '02-10', // 예시 날짜
   '발렌타인데이': '02-14',
   '과학의날': '04-21'
 };
 
-// 수정된 getClosestAnniversary 함수
 const getClosestAnniversary = () => {
   const today = new Date();
   const dates = Object.entries(anniversaryDates).map(([name, date]) => {
     const [month, day] = date.split('-');
     const anniversaryDate = new Date(today.getFullYear(), parseInt(month) - 1, parseInt(day));
-
-    // 기념일이 오늘보다 이전이면 다음 해로 설정
     if (anniversaryDate < today) {
       anniversaryDate.setFullYear(today.getFullYear() + 1);
     }
-
-    const timeDiff = Math.abs(anniversaryDate - today);
-    return { name, date: anniversaryDate, diff: timeDiff };  // 기념일까지의 차이를 저장
+    return { name, date: anniversaryDate };
   });
 
-  // 기념일까지의 차이가 가장 적은 기념일을 찾음
-  dates.sort((a, b) => a.diff - b.diff);
-  console.log("Next closest anniversary: ", dates[0].name);  // 디버깅용 로그 추가
+  dates.sort((a, b) => a.date - b.date);
   return dates[0].name;
 };
 
@@ -144,9 +137,6 @@ function RecomPage() {
         const filteredMovies = data.content.filter(movie => movie.anniversary_name === closestAnniv);
         setAnniversaryMovies(filteredMovies);
         setLoadingAnniversaryMovies(false);
-
-        console.log("Filtered movies: ", filteredMovies);
-        console.log("Closest anniversary: ", closestAnniv);
       } catch (error) {
         console.error('Error fetching anniversary movies:', error.message);
         setLoadingAnniversaryMovies(false);
@@ -258,8 +248,7 @@ function RecomPage() {
               navigation
               modules={[Navigation, Pagination]}
               className="movieSwiper"
-              loop={anniversaryMovies.length > 4}  // 슬라이드가 4개 이상일 때만 루프 사용
-              loopFillGroupWithBlank={true}  // 슬라이드 부족 시 빈 슬라이드로 채워서 루프 유지
+              loop={true}
             >
               {anniversaryMovies.map((movie, index) => {
                 const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/70x105?text=No+Image';

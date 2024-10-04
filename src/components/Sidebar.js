@@ -1,18 +1,18 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // useNavigate 추가
+import { Link, useNavigate } from 'react-router-dom'; 
 import { useAuth } from '../context/AuthContext';
-import '../css/Sidebar.css'; // 사이드바 스타일을 위한 CSS 파일
+import '../css/Sidebar.css'; 
 import logoImage from '../logo.png';
 
 function Sidebar({ isOpen, onClose }) {
   const { authToken, logout } = useAuth();
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate(); 
 
   const handleAuthButtonClick = () => {
     if (authToken) {
       logout();
     } else {
-      onClose(); // 사이드바를 닫고 로그인 페이지로 이동
+      onClose(); 
       navigate('/log-sign');
     }
   };

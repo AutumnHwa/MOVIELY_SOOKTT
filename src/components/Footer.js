@@ -1,6 +1,6 @@
 // Footer.js
 import React from 'react';
-import './Footer.css'; // 위에서 작성한 CSS 파일을 import
+import './Footer.css';
 
 const Footer = () => {
   return (
